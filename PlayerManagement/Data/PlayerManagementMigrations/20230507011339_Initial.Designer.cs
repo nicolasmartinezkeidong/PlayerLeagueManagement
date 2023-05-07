@@ -11,7 +11,7 @@ using PlayerManagement.Data;
 namespace PlayerManagement.Data.PlayerManagementMigrations
 {
     [DbContext(typeof(PlayerManagementContext))]
-    [Migration("20230506054248_Initial")]
+    [Migration("20230507011339_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
