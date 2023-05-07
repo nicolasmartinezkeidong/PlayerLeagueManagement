@@ -103,8 +103,8 @@ namespace PlayerManagement.Data
                     var intermediateLeague = context.Leagues.FirstOrDefault(l => l.Name == "Intermediate");
                     var recreationalLeague = context.Leagues.FirstOrDefault(l => l.Name == "Recreational");
 
-                    int countTeamsInt = context.Teams.Where(t => t.Name == "Intermediate").Count();
-                    int countTeamsRec = context.Teams.Where(t => t.Name == "Recreational").Count();
+                    int countTeamsInt = context.Teams.Count(t => t.League.Name == "Intermediate");
+                    int countTeamsRec = context.Teams.Count(t => t.League.Name == "Recreational");
 
                     // update number of teams and league budget for each league
                     intermediateLeague.NumberOfTeams = countTeamsInt;
