@@ -48,7 +48,7 @@ namespace PlayerManagement.Controllers
         // GET: Teams/Create
         public IActionResult Create()
         {
-            ViewData["LeagueId"] = new SelectList(_context.Leagues, "Id", "Name");
+            PopulateDropDownLists();
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace PlayerManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LeagueId"] = new SelectList(_context.Leagues, "Id", "LeagueFoundation", team.LeagueId);
+            PopulateDropDownLists(team);
             return View(team);
         }
 
@@ -82,7 +82,7 @@ namespace PlayerManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["LeagueId"] = new SelectList(_context.Leagues, "Id", "LeagueFoundation", team.LeagueId);
+            PopulateDropDownLists(team);
             return View(team);
         }
 
@@ -118,7 +118,7 @@ namespace PlayerManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LeagueId"] = new SelectList(_context.Leagues, "Id", "LeagueFoundation", team.LeagueId);
+            PopulateDropDownLists(team);
             return View(team);
         }
 
@@ -159,6 +159,17 @@ namespace PlayerManagement.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+        // Order ddl and orderer it by Name
+        private void PopulateDropDownLists(Team team = null)
+        {
+            var lQuery = from l in _context.Leagues
+                         orderby l.Name
+                         select l;
+            ViewData["LeagueId"] = new SelectList(lQuery, "Id", "Name", team?.LeagueId);
+        }
+
 
         private bool TeamExists(int id)
         {

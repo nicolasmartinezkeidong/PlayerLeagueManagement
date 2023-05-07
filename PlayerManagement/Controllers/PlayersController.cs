@@ -50,7 +50,7 @@ namespace PlayerManagement.Controllers
         public IActionResult Create()
         {
             ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos");
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
+            PopulateDropDownLists();
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace PlayerManagement.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player.PlayerPositionId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", player.TeamId);
+            PopulateDropDownLists(player);
             return View(player);
         }
 
@@ -86,7 +86,7 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
             ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player.PlayerPositionId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", player.TeamId);
+            PopulateDropDownLists(player);
             return View(player);
         }
 
@@ -123,7 +123,7 @@ namespace PlayerManagement.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player.PlayerPositionId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", player.TeamId);
+            PopulateDropDownLists(player);
             return View(player);
         }
 
@@ -165,6 +165,16 @@ namespace PlayerManagement.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+        private void PopulateDropDownLists(Player player = null)
+        {
+            var tQuery = from t in _context.Teams
+                         orderby t.Name
+                         select t;
+            ViewData["TeamId"] = new SelectList(tQuery, "Id", "Name", player?.TeamId);
+        }
+
 
         private bool PlayerExists(int id)
         {
