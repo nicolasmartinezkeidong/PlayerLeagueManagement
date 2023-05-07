@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PlayerManagement.Models.Team>
+﻿@model IEnumerable<PlayerManagement.Models.League>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,10 +16,13 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegistrationDate)
+                @Html.DisplayNameFor(model => model.LeagueFoundation)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.League)
+                @Html.DisplayNameFor(model => model.LeagueBudget)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfTeams)
             </th>
             <th></th>
         </tr>
@@ -31,10 +34,13 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RegistrationDate)
+                @Html.DisplayFor(modelItem => item.LeagueFoundation)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.League.Name)
+                @Html.DisplayFor(modelItem => item.LeagueBudget)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfTeams)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
