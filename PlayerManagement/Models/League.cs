@@ -43,7 +43,11 @@ namespace PlayerManagement.Models
         {
             if ((int.Parse(LeagueFoundation) - 1) > DateTime.Today.Year)
             {
-                yield return new ValidationResult("League Foundation cannot be more then one year in the future.", new[] { "LeagueFoundation" });
+                yield return new ValidationResult("League Foundation cannot be more than one year in the future.", new[] { "LeagueFoundation" });
+            }
+            else if((int.Parse(LeagueFoundation))< (( DateTime.Today.Year)-1))
+            {
+                yield return new ValidationResult("League Foundation cannot be more than one year in the past.", new[] { "LeagueFoundation" });
             }
         }
     }

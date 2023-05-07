@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -59,20 +60,27 @@ namespace PlayerManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,RegistrationDate,LeagueId")] Team team)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(team);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(team);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            PopulateDropDownLists(team);
+            catch(DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
+            }
+            
             return View(team);
         }
 
         // GET: Teams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Teams == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -91,23 +99,28 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,RegistrationDate,LeagueId")] Team team)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != team.Id)
+            //Go get the Team to update
+            var teamToUpdate = await _context.Teams.SingleOrDefaultAsync(t => t.Id == id);
+
+            if (teamToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //Try updating it with the values posted
+            if (await TryUpdateModelAsync<Team>(teamToUpdate, "",
+                t => t.Name, t => t.RegistrationDate, t => t.LeagueId))
             {
                 try
                 {
-                    _context.Update(team);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeamExists(team.Id))
+                    if (!TeamExists(teamToUpdate.Id))
                     {
                         return NotFound();
                     }
@@ -116,22 +129,26 @@ namespace PlayerManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
+                }
+
             }
-            PopulateDropDownLists(team);
-            return View(team);
+            return View(teamToUpdate);
         }
+
 
         // GET: Teams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Teams == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var team = await _context.Teams
-                .Include(t => t.League)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (team == null)
             {
@@ -151,15 +168,34 @@ namespace PlayerManagement.Controllers
                 return Problem("Entity set 'PlayerManagementContext.Teams'  is null.");
             }
             var team = await _context.Teams.FindAsync(id);
-            if (team != null)
+            try
             {
-                _context.Teams.Remove(team);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+                if (team != null)
+                {
+                    _context.Teams.Remove(team);
+                }
 
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Team. Remember, you cannot delete a Team that has players assigned.");
+                }
+                else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Teams.Name"))
+                {
+                    ModelState.AddModelError("Name", "Unable to save changes. Remember, you cannot have duplicate Team names.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(team);
+
+        }
 
         // Order ddl and orderer it by Name
         private void PopulateDropDownLists(Team team = null)

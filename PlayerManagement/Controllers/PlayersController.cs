@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -61,11 +62,29 @@ namespace PlayerManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Phone,Email,DOB,PlayerPositionId,TeamId")] Player player)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(player);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(player);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Players.Email"))
+                {
+                    ModelState.AddModelError("Email", "Unable to save changes. Remember, you cannot have duplicate emails.");
+                }
+                else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Players.Phone"))
+                {
+                    ModelState.AddModelError("Phone", "Unable to save changes. Remember, you cannot have duplicate phones.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
             ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player.PlayerPositionId);
             PopulateDropDownLists(player);
@@ -95,23 +114,30 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Phone,Email,DOB,PlayerPositionId,TeamId")] Player player)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != player.Id)
+
+            //Go get the patient to update
+            var playerToUpdate = await _context.Players.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (playerToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //Try updating it with the values posted
+            if (await TryUpdateModelAsync<Player>(playerToUpdate, "",
+                p => p.FirstName, p => p.LastName, p => p.Phone, p => p.Email, p => p.DOB,
+                p => p.TeamId, p => p.PlayerPositionId))
             {
                 try
                 {
-                    _context.Update(player);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PlayerExists(player.Id))
+                    if (!PlayerExists(playerToUpdate.Id))
                     {
                         return NotFound();
                     }
@@ -120,24 +146,38 @@ namespace PlayerManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Players.Email"))
+                    {
+                        ModelState.AddModelError("Email", "Unable to save changes. Remember, you cannot have duplicate emails.");
+                    }
+                    else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Players.Phone"))
+                    {
+                        ModelState.AddModelError("Phone", "Unable to save changes. Remember, you cannot have duplicate phones.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
+                }
             }
-            ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player.PlayerPositionId);
-            PopulateDropDownLists(player);
-            return View(player);
+                ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", playerToUpdate.PlayerPositionId);
+                PopulateDropDownLists(playerToUpdate);
+                return View(playerToUpdate);
         }
-
         // GET: Players/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Players == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var player = await _context.Players
-                .Include(p => p.PlayerPosition)
                 .Include(p => p.Team)
+                .Include(p => p.PlayerPosition)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (player == null)
             {
@@ -157,13 +197,21 @@ namespace PlayerManagement.Controllers
                 return Problem("Entity set 'PlayerManagementContext.Players'  is null.");
             }
             var player = await _context.Players.FindAsync(id);
-            if (player != null)
+            try
             {
-                _context.Players.Remove(player);
+                if (player != null)
+                {
+                    _context.Players.Remove(player);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists contact your system administrator.");
+            }
+            return View(player);
         }
 
 

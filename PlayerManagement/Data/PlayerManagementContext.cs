@@ -28,7 +28,14 @@ namespace PlayerManagement.Data
                 .HasForeignKey(t => t.LeagueId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //Add a unique index to the 
+            //Prevent Cascade Delete from Team to Player
+            modelBuilder.Entity<Team>()
+                .HasMany<Player>(t => t.Players)
+                .WithOne(t => t.Team)
+                .HasForeignKey(t => t.TeamId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //Add a unique index to the Player Email and Phone
             modelBuilder.Entity<Player>()
             .HasIndex(p => new { p.Email, p.Phone })
             .IsUnique();
@@ -37,8 +44,12 @@ namespace PlayerManagement.Data
             modelBuilder.Entity<Play>()
             .HasKey(p => new { p.PlayerId, p.PlayerPositionId });
 
-            //Add a unique index
+            //Add a unique index to the Team Name
             modelBuilder.Entity<Team>()
+            .HasIndex(p => new { p.Name })
+            .IsUnique();
+            //Add a unique index to the League Name
+            modelBuilder.Entity<League>()
             .HasIndex(p => new { p.Name })
             .IsUnique();
         }
