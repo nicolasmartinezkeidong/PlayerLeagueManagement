@@ -16,6 +16,8 @@ namespace PlayerManagement.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<PlayerPosition> PlayerPositions { get; set; }
         public DbSet<Team> Teams { get; set; }
+        public DbSet<Field> Fields { get; set; }
+        public DbSet<MatchSchedule> MatchSchedules { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

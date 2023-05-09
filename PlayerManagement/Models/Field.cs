@@ -16,7 +16,7 @@ namespace PlayerManagement.Models
 
         [StringLength(1000, ErrorMessage = "Comments cannot be more than 1000 characters long.")]
         [DataType(DataType.MultilineText)]
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
 
         [Required(ErrorMessage = "You must enter a Google Maps link.")]
         [StringLength(200, ErrorMessage = "Link cannot be more than 200 characters long.")]

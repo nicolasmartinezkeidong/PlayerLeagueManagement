@@ -1,4 +1,6 @@
-﻿Add-Migration -Context PlayerManagementContext -o Data\PlayerManagementMigrations Initial
+﻿//Migrations commands
+
+Add-Migration -Context PlayerManagementContext -o Data\PlayerManagementMigrations Initial
 Update-Database -Context PlayerManagementContext 
 
 

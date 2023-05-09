@@ -195,6 +195,149 @@ namespace PlayerManagement.Data
                     context.SaveChanges();
                 }
 
+
+                if (!context.Fields.Any())
+                {
+                    context.Fields.AddRange(
+                        new Field
+                        {
+                            Name = "West Park 1",
+                            Address = "78 Louth St, St Catharines, ON",
+                            Comments = "Parking off of Louth Street for Field 1 & Powerview Ave for field 2",
+                            GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&ie=UTF-8&q=west+park+st.+catharines&fb=1&gl=ca&hq=west+park&hnear=0x89d35054bb6a5a4b:0x37563636c082837,St+Catharines,+ON&cid=0,0,3582645329997063709&ei=FegtUuejAsr4qAGB1IC4Cw&ved=0CIABEPwSMAo"
+                        },
+                        new Field
+                        {
+                            Name = "West Park 2",
+                            Address = "78 Louth St, St Catharines, ON",
+                            Comments = "Parking off of Louth Street for Field 1 & Powerview Ave for field 2",
+                            GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&ie=UTF-8&q=west+park+st.+catharines&fb=1&gl=ca&hq=west+park&hnear=0x89d35054bb6a5a4b:0x37563636c082837,St+Catharines,+ON&cid=0,0,3582645329997063709&ei=FegtUuejAsr4qAGB1IC4Cw&ved=0CIABEPwSMAo"
+                        },
+                        new Field
+                        {
+                            Name = "Berkley Park",
+                            Address = "44 Ridgeview Avenue (Just off of Bunting), St. Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "http://maps.google.ca/maps?sugexp=chrome,mod%3D15&um=1&ie=UTF-8&q=berkley+park+st.+catharines+ontario&fb=1&gl=ca&hq=berkley+park+st.+catharines+ontario&hnear=berkley+park+st.+catharines+ontario&cid=0,0,1601090874100366313&ei=Tp27T8GyNcXCgAfV_JysCg&sa=X&oi=local_result&ct=image&resnum=1&ved=0CAkQ_BIwAA"
+                        },
+                        new Field
+                        {
+                            Name = "Grantham Lions Park",
+                            Address = "732 Niagara Street, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&channel=rcs&ie=UTF-8&q=Grantham+Lions+Park&fb=1&gl=ca&hq=Grantham+Lions+Park&cid=8286619720609870366&ei=ZL4YU9ftCIqJrAH_p4HADg&ved=0CHkQ_BIwCg"
+                        },
+                        new Field
+                        {
+                            Name = "Pearson Park West",
+                            Address = "352 Niagara St, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://www.google.ca/maps/place/Lester+B.+Pearson+Park/@43.183219,-79.2246726,15z/data=!4m2!3m1!1s0x0:0x5843290380bf4151"
+                        },
+                        new Field
+                        {
+                            Name = "Pearson Park East",
+                            Address = "352 Niagara St, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://www.google.ca/maps/place/Lester+B.+Pearson+Park/@43.183219,-79.2246726,15z/data=!4m2!3m1!1s0x0:0x5843290380bf4151"
+                        },
+                        new Field
+                        {
+                            Name = "Lancaster Park ",
+                            Address = "31 Wood St, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&rls=org.mozilla:en-GB:official&client=firefox-a&gfe_rd=cr&um=1&ie=UTF-8&fb=1&gl=ca&q=Lancaster+Park&cid=11421773781498883178&sa=X&ei=P9uRU4PqB5eNqAbVz4HICg&ved=0CJUBEPwSMA4"
+                        },
+                        new Field
+                        {
+                            Name = "Bermuda Park ",
+                            Address = "16 Bermuda Drive St, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://www.google.com/maps/place/Bermuda+Dr,+St.+Catharines,+ON/@43.1911051,-79.2083083,331m/data=!3m1!1e3!4m5!3m4!1s0x89d350a4f9061ced:0x622dd0779088811f!8m2!3d43.1914735!4d-79.2087968"
+                        });
+                    context.SaveChanges();
+                }
+
+                //Create a collection of the primary keys of the Fields
+                int[] fieldIDs = context.Fields.Select(a => a.Id).ToArray();
+                int fieldIDCount = fieldIDs.Length;
+
+                if (!context.MatchSchedules.Any())
+                    {
+                        string[] matchTime = { "3:50", "5:10", "6:30", "7:50","9:00" };
+                        DateTime matchDate = new DateTime(2022,05,29);
+                    
+
+                        //Create teams for recreational League
+                        List<string> remainingTeamsRecreational = new List<string>(teamNamesRecreational);
+                        List<string> playedTeamsRecreational = new List<string>();
+                        while (remainingTeamsRecreational.Count > 0)
+                        {
+                            string homeTeam = remainingTeamsRecreational[0];
+                            remainingTeamsRecreational.RemoveAt(0);
+        
+                            List<string> availableTeams = remainingTeamsRecreational
+                                .Where(t => !playedTeamsRecreational.Contains(t))
+                                .ToList();
+                            while (availableTeams.Count > 0)
+                            {
+                                string awayTeam = availableTeams[random.Next(availableTeams.Count)];
+                                availableTeams.Remove(awayTeam);
+            
+                                context.MatchSchedules.Add(
+                                    new MatchSchedule
+                                    {
+                                        Date = matchDate,
+                                        Time = matchTime[random.Next(matchTime.Length)],
+                                        FieldId = fieldIDs[random.Next(fieldIDCount)],
+                                        HomeTeamId = context.Teams.FirstOrDefault(l => l.Name == homeTeam).Id,
+                                        AwayTeamId = context.Teams.FirstOrDefault(l => l.Name == awayTeam).Id,
+                                        HomeTeamScore = random.Next(0, 7),
+                                        AwayTeamScore = random.Next(0, 7)
+                                    });
+                
+                                playedTeamsRecreational.Add(homeTeam);
+                                playedTeamsRecreational.Add(awayTeam);
+                            }
+                        }
+    
+                        //Create teams for Intermediate League
+                        List<string> remainingTeamsIntermediate = new List<string>(teamNamesIntermediate);
+                        List<string> playedTeamsIntermediate = new List<string>();
+                        while (remainingTeamsIntermediate.Count > 0)
+                        {
+                            string homeTeam = remainingTeamsIntermediate[0];
+                            remainingTeamsIntermediate.RemoveAt(0);
+        
+                            List<string> availableTeams = remainingTeamsIntermediate
+                                .Where(t => !playedTeamsIntermediate.Contains(t))
+                                .ToList();
+                            while (availableTeams.Count > 0)
+                            {
+                                string awayTeam = availableTeams[random.Next(availableTeams.Count)];
+                                availableTeams.Remove(awayTeam);
+            
+                                context.MatchSchedules.Add(
+                                    new MatchSchedule
+                                    {
+                                        Date = matchDate,
+                                        Time = matchTime[random.Next(matchTime.Length)],
+                                        FieldId = fieldIDs[random.Next(fieldIDCount)],
+                                        HomeTeamId = context.Teams.FirstOrDefault(l => l.Name == homeTeam).Id,
+                                        AwayTeamId = context.Teams.FirstOrDefault(l => l.Name == awayTeam).Id,
+                                        HomeTeamScore = random.Next(0, 7),
+                                        AwayTeamScore = random.Next(0, 7)
+                                    });
+                
+                                playedTeamsIntermediate.Add(homeTeam);
+                                playedTeamsIntermediate.Add(awayTeam);
+                            }
+                        }
+    
+                        context.SaveChanges();
+                    }
+
+
             }
             catch (Exception ex)
             {

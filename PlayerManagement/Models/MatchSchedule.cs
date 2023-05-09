@@ -7,16 +7,26 @@ namespace PlayerManagement.Models
     {
         public int Id { get; set; }
 
+        public string Summary
+        {
+            get
+            {
+                return $"{Date} {Time} {Field}";
+            }
+        }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "You must enter a date for the game.")]
         public DateTime Date { get; set; }
 
         [Required(ErrorMessage = "You must enter a time for the game.")]
-        [DataType(DataType.Time)]
-        public DateTime Time { get; set; }
+        [RegularExpression("^(3:50|5:10|6:30|7:50)$", ErrorMessage = "Invalid time format, it must be any of this three times 3:50,5:10,6:30,7:50.")]
+        public string Time { get; set; }
 
         [Required(ErrorMessage = "You must enter a location for the game.")]
-        public int LocationId { get; set; }
-        public Location Location { get; set; }
+        public int FieldId { get; set; }
+        public Field Field { get; set; }
 
         [Required(ErrorMessage = "You must enter the home team for the game.")]
         public int HomeTeamId { get; set; }
@@ -28,5 +38,25 @@ namespace PlayerManagement.Models
 
         public int? HomeTeamScore { get; set; }
         public int? AwayTeamScore { get; set; }
+
+        public ICollection<MatchSchedule> Matches { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Matches.Any(m => m.FieldId == FieldId && m.Time == Time))
+            {
+                yield return new ValidationResult("There is already a match scheduled for field.", new[] { "FieldId", "Time" });
+            }
+
+            else if (HomeTeam.Name == AwayTeam.Name)
+            {
+                yield return new ValidationResult("A team cannot play against itself.", new[] { "HomeTeamId", "AwayTeamId" });
+            }
+
+            else if (Matches.Any(m => m.Date == Date && (m.HomeTeamId == HomeTeamId || m.AwayTeamId == AwayTeamId)))
+            {
+                yield return new ValidationResult("One of the teams has already have a match scheduled.", new[] { "Date", "HomeTeamId", "AwayTeamId" });
+            }
+        }
     }
 }
