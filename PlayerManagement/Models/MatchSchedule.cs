@@ -28,15 +28,19 @@ namespace PlayerManagement.Models
         public int FieldId { get; set; }
         public Field Field { get; set; }
 
+        [Display(Name = "Home Team")]
         [Required(ErrorMessage = "You must enter the home team for the game.")]
         public int HomeTeamId { get; set; }
         public Team HomeTeam { get; set; }
-
+        [Display(Name = "Away Team")]
         [Required(ErrorMessage = "You must enter the away team for the game.")]
         public int AwayTeamId { get; set; }
         public Team AwayTeam { get; set; }
 
+        [Display(Name = "HT Score")]
         public int? HomeTeamScore { get; set; }
+
+        [Display(Name = "AT Score")]
         public int? AwayTeamScore { get; set; }
 
         public ICollection<MatchSchedule> Matches { get; set; }
