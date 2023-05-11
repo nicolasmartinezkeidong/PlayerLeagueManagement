@@ -24,6 +24,7 @@ namespace PlayerManagement.Models
         [RegularExpression("^(3:50|5:10|6:30|7:50)$", ErrorMessage = "Invalid time format, it must be any of this three times 3:50,5:10,6:30,7:50.")]
         public string Time { get; set; }
 
+        [Display(Name ="Field")]
         [Required(ErrorMessage = "You must enter a location for the game.")]
         public int FieldId { get; set; }
         public Field Field { get; set; }

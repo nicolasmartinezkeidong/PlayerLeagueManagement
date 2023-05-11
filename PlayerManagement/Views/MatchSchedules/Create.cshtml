@@ -24,24 +24,33 @@
             </div>
             <div class="form-group">
                 <label asp-for="FieldId" class="control-label"></label>
-                <select asp-for="FieldId" class ="form-control" asp-items="ViewBag.FieldId"></select>
+                <select asp-for="FieldId" class ="form-control" asp-items="ViewBag.FieldId">
+                    <option value="">Select a field</option>
+                    <span asp-validation-for="FieldId" class="text-danger"></span>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="HomeTeamId" class="control-label"></label>
-                <select asp-for="HomeTeamId" class ="form-control" asp-items="ViewBag.HomeTeamId"></select>
+                <select asp-for="HomeTeamId" class ="form-control" asp-items="ViewBag.HomeTeamId">
+                    <option value="">Select a home team</option>
+                    <span asp-validation-for="HomeTeamId" class="text-danger"></span>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="AwayTeamId" class="control-label"></label>
-                <select asp-for="AwayTeamId" class ="form-control" asp-items="ViewBag.AwayTeamId"></select>
+                <select asp-for="AwayTeamId" class ="form-control" asp-items="ViewBag.AwayTeamId">
+                    <option value="">Select an away team</option>
+                    <span asp-validation-for="AwayTeamId" class="text-danger"></span>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="HomeTeamScore" class="control-label"></label>
-                <input asp-for="HomeTeamScore" class="form-control" />
+                <input asp-for="HomeTeamScore" class="form-control" min="0" max="30" />
                 <span asp-validation-for="HomeTeamScore" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AwayTeamScore" class="control-label"></label>
-                <input asp-for="AwayTeamScore" class="form-control" />
+                <input asp-for="AwayTeamScore" class="form-control" min="0" max="30"/>
                 <span asp-validation-for="AwayTeamScore" class="text-danger"></span>
             </div>
             <div class="form-group">

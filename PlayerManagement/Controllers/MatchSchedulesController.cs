@@ -38,6 +38,7 @@ namespace PlayerManagement.Controllers
                 .Include(m => m.AwayTeam)
                 .Include(m => m.Field)
                 .Include(m => m.HomeTeam)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (matchSchedule == null)
             {
@@ -61,11 +62,18 @@ namespace PlayerManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Date,Time,FieldId,HomeTeamId,AwayTeamId,HomeTeamScore,AwayTeamScore")] MatchSchedule matchSchedule)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(matchSchedule);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(matchSchedule);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch(DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
             PopulateDropDownLists(matchSchedule);
@@ -75,7 +83,7 @@ namespace PlayerManagement.Controllers
         // GET: MatchSchedules/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.MatchSchedules == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -129,7 +137,7 @@ namespace PlayerManagement.Controllers
         // GET: MatchSchedules/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.MatchSchedules == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -138,6 +146,7 @@ namespace PlayerManagement.Controllers
                 .Include(m => m.AwayTeam)
                 .Include(m => m.Field)
                 .Include(m => m.HomeTeam)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (matchSchedule == null)
             {
@@ -151,19 +160,49 @@ namespace PlayerManagement.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
+
         {
             if (_context.MatchSchedules == null)
             {
                 return Problem("Entity set 'PlayerManagementContext.MatchSchedules'  is null.");
             }
             var matchSchedule = await _context.MatchSchedules.FindAsync(id);
-            if (matchSchedule != null)
+            try
             {
-                _context.MatchSchedules.Remove(matchSchedule);
+                if (matchSchedule != null)
+                {
+                    _context.MatchSchedules.Remove(matchSchedule);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(matchSchedule);
+        }
+
+        private void PopulateDropDownLists(MatchSchedule matchSchedule = null)
+        {
+            //Home team
+            var msQuery = from ms in _context.Teams
+                         orderby ms.Name
+                         select ms;
+            ViewData["HomeTeamId"] = new SelectList(msQuery, "Id", "Name", matchSchedule?.HomeTeamId);
+
+            //Away team
+            var tQuery = from ms in _context.Teams
+                          orderby ms.Name
+                          select ms;
+            ViewData["AwayTeamId"] = new SelectList(tQuery, "Id", "Name", matchSchedule?.AwayTeamId);
+
+            //Field
+            var fQuery = from ms in _context.Fields
+                         orderby ms.Name
+                         select ms;
+            ViewData["FieldId"] = new SelectList(fQuery, "Id", "Name", matchSchedule?.FieldId);
         }
 
         private void PopulateDropDownLists(MatchSchedule matchSchedule = null)
