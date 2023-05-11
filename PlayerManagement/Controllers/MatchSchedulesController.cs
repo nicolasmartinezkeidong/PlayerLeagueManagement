@@ -75,6 +75,7 @@ namespace PlayerManagement.Controllers
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
+
             PopulateDropDownLists(matchSchedule);
             return View(matchSchedule);
         }
@@ -92,6 +93,7 @@ namespace PlayerManagement.Controllers
             {
                 return NotFound();
             }
+
             PopulateDropDownLists(matchSchedule);
             return View(matchSchedule);
         }
@@ -201,6 +203,26 @@ namespace PlayerManagement.Controllers
                          orderby ms.Name
                          select ms;
             ViewData["FieldId"] = new SelectList(fQuery, "Id", "Name", matchSchedule?.FieldId);
+        }
+
+        private void PopulateDropDownLists(MatchSchedule matchSchedule = null)
+        {
+            var fQuery = from f in _context.Fields
+                         orderby f.Name
+                         select f;
+            ViewData["FieldId"] = new SelectList(fQuery, "Id", "Name", matchSchedule?.FieldId);
+
+            //Home team
+            var htQuery = from t in _context.Teams
+                         orderby t.Name
+                         select t;
+            ViewData["HomeTeamId"] = new SelectList(htQuery, "Id", "Name", matchSchedule?.HomeTeamId);
+
+            //Away team
+            var atQuery = from t in _context.Teams
+                          orderby t.Name
+                          select t;
+            ViewData["AwayTeamId"] = new SelectList(htQuery, "Id", "Name", matchSchedule?.AwayTeamId);
         }
 
         private bool MatchScheduleExists(int id)

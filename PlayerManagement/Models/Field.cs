@@ -18,8 +18,9 @@ namespace PlayerManagement.Models
         [DataType(DataType.MultilineText)]
         public string? Comments { get; set; }
 
+        [Display(Name = "Google maps link")]
         [Required(ErrorMessage = "You must enter a Google Maps link.")]
-        [StringLength(200, ErrorMessage = "Link cannot be more than 200 characters long.")]
+        [StringLength(700, ErrorMessage = "Link cannot be more than 700 characters long.")]
         public string GoogleMapsLink { get; set; }
     }
 }
