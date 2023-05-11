@@ -177,13 +177,13 @@ namespace PlayerManagement.Controllers
             var htQuery = from t in _context.Teams
                          orderby t.Name
                          select t;
-            ViewData["TeamId"] = new SelectList(htQuery, "Id", "Name", matchSchedule?.HomeTeamId);
+            ViewData["HomeTeamId"] = new SelectList(htQuery, "Id", "Name", matchSchedule?.HomeTeamId);
 
             //Away team
             var atQuery = from t in _context.Teams
                           orderby t.Name
                           select t;
-            ViewData["TeamId"] = new SelectList(htQuery, "Id", "Name", matchSchedule?.AwayTeamId);
+            ViewData["AwayTeamId"] = new SelectList(htQuery, "Id", "Name", matchSchedule?.AwayTeamId);
         }
 
         private bool MatchScheduleExists(int id)
