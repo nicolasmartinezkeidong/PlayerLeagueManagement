@@ -37,6 +37,7 @@ namespace PlayerManagement.Controllers
 
             var team = await _context.Teams
                 .Include(t => t.League)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (team == null)
             {
