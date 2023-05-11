@@ -50,9 +50,7 @@ namespace PlayerManagement.Controllers
         // GET: MatchSchedules/Create
         public IActionResult Create()
         {
-            ViewData["AwayTeamId"] = new SelectList(_context.Teams, "Id", "Name");
-            ViewData["FieldId"] = new SelectList(_context.Fields, "Id", "Address");
-            ViewData["HomeTeamId"] = new SelectList(_context.Teams, "Id", "Name");
+            PopulateDropDownLists();
             return View();
         }
 
@@ -69,9 +67,8 @@ namespace PlayerManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AwayTeamId"] = new SelectList(_context.Teams, "Id", "Name", matchSchedule.AwayTeamId);
-            ViewData["FieldId"] = new SelectList(_context.Fields, "Id", "Address", matchSchedule.FieldId);
-            ViewData["HomeTeamId"] = new SelectList(_context.Teams, "Id", "Name", matchSchedule.HomeTeamId);
+
+            PopulateDropDownLists(matchSchedule);
             return View(matchSchedule);
         }
 
@@ -88,9 +85,8 @@ namespace PlayerManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["AwayTeamId"] = new SelectList(_context.Teams, "Id", "Name", matchSchedule.AwayTeamId);
-            ViewData["FieldId"] = new SelectList(_context.Fields, "Id", "Address", matchSchedule.FieldId);
-            ViewData["HomeTeamId"] = new SelectList(_context.Teams, "Id", "Name", matchSchedule.HomeTeamId);
+
+            PopulateDropDownLists(matchSchedule);
             return View(matchSchedule);
         }
 
@@ -126,9 +122,7 @@ namespace PlayerManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AwayTeamId"] = new SelectList(_context.Teams, "Id", "Name", matchSchedule.AwayTeamId);
-            ViewData["FieldId"] = new SelectList(_context.Fields, "Id", "Address", matchSchedule.FieldId);
-            ViewData["HomeTeamId"] = new SelectList(_context.Teams, "Id", "Name", matchSchedule.HomeTeamId);
+            PopulateDropDownLists(matchSchedule);
             return View(matchSchedule);
         }
 
@@ -170,6 +164,26 @@ namespace PlayerManagement.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private void PopulateDropDownLists(MatchSchedule matchSchedule = null)
+        {
+            var fQuery = from f in _context.Fields
+                         orderby f.Name
+                         select f;
+            ViewData["FieldId"] = new SelectList(fQuery, "Id", "Name", matchSchedule?.FieldId);
+
+            //Home team
+            var htQuery = from t in _context.Teams
+                         orderby t.Name
+                         select t;
+            ViewData["HomeTeamId"] = new SelectList(htQuery, "Id", "Name", matchSchedule?.HomeTeamId);
+
+            //Away team
+            var atQuery = from t in _context.Teams
+                          orderby t.Name
+                          select t;
+            ViewData["AwayTeamId"] = new SelectList(htQuery, "Id", "Name", matchSchedule?.AwayTeamId);
         }
 
         private bool MatchScheduleExists(int id)
