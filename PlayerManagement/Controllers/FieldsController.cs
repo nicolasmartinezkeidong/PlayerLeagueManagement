@@ -20,9 +20,26 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Fields
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString, string SearchStringAddress)
         {
-              return View(await _context.Fields.ToListAsync());
+
+            ViewData["Filtering"] = "btn-outline-secondary";
+            var fields = from f in _context.Fields
+                         .AsNoTracking()
+                         select f;
+
+            //Filters
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                fields = fields.Where(f => f.Name.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = "btn-danger";
+            }
+            if (!String.IsNullOrEmpty(SearchStringAddress))
+            {
+                fields = fields.Where(f => f.Address.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = "btn-danger";
+            }
+            return View(await fields.ToListAsync());
         }
 
         // GET: Fields/Details/5
