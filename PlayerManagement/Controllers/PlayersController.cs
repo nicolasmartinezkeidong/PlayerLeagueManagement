@@ -21,10 +21,40 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Players
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString, int? TeamId, int? PlayerPositionId)
         {
-            var playerManagementContext = _context.Players.Include(p => p.PlayerPosition).Include(p => p.Team);
-            return View(await playerManagementContext.ToListAsync());
+            //Toggle the Open/Closed state of the collapse depending on if we are filtering
+            ViewData["Filtering"] = "btn-outline-secondary";
+            //Then in each "test" for filtering, add ViewData["Filtering"] = " show" if true;
+
+            // Populate the filter for Team and Position
+            PopulateDropDownLists();
+
+            var players = from p in _context.Players
+                .Include(p => p.PlayerPosition)
+                .Include(p => p.Team)
+                .AsNoTracking()
+                          select p;
+
+            //Filters
+            if(TeamId.HasValue)
+            {
+                players = players.Where(p => p.TeamId == TeamId);
+                ViewData["Filtering"] = "btn-danger";
+            }
+            if(PlayerPositionId.HasValue)
+            {
+                players = players.Where(p => p.PlayerPositionId == PlayerPositionId);
+                ViewData["Filtering"] = "btn-danger";
+            }
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                players = players.Where(p => p.LastName.ToUpper().Contains(SearchString.ToUpper())
+                                       || p.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = "btn-danger";
+            }
+
+            return View(await players.ToListAsync());
         }
 
         // GET: Players/Details/5
@@ -51,7 +81,7 @@ namespace PlayerManagement.Controllers
         // GET: Players/Create
         public IActionResult Create()
         {
-            ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos");
+
             PopulateDropDownLists();
             return View();
         }
@@ -87,7 +117,7 @@ namespace PlayerManagement.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
             }
-            ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player.PlayerPositionId);
+            
             PopulateDropDownLists(player);
             return View(player);
         }
@@ -105,7 +135,7 @@ namespace PlayerManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player.PlayerPositionId);
+            
             PopulateDropDownLists(player);
             return View(player);
         }
@@ -222,6 +252,7 @@ namespace PlayerManagement.Controllers
                          orderby t.Name
                          select t;
             ViewData["TeamId"] = new SelectList(tQuery, "Id", "Name", player?.TeamId);
+            ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player?.PlayerPositionId);
         }
 
 
