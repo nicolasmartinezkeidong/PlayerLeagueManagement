@@ -20,13 +20,17 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Fields
-        public async Task<IActionResult> Index(string SearchString, string SearchStringAddress)
+        public async Task<IActionResult> Index(string SearchString, string SearchStringAddress
+            , string actionButton, string sortDirection = "asc", string sortField = "Name")
         {
 
             ViewData["Filtering"] = "btn-outline-secondary";
             var fields = from f in _context.Fields
                          .AsNoTracking()
                          select f;
+
+            //List of sort options.
+            string[] sortOptions = new[] { "Name", "Address"};
 
             //Filters
             if (!String.IsNullOrEmpty(SearchString))
@@ -39,6 +43,50 @@ namespace PlayerManagement.Controllers
                 fields = fields.Where(f => f.Address.ToUpper().Contains(SearchString.ToUpper()));
                 ViewData["Filtering"] = "btn-danger";
             }
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+            //Sort
+            //Now we know which field and direction to sort by
+            if (sortField == "Name")
+            {
+                if (sortDirection == "asc")
+                {
+                    fields = fields.OrderBy(f => f.Name);
+                }
+                else
+                {
+                    fields = fields.OrderByDescending(f => f.Name);
+                }
+            }
+            else
+            {
+                if (sortDirection == "asc")
+                {
+                    fields = fields
+                        .OrderBy(p => p.Address);
+                }
+                else
+                {
+                    fields = fields
+                        .OrderByDescending(p => p.Address);
+                }
+            }
+
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
             return View(await fields.ToListAsync());
         }
 
