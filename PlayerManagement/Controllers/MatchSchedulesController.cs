@@ -20,10 +20,42 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: MatchSchedules
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index( int? HomeTeamId, int? AwayTeamId, int? FieldId, DateTime? startDate, DateTime? endDate)
         {
-            var playerManagementContext = _context.MatchSchedules.Include(m => m.AwayTeam).Include(m => m.Field).Include(m => m.HomeTeam);
-            return View(await playerManagementContext.ToListAsync());
+            ViewData["Filtering"] = "btn-outline-secondary";
+
+            PopulateDropDownLists();
+
+            var matchSchedules = from m in _context.MatchSchedules
+                .Include(m => m.AwayTeam)
+                .Include(m => m.Field)
+                .Include(m => m.HomeTeam)
+                .AsNoTracking()
+                select m;
+
+            //Filters
+            if (HomeTeamId.HasValue)
+            {
+                matchSchedules = matchSchedules.Where(t => t.HomeTeamId == HomeTeamId);
+                ViewData["Filtering"] = "btn-danger";
+            }
+            if (AwayTeamId.HasValue)
+            {
+                matchSchedules = matchSchedules.Where(t => t.AwayTeamId == AwayTeamId);
+                ViewData["Filtering"] = "btn-danger";
+            }
+            if (FieldId.HasValue)
+            {
+                matchSchedules = matchSchedules.Where(f => f.FieldId == FieldId);
+                ViewData["Filtering"] = "btn-danger";
+            }
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                matchSchedules = matchSchedules.Where(d => d.Date >= startDate && d.Date <= endDate);
+                ViewData["Filtering"] = "btn-danger";
+            }
+
+            return View(await matchSchedules.ToListAsync());
         }
 
         // GET: MatchSchedules/Details/5

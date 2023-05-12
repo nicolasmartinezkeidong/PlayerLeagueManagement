@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PlayerManagement.Models.Player>
+﻿ @model IEnumerable<PlayerManagement.Models.Player>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,6 +9,35 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-action="Index" method="get">
+    <div class="form-horizontal">
+        <button class="btn @(ViewData["Filtering"])" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+            Filter/Search
+        </button>
+        <div class="collapse" id="collapseFilter">
+            <div class="card card-body bg-light">
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label class="control-label">Select by Team:</label>
+                @Html.DropDownList("TeamId", null, "All Teams", htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="form-group col-md-4">
+                <label class="control-label">Filter by Player Position:</label>
+                @Html.DropDownList("PlayerPositionId", null, "None", htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="form-group col-md-4">
+                <label class="control-label">Search Player Name:</label>
+                @Html.TextBox("SearchString", null, new { @class = "form-control" })
+            </div>
+            <div class="form-group col-md-4 align-self-end">
+                <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
+                <a asp-action="Index" class="btn btn-outline-dark">Clear</a>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -57,3 +86,4 @@
 }
     </tbody>
 </table>
+

@@ -21,10 +21,31 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Teams
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString, int? LeagueId)
         {
-            var playerManagementContext = _context.Teams.Include(t => t.League);
-            return View(await playerManagementContext.ToListAsync());
+            //Toggle the Open/Closed state of the collapse depending on if we are filtering
+            ViewData["Filtering"] = "btn-outline-secondary"; //Assume not filtering
+
+            PopulateDropDownLists();
+
+            var teams = from t in _context.Teams
+                .Include(p => p.League)
+                .AsNoTracking()
+            select t;
+
+            //filters
+            if (LeagueId.HasValue)
+            {
+                teams = teams.Where(t => t.LeagueId == LeagueId);
+                ViewData["Filtering"] = "btn-danger";
+            }
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                teams = teams.Where(t => t.Name.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = "btn-danger";
+            }
+
+            return View(await teams.ToListAsync());
         }
 
         // GET: Teams/Details/5
