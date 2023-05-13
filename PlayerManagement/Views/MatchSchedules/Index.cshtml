@@ -10,6 +10,8 @@
     <a asp-action="Create">Create New</a>
 </p>
 <form asp-action="Index" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
     <div class="form-horizontal">
         <button class="btn @(ViewData["Filtering"])" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
             Filter/Search
@@ -45,30 +47,29 @@
         </div>
         </div>
     </div>
-</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                <input type="submit" name="actionButton" value="Date" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Time)
+                <input type="submit" name="actionButton" value="Time" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Field)
+                <input type="submit" name="actionButton" value="Field" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HomeTeam)
+                <input type="submit" name="actionButton" value="HomeTeam" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AwayTeam)
+                <input type="submit" name="actionButton" value="AwayTeam" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HomeTeamScore)
+                <input type="submit" disabled="disabled" name="actionButton" value="HomeTeamScore" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AwayTeamScore)
+                <input type="submit" disabled="disabled" name="actionButton" value="AwayTeamScore" class="btn btn-link" />
             </th>
             <th></th>
         </tr>
@@ -106,3 +107,4 @@
 }
     </tbody>
 </table>
+</form>
