@@ -26,7 +26,7 @@ namespace PlayerManagement.Controllers
         {
             //Toggle the Open/Closed state of the collapse depending on if we are filtering
             ViewData["Filtering"] = "btn-outline-secondary";
-            //Then in each "test" for filtering, add ViewData["Filtering"] = " show" if true;
+
 
             // Populate the filter for Team and Position
             PopulateDropDownLists();
@@ -89,13 +89,13 @@ namespace PlayerManagement.Controllers
             {
                 if (sortDirection == "asc")
                 {
-                    players = players.OrderBy(p => p.PlayerPosition);
+                    players = players.OrderBy(p => p.PlayerPosition.PlayerPos);
 
                 }
                 else
                 {
                     players = players
-                        .OrderByDescending(p => p.PlayerPosition);
+                        .OrderByDescending(p => p.PlayerPosition.PlayerPos);
                 }
             }
             else if (sortField == "Team")
