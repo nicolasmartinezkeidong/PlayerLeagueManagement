@@ -10,6 +10,8 @@
     <a asp-action="Create">Create New</a>
 </p>
 <form asp-action="Index" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
     <div class="form-horizontal">
         <button class="btn @(ViewData["Filtering"])" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
             Filter/Search
@@ -42,19 +44,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+                <input type="submit" name="actionButton" value="Player" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Phone)
+                <input type="submit" name="actionButton" value="Email" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                <input type="submit" name="actionButton" value="PlayerPosition" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PlayerPosition)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Team)
+                <input type="submit" name="actionButton" value="Team" class="btn btn-link" />
             </th>
             <th></th>
         </tr>
@@ -64,9 +63,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneFormatted)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)

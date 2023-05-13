@@ -21,18 +21,22 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Teams
-        public async Task<IActionResult> Index(string SearchString, int? LeagueId)
+        public async Task<IActionResult> Index(string SearchString, int? LeagueId,
+            string actionButton, string sortDirection = "asc", string sortField = "Team")
         {
             //Toggle the Open/Closed state of the collapse depending on if we are filtering
             ViewData["Filtering"] = "btn-outline-secondary"; //Assume not filtering
 
             PopulateDropDownLists();
 
+            string[] sortOptions = new[] { "Team", "RegistrationDate", "League" };
+
             var teams = from t in _context.Teams
                 .Include(p => p.League)
                 .AsNoTracking()
             select t;
 
+            #region Filters
             //filters
             if (LeagueId.HasValue)
             {
@@ -44,6 +48,65 @@ namespace PlayerManagement.Controllers
                 teams = teams.Where(t => t.Name.ToUpper().Contains(SearchString.ToUpper()));
                 ViewData["Filtering"] = "btn-danger";
             }
+            #endregion
+
+            #region Sorting
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+
+            if (sortField == "RegistrationDate")
+            {
+                if (sortDirection == "asc")
+                {
+                    teams = teams
+                        .OrderBy(p => p.RegistrationDate);
+                }
+                else
+                {
+                    teams = teams
+                        .OrderByDescending(p => p.RegistrationDate);
+                }
+            }
+            else if (sortField == "League")
+            {
+                if (sortDirection == "asc")
+                {
+                    teams = teams
+                        .OrderBy(p => p.League.Name);
+                }
+                else
+                {
+                    teams = teams
+                        .OrderByDescending(p => p.League.Name);
+                }
+            }
+            else //Sorting by Team Name
+            {
+                if (sortDirection == "asc")
+                {
+                    teams = teams
+                        .OrderBy(p => p.Name);
+                }
+                else
+                {
+                    teams = teams
+                        .OrderByDescending(p => p.Name);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+            #endregion
 
             return View(await teams.ToListAsync());
         }

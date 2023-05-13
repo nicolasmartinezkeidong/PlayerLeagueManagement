@@ -22,7 +22,7 @@ namespace PlayerManagement.Controllers
         // GET: MatchSchedules
         public async Task<IActionResult> Index( int? HomeTeamId, int? AwayTeamId, int? FieldId, 
             DateTime? startDate, DateTime? endDate, string actionButton, string sortDirection = "asc", 
-            string sortField = "Date")
+            string sortField = "Field")
         {
             ViewData["Filtering"] = "btn-outline-secondary";
 
@@ -37,6 +37,7 @@ namespace PlayerManagement.Controllers
                 .AsNoTracking()
                 select m;
 
+            #region Filters
             //Filters
             if (HomeTeamId.HasValue)
             {
@@ -70,7 +71,9 @@ namespace PlayerManagement.Controllers
                     sortField = actionButton;//Sort by the button clicked
                 }
             }
+            #endregion
 
+            #region Sorting
             //Now we know which field and direction to sort by
             if (sortField == "Time")
             {
@@ -98,41 +101,41 @@ namespace PlayerManagement.Controllers
             {
                 if (sortDirection == "asc")
                 {
-                    matchSchedules = matchSchedules.OrderBy(p => p.HomeTeam);
+                    matchSchedules = matchSchedules.OrderBy(p => p.HomeTeam.Name);
 
                 }
                 else
                 {
-                    matchSchedules = matchSchedules.OrderByDescending(p => p.HomeTeam);
+                    matchSchedules = matchSchedules.OrderByDescending(p => p.HomeTeam.Name);
                 }
             }
             else if (sortField == "AwayTeam")
             {
                 if (sortDirection == "asc")
                 {
-                    matchSchedules = matchSchedules.OrderBy(p => p.AwayTeam);
+                    matchSchedules = matchSchedules.OrderBy(p => p.AwayTeam.Name);
 
                 }
                 else
                 {
-                    matchSchedules = matchSchedules.OrderByDescending(p => p.AwayTeam);
+                    matchSchedules = matchSchedules.OrderByDescending(p => p.AwayTeam.Name);
                 }
             }
             else 
             {
                 if (sortDirection == "asc")
                 {
-                    matchSchedules = matchSchedules.OrderBy(p => p.Field);
+                    matchSchedules = matchSchedules.OrderBy(p => p.Field.Name);
                 }
                 else
                 {
-                    matchSchedules = matchSchedules.OrderByDescending(p => p.Field);
+                    matchSchedules = matchSchedules.OrderByDescending(p => p.Field.Name);
                 }
             }
             //Set sort for next time
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
-
+            #endregion
 
             return View(await matchSchedules.ToListAsync());
         }

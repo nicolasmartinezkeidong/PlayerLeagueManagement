@@ -21,7 +21,7 @@ namespace PlayerManagement.Controllers
 
         // GET: Fields
         public async Task<IActionResult> Index(string SearchString, string SearchStringAddress
-            , string actionButton, string sortDirection = "asc", string sortField = "Name")
+            , string actionButton, string sortDirection = "asc", string sortField = "Field")
         {
 
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -30,7 +30,7 @@ namespace PlayerManagement.Controllers
                          select f;
 
             //List of sort options.
-            string[] sortOptions = new[] { "Name", "Address"};
+            string[] sortOptions = new[] { "Field", "Address"};
 
             //Filters
             if (!String.IsNullOrEmpty(SearchString))
@@ -58,15 +58,15 @@ namespace PlayerManagement.Controllers
             }
             //Sort
             //Now we know which field and direction to sort by
-            if (sortField == "Name")
+            if (sortField == "Address")
             {
                 if (sortDirection == "asc")
                 {
-                    fields = fields.OrderBy(f => f.Name);
+                    fields = fields.OrderBy(f => f.Address);
                 }
                 else
                 {
-                    fields = fields.OrderByDescending(f => f.Name);
+                    fields = fields.OrderByDescending(f => f.Address);
                 }
             }
             else
@@ -74,12 +74,12 @@ namespace PlayerManagement.Controllers
                 if (sortDirection == "asc")
                 {
                     fields = fields
-                        .OrderBy(p => p.Address);
+                        .OrderBy(p => p.Name);
                 }
                 else
                 {
                     fields = fields
-                        .OrderByDescending(p => p.Address);
+                        .OrderByDescending(p => p.Name);
                 }
             }
 
