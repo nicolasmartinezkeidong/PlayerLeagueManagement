@@ -10,6 +10,8 @@
     <a asp-action="Create">Create New</a>
 </p>
 <form asp-action="Index" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
     <div class="form-horizontal">
         <button class="btn @(ViewData["Filtering"])" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
             Filter/Search
@@ -33,18 +35,17 @@
             </div>
         </div>
     </div>
-</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <input type="submit" name="actionButton" value="Field" class="btn btn-link" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                <input type="submit" name="actionButton" value="Address" class="btn btn-link" />
             </th>
             <th>
-                Field
+                <input type="submit"  disabled="disabled" value="Google Maps" class="btn btn-link" />
             </th>
             <th></th>
         </tr>
@@ -59,7 +60,7 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                <a href="@Html.DisplayFor(modelItem => item.GoogleMapsLink)" target="_blank">Google Maps Link</a>
+                <a href="@Html.DisplayFor(modelItem => item.GoogleMapsLink)" target="_blank">Link</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -70,3 +71,14 @@
 }
     </tbody>
 </table>
+</form>
+
+@section Scripts {
+    @*//Activate Tooltip*@
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}

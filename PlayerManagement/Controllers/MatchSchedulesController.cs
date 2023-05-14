@@ -20,11 +20,15 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: MatchSchedules
-        public async Task<IActionResult> Index( int? HomeTeamId, int? AwayTeamId, int? FieldId, DateTime? startDate, DateTime? endDate)
+        public async Task<IActionResult> Index( int? HomeTeamId, int? AwayTeamId, int? FieldId, 
+            DateTime? startDate, DateTime? endDate, string actionButton, string sortDirection = "asc", 
+            string sortField = "Field")
         {
             ViewData["Filtering"] = "btn-outline-secondary";
 
             PopulateDropDownLists();
+
+            string[] sortOptions = new[] { "Date", "Time", "Field", "HomeTeam", "AwayTeam" };
 
             var matchSchedules = from m in _context.MatchSchedules
                 .Include(m => m.AwayTeam)
@@ -33,6 +37,7 @@ namespace PlayerManagement.Controllers
                 .AsNoTracking()
                 select m;
 
+            #region Filters
             //Filters
             if (HomeTeamId.HasValue)
             {
@@ -54,6 +59,83 @@ namespace PlayerManagement.Controllers
                 matchSchedules = matchSchedules.Where(d => d.Date >= startDate && d.Date <= endDate);
                 ViewData["Filtering"] = "btn-danger";
             }
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+            #endregion
+
+            #region Sorting
+            //Now we know which field and direction to sort by
+            if (sortField == "Time")
+            {
+                if (sortDirection == "asc")
+                {
+                    matchSchedules = matchSchedules.OrderBy(p => p.Time);
+                }
+                else
+                {
+                    matchSchedules = matchSchedules.OrderByDescending(p => p.Time);
+                }
+            }
+            else if (sortField == "Date")
+            {
+                if (sortDirection == "asc")
+                {
+                    matchSchedules = matchSchedules.OrderBy(p => p.Date);
+                }
+                else
+                {
+                    matchSchedules = matchSchedules.OrderByDescending(p => p.Date);
+                }
+            }
+            else if (sortField == "HomeTeam")
+            {
+                if (sortDirection == "asc")
+                {
+                    matchSchedules = matchSchedules.OrderBy(p => p.HomeTeam.Name);
+
+                }
+                else
+                {
+                    matchSchedules = matchSchedules.OrderByDescending(p => p.HomeTeam.Name);
+                }
+            }
+            else if (sortField == "AwayTeam")
+            {
+                if (sortDirection == "asc")
+                {
+                    matchSchedules = matchSchedules.OrderBy(p => p.AwayTeam.Name);
+
+                }
+                else
+                {
+                    matchSchedules = matchSchedules.OrderByDescending(p => p.AwayTeam.Name);
+                }
+            }
+            else 
+            {
+                if (sortDirection == "asc")
+                {
+                    matchSchedules = matchSchedules.OrderBy(p => p.Field.Name);
+                }
+                else
+                {
+                    matchSchedules = matchSchedules.OrderByDescending(p => p.Field.Name);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+            #endregion
 
             return View(await matchSchedules.ToListAsync());
         }

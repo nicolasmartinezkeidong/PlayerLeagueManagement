@@ -21,23 +21,27 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Players
-        public async Task<IActionResult> Index(string SearchString, int? TeamId, int? PlayerPositionId)
+        public async Task<IActionResult> Index(string SearchString, int? TeamId, int? PlayerPositionId,
+            string actionButton, string sortDirection = "asc", string sortField = "Player")
         {
             //Toggle the Open/Closed state of the collapse depending on if we are filtering
             ViewData["Filtering"] = "btn-outline-secondary";
-            //Then in each "test" for filtering, add ViewData["Filtering"] = " show" if true;
+
 
             // Populate the filter for Team and Position
             PopulateDropDownLists();
+
+            //List of sort options
+            string[] sortOptions = new[] { "Player", "Email", "PlayerPosition", "Team" };
 
             var players = from p in _context.Players
                 .Include(p => p.PlayerPosition)
                 .Include(p => p.Team)
                 .AsNoTracking()
                           select p;
-
+            #region filters
             //Filters
-            if(TeamId.HasValue)
+            if (TeamId.HasValue)
             {
                 players = players.Where(p => p.TeamId == TeamId);
                 ViewData["Filtering"] = "btn-danger";
@@ -53,6 +57,78 @@ namespace PlayerManagement.Controllers
                                        || p.FirstName.ToUpper().Contains(SearchString.ToUpper()));
                 ViewData["Filtering"] = "btn-danger";
             }
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+
+            #endregion
+
+            #region sorting
+            if (sortField == "Email")
+            {
+                if (sortDirection == "asc")
+                {
+                    players = players.OrderBy(p => p.Email);
+                }
+                else
+                {
+                    players = players.OrderByDescending(p => p.Email);
+
+                }
+            }
+            else if (sortField == "PlayerPosition")
+            {
+                if (sortDirection == "asc")
+                {
+                    players = players.OrderBy(p => p.PlayerPosition.PlayerPos);
+
+                }
+                else
+                {
+                    players = players
+                        .OrderByDescending(p => p.PlayerPosition.PlayerPos);
+                }
+            }
+            else if (sortField == "Team")
+            {
+                if (sortDirection == "asc")
+                {
+                    players = players.OrderBy(p => p.Team.Name);
+                }
+                else
+                {
+                    players = players
+                        .OrderByDescending(p => p.Team.Name);
+                }
+            }
+            else
+            {
+                if (sortDirection == "asc")
+                {
+                    players = players
+                        .OrderBy(p => p.FirstName)
+                        .ThenBy(p => p.LastName);
+                }
+                else
+                {
+                    players = players
+                        .OrderByDescending(p => p.FirstName)
+                        .ThenBy(p => p.LastName);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+            #endregion
 
             return View(await players.ToListAsync());
         }
