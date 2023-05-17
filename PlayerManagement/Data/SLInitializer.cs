@@ -30,7 +30,7 @@ namespace PlayerManagement.Data
                 string[] lastsNames = new string[] { "Stovell", "Jones", "Bloggs", "Watts", "Randall", "Arias", "Weber", "Stone", "Carlson", "Robles", "Frederick", "Parker", "Morris", "Soto", "Bruce", "Orozco", "Boyer", "Burns", "Cobb", "Houston", "Rubble", "Brown", "John", "McCartney", "Twain", "Cockburn" };
                 string[] playerPositions = new string[] { "Goalkeeper", "Right Fullback", "Left Fullback", "Center Back", "Holding Midfielder", "Right Midfielder", "Left Midfielder", "Box-to-Box Midfielder", "Striker", "Attacking Midfielder", "Winger" };
 
-
+                #region PlayerPositions
                 //PlayerPositions
                 if (!context.PlayerPositions.Any())
                 {
@@ -45,7 +45,9 @@ namespace PlayerManagement.Data
                     }
                     context.SaveChanges();
                 }
+                #endregion
 
+                #region League
                 //League
                 if (!context.Leagues.Any())
                 {
@@ -67,13 +69,16 @@ namespace PlayerManagement.Data
                         });
                     context.SaveChanges();
                 }
+                #endregion
 
+                //Unique Date for Team, because is just seed data we are not using different dates
                 DateTime registrationDate = new DateTime(2023, 01, 01);
 
+                //Team names
                 string[] teamNamesIntermediate = new string[] { "Monstars", "PFC", "PDHC", "Past Our Prime", "Squad Goals", "Monarch FC", "Vas Defenses", "Sorry In Advance", "Niacon FC", "Chelsea Farm Team", "Strikers", "Proactive", "Bunny Rabbits FC", "Summer FC", "Niagara FC", "Willow FC", "Blue Jays", "TBD" };
                 string[] teamNamesRecreational = new string[] { "Niagara 55ers", "Dolls and Balls", "Back That Pass Up", "Multiple Score", "Your keepers", "Threat Level Midnight", "Pink Slips", "The Tigers", "FISA FC", "InterCorsica", "Cleats Up", "Niagara Munchën", "Blue Balls FC", "Goon Squad", "Balotelli-tubbies", "BallStars FC", "Individuals 2", "For Kicks and Giggles", "Dom Pérignon", "Fake Madrid", "Beers and Balls", "Ball Busters", "Shooting Blanks", "Rum Runners" };
 
-
+                #region Teams
                 // Look for any Teams.
                 if (!context.Teams.Any())
                 {
@@ -118,6 +123,8 @@ namespace PlayerManagement.Data
 
                     context.SaveChanges();
                 }
+                #endregion
+
 
                 //Create a collection of the primary keys of the Positions
                 int[] positionIDs = context.PlayerPositions.Select(p => p.Id).ToArray();
@@ -127,6 +134,7 @@ namespace PlayerManagement.Data
                 int[] teamIDs = context.Teams.Select(p => p.Id).ToArray();
                 int teamIDCount = teamIDs.Length;
 
+                #region Players
                 //Look for any Player
                 if (!context.Players.Any())
                 {
@@ -166,12 +174,13 @@ namespace PlayerManagement.Data
                     }
                     context.SaveChanges();
                 }
-
+                #endregion
 
                 //Create a collection of the primary keys of the Players
                 int[] playerIDs = context.Players.Select(a => a.Id).ToArray();
                 int playerIDCount = playerIDs.Length;
 
+                #region Play
                 //Play
                 //Add a few positions to each player
                 if (!context.Plays.Any())
@@ -197,8 +206,9 @@ namespace PlayerManagement.Data
                     }
                     context.SaveChanges();
                 }
+                #endregion
 
-
+                #region Fields
                 if (!context.Fields.Any())
                 {
                     context.Fields.AddRange(
@@ -260,12 +270,13 @@ namespace PlayerManagement.Data
                         });
                     context.SaveChanges();
                 }
+                #endregion
 
                 //Create a collection of the primary keys of the Fields
                 int[] fieldIDs = context.Fields.Select(a => a.Id).ToArray();
                 int fieldIDCount = fieldIDs.Length;
 
-
+                #region MatchSchedules
                 if (!context.MatchSchedules.Any())
                 {
                     //Times when the games are played
@@ -346,53 +357,61 @@ namespace PlayerManagement.Data
                     }
 
                     List<string> availableTeamsRec = teamNamesRecreational.ToList();
-                    List<string> scheduledTeamsRec = new List<string>();
 
                     string lastHomeTeamRec = null;
                     string lastAwayTeamRec = null;
+
                     //Create teams for Recreational League
                     foreach (string homeTeam in teamNamesRecreational)
                     {
-                        if (homeTeam == lastHomeTeamRec || homeTeam == lastAwayTeamRec) 
-                            continue;
-
-                        availableTeamsRec.Remove(homeTeam);
-                        string awayTeam = availableTeamsRec.FirstOrDefault(t => t != homeTeam && t != lastHomeTeamRec && t != lastAwayTeamRec);
-
-                        if (awayTeam != null)
+                        foreach(string times in matchTime)
                         {
-                            scheduledTeamsRec.Add(homeTeam);
-                            scheduledTeamsRec.Add(awayTeam);
-                            availableTeamsRec.Remove(awayTeam);
-                            context.MatchSchedules.Add(
-                            new MatchSchedule
+                            foreach(int fields in fieldIDs)
                             {
-                                Date = matchDate,
-                                Time = matchTime[random.Next(matchTime.Length)],
-                                FieldId = fieldIDs[random.Next(fieldIDCount)],
-                                HomeTeamId = context.Teams.FirstOrDefault(l => l.Name == homeTeam).Id,
-                                AwayTeamId = context.Teams.FirstOrDefault(l => l.Name == awayTeam).Id,
-                                HomeTeamScore = random.Next(0, 7),
-                                AwayTeamScore = random.Next(0, 7)
-                            });
+                                if (scheduledTimes[fields].Contains(times))
+                                    continue;
 
-                            lastHomeTeamRec = homeTeam;
-                            lastAwayTeamRec = awayTeam;
+                                if (homeTeam == lastHomeTeamRec || homeTeam == lastAwayTeamRec)
+                                    continue;
+                                availableTeamsRec.Remove(homeTeam);
+                                string awayTeam = availableTeamsRec.FirstOrDefault(t => t != homeTeam && t != lastHomeTeamRec && t != lastAwayTeamRec);
+
+
+                                if (awayTeam != null)
+                                {
+                                    scheduledTeams.Add(homeTeam);
+                                    scheduledTeams.Add(awayTeam);
+                                    availableTeamsRec.Remove(awayTeam);
+                                    context.MatchSchedules.Add(
+                                    new MatchSchedule
+                                    {
+                                        Date = matchDate,
+                                        Time = matchTime[random.Next(matchTime.Length)],
+                                        FieldId = fieldIDs[random.Next(fieldIDCount)],
+                                        HomeTeamId = context.Teams.FirstOrDefault(l => l.Name == homeTeam).Id,
+                                        AwayTeamId = context.Teams.FirstOrDefault(l => l.Name == awayTeam).Id,
+                                        HomeTeamScore = random.Next(0, 7),
+                                        AwayTeamScore = random.Next(0, 7)
+                                    });
+
+                                    lastHomeTeamRec = homeTeam;
+                                    lastAwayTeamRec = awayTeam;
+                                }
+                                else
+                                {
+                                    // All available teams have been scheduled, so break the loop
+                                    break;
+                                }
+
+                            }
+                            context.SaveChanges();
                         }
-                        else
-                        {
-                            // All available teams have been scheduled, so break the loop
-                            break;
-                        }
+                        
                     }
-
-
-                    context.SaveChanges();
+                    
                 }
-
-                //Create teams for Intermediate League
-
-
+                #endregion
+                
 
             }
             catch (Exception ex)

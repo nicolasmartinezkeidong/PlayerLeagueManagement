@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
+using PlayerManagement.Utilities;
 
 namespace PlayerManagement.Controllers
 {
@@ -20,7 +22,7 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: MatchSchedules
-        public async Task<IActionResult> Index( int? HomeTeamId, int? AwayTeamId, int? FieldId, 
+        public async Task<IActionResult> Index(int? page,int? pageSizeID, int? HomeTeamId, int? AwayTeamId, int? FieldId, 
             DateTime? startDate, DateTime? endDate, string actionButton, string sortDirection = "asc", 
             string sortField = "Field")
         {
@@ -62,6 +64,7 @@ namespace PlayerManagement.Controllers
             //Before we sort, see if we have called for a change of filtering or sorting
             if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
             {
+                page = 1;
                 if (sortOptions.Contains(actionButton))//Change of sort is requested
                 {
                     if (actionButton == sortField) //Reverse order on same field
@@ -137,7 +140,11 @@ namespace PlayerManagement.Controllers
             ViewData["sortDirection"] = sortDirection;
             #endregion
 
-            return View(await matchSchedules.ToListAsync());
+            //Handle Paging
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, "MatchSchedulesController");
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<MatchSchedule>.CreateAsync(matchSchedules.AsNoTracking(), page ?? 1, pageSize);
+            return View(pagedData);
         }
 
         // GET: MatchSchedules/Details/5
