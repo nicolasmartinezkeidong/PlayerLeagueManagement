@@ -22,7 +22,7 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: MatchSchedules
-        public async Task<IActionResult> Index(int? page, int? HomeTeamId, int? AwayTeamId, int? FieldId, 
+        public async Task<IActionResult> Index(int? page,int? pageSizeID, int? HomeTeamId, int? AwayTeamId, int? FieldId, 
             DateTime? startDate, DateTime? endDate, string actionButton, string sortDirection = "asc", 
             string sortField = "Field")
         {
@@ -140,7 +140,9 @@ namespace PlayerManagement.Controllers
             ViewData["sortDirection"] = sortDirection;
             #endregion
 
-            int pageSize = 10;//Change as required
+            //Handle Paging
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, "MatchSchedulesController");
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<MatchSchedule>.CreateAsync(matchSchedules.AsNoTracking(), page ?? 1, pageSize);
             return View(pagedData);
         }

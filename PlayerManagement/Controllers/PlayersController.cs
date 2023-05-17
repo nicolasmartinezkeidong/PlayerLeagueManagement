@@ -22,7 +22,7 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Players
-        public async Task<IActionResult> Index(int? page,string SearchString, int? TeamId, int? PlayerPositionId,
+        public async Task<IActionResult> Index(int? page,int? pageSizeID,string SearchString, int? TeamId, int? PlayerPositionId,
             string actionButton, string sortDirection = "asc", string sortField = "Player")
         {
             //Toggle the Open/Closed state of the collapse depending on if we are filtering
@@ -133,7 +133,9 @@ namespace PlayerManagement.Controllers
             ViewData["sortDirection"] = sortDirection;
             #endregion
 
-            int pageSize = 10;//Change as required
+            //Handle Paging
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID,"PlayersController");
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<Player>.CreateAsync(players.AsNoTracking(), page ?? 1, pageSize);
 
             return View(pagedData);
