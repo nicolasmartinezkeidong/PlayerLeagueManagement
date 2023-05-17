@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
+using PlayerManagement.Utilities;
 
 namespace PlayerManagement.Controllers
 {
@@ -21,7 +22,7 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Teams
-        public async Task<IActionResult> Index(string SearchString, int? LeagueId,
+        public async Task<IActionResult> Index(int? page, string SearchString, int? LeagueId,
             string actionButton, string sortDirection = "asc", string sortField = "Team")
         {
             //Toggle the Open/Closed state of the collapse depending on if we are filtering
@@ -45,6 +46,7 @@ namespace PlayerManagement.Controllers
             }
             if (!String.IsNullOrEmpty(SearchString))
             {
+
                 teams = teams.Where(t => t.Name.ToUpper().Contains(SearchString.ToUpper()));
                 ViewData["Filtering"] = "btn-danger";
             }
@@ -54,6 +56,7 @@ namespace PlayerManagement.Controllers
             //Before we sort, see if we have called for a change of filtering or sorting
             if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
             {
+                page = 1;
                 if (sortOptions.Contains(actionButton))//Change of sort is requested
                 {
                     if (actionButton == sortField) //Reverse order on same field
@@ -108,7 +111,10 @@ namespace PlayerManagement.Controllers
             ViewData["sortDirection"] = sortDirection;
             #endregion
 
-            return View(await teams.ToListAsync());
+            int pageSize = 10;//Change as required
+            var pagedData = await PaginatedList<Team>.CreateAsync(_context.Teams.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: Teams/Details/5

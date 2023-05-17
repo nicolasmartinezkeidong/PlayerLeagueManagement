@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
+using PlayerManagement.Utilities;
 
 namespace PlayerManagement.Controllers
 {
@@ -21,7 +22,7 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Players
-        public async Task<IActionResult> Index(string SearchString, int? TeamId, int? PlayerPositionId,
+        public async Task<IActionResult> Index(int? page,string SearchString, int? TeamId, int? PlayerPositionId,
             string actionButton, string sortDirection = "asc", string sortField = "Player")
         {
             //Toggle the Open/Closed state of the collapse depending on if we are filtering
@@ -53,6 +54,8 @@ namespace PlayerManagement.Controllers
             }
             if (!String.IsNullOrEmpty(SearchString))
             {
+                page = 1;//Reset page to start
+
                 players = players.Where(p => p.LastName.ToUpper().Contains(SearchString.ToUpper())
                                        || p.FirstName.ToUpper().Contains(SearchString.ToUpper()));
                 ViewData["Filtering"] = "btn-danger";
@@ -130,7 +133,10 @@ namespace PlayerManagement.Controllers
             ViewData["sortDirection"] = sortDirection;
             #endregion
 
-            return View(await players.ToListAsync());
+            int pageSize = 10;//Change as required
+            var pagedData = await PaginatedList<Player>.CreateAsync(players.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: Players/Details/5
