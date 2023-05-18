@@ -25,6 +25,9 @@ namespace PlayerManagement.Controllers
         public async Task<IActionResult> Index(int? page,int? pageSizeID, string SearchString, int? LeagueId,
             string actionButton, string sortDirection = "asc", string sortField = "Team")
         {
+            //Clear the sort/filter/paging URL Cookie for Controller
+            CookieHelper.CookieSet(HttpContext, ControllerName() + "URL", "", -1);
+
             //Toggle the Open/Closed state of the collapse depending on if we are filtering
             ViewData["Filtering"] = "btn-outline-secondary"; //Assume not filtering
 
@@ -122,6 +125,9 @@ namespace PlayerManagement.Controllers
         // GET: Teams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //URL with the last filter, sort and page parameters for this controller
+            ViewDataReturnURL();
+
             if (id == null || _context.Teams == null)
             {
                 return NotFound();
@@ -142,6 +148,9 @@ namespace PlayerManagement.Controllers
         // GET: Teams/Create
         public IActionResult Create()
         {
+            //URL with the last filter, sort and page parameters for this controller
+            ViewDataReturnURL();
+
             PopulateDropDownLists();
             return View();
         }
@@ -153,6 +162,9 @@ namespace PlayerManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,RegistrationDate,LeagueId")] Team team)
         {
+            //URL with the last filter, sort and page parameters for this controller
+            ViewDataReturnURL();
+
             try
             {
                 if (ModelState.IsValid)
@@ -173,6 +185,9 @@ namespace PlayerManagement.Controllers
         // GET: Teams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //URL with the last filter, sort and page parameters for this controller
+            ViewDataReturnURL();
+
             if (id == null)
             {
                 return NotFound();
@@ -194,6 +209,9 @@ namespace PlayerManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
         {
+            //URL with the last filter, sort and page parameters for this controller
+            ViewDataReturnURL();
+
             //Go get the Team to update
             var teamToUpdate = await _context.Teams.SingleOrDefaultAsync(t => t.Id == id);
 
@@ -235,6 +253,9 @@ namespace PlayerManagement.Controllers
         // GET: Teams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            //URL with the last filter, sort and page parameters for this controller
+            ViewDataReturnURL();
+
             if (id == null)
             {
                 return NotFound();
@@ -256,6 +277,9 @@ namespace PlayerManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //URL with the last filter, sort and page parameters for this controller
+            ViewDataReturnURL();
+
             if (_context.Teams == null)
             {
                 return Problem("Entity set 'PlayerManagementContext.Teams'  is null.");
@@ -288,6 +312,15 @@ namespace PlayerManagement.Controllers
             }
             return View(team);
 
+        }
+
+        private string ControllerName()
+        {
+            return this.ControllerContext.RouteData.Values["controller"].ToString();
+        }
+        private void ViewDataReturnURL()
+        {
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, ControllerName());
         }
 
         // Order ddl and orderer it by Name
