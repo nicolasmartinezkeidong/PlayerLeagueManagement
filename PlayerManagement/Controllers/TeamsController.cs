@@ -37,6 +37,7 @@ namespace PlayerManagement.Controllers
 
             var teams = from t in _context.Teams
                 .Include(p => p.League)
+                .Include(p => p.Players)
                 .AsNoTracking()
             select t;
 
