@@ -18,7 +18,6 @@ namespace PlayerManagement.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<Field> Fields { get; set; }
         public DbSet<MatchSchedule> MatchSchedules { get; set; }
-        public DbSet<PlayerTeam> PlayerTeams { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,8 +46,6 @@ namespace PlayerManagement.Data
             modelBuilder.Entity<PlayPosition>()
             .HasKey(p => new { p.PlayerId, p.PlayerPositionId });
 
-            modelBuilder.Entity<PlayerTeam>()
-            .HasKey(p => new { p.PlayerId, p.TeamId });
 
 
             //Add a unique index to the Team Name

@@ -412,29 +412,7 @@ namespace PlayerManagement.Data
                 }
                 #endregion
 
-                if (!context.PlayerTeams.Any())
-                {
-                    //i loops through the primary keys of the musicians
-                    //j is just a counter so we add a few instruments to a musician
-                    //k lets us step through all instruments so we can make sure each gets used
-                    int k = 0;//Start with the first instrument
-                    foreach (int i in teamIDs)
-                    {
-                        int howMany = random.Next(1, playerIDCount);//add a few instruments to a musician
-                        for (int j = 1; j <= howMany; j++)
-                        {
-                            k = (k >= playerIDCount) ? 0 : k;//Resets counter k to 0 if we have run out of instruments
-                            PlayerTeam p = new PlayerTeam()
-                            {
-                                TeamId = i,
-                                PlayerId = playerIDs[k]
-                            };
-                            context.PlayerTeams.Add(p);
-                            k++;
-                        }
-                    }
-                    context.SaveChanges();
-                }
+                
 
             }
             catch (Exception ex)

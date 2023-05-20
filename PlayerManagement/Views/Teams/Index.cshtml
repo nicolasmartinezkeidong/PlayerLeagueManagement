@@ -43,16 +43,13 @@
                 <input type="submit" name="actionButton" value="Team" class="btn btn-link" />
             </th>
             <th>
-                <input type="submit" name="actionButton" value="RegistrationDate" class="btn btn-link" />
+                <input type="submit" name="actionButton" value="Registration Date" class="btn btn-link" />
             </th>
             <th>
                 <input type="submit" name="actionButton" value="League" class="btn btn-link" />
             </th>
             <th>
-                <input type="submit" disabled="disabled" value="Players" class="btn btn-link" />
-            </th>
-            <th>
-                test
+                <input type="submit" disabled="disabled" value="# Players" class="btn btn-link" />
             </th>
             <th></th>
         </tr>
@@ -69,38 +66,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.League.Name)
             </td>
-            <td>
-                            @{
-                            int playerCount = item.PlayerTeams.Count;
-                            if (playerCount > 0)
-                            {
-                                string firstPlayer = item.PlayerTeams.FirstOrDefault()?.Player.FullName;
-                                if (playerCount > 1)
-                                {
-                                    string playerList = "";
-                                    var c = item.PlayerTeams.ToList();
-                                    for (int i = 0; i < playerCount; i++)//Skip the first because we have it already
-                                    {
-                                        playerList += c[i].Player.FullName + " <br />";
-                                    }
-                                    <a class="" role="button" data-bs-toggle="collapse" href="#collapseMusicians@(item.Id)"
-                                        aria-expanded="false" aria-controls="collapseMusicians@(item.Id)">
-                                        @firstPlayer <span class="badge bg-info">@playerCount</span>
-                                    </a>
-                                    <div class="collapse" id="collapseMusicians@(item.Id)">
-                                        @Html.Raw(playerList)
-                                    </div>
-                                }
-                                else
-                                {
-                                    @firstPlayer
-                                }
-                            }
-                        }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PlayerTeams.Count)
-                        </td>
+            <td style="text-align:center">@*Align text inside the cells*@
+                 @Html.DisplayFor(modelItem => item.Players.Count)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

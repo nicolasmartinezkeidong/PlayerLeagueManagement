@@ -36,10 +36,11 @@ namespace PlayerManagement.Controllers
 
             string[] sortOptions = new[] { "Team", "RegistrationDate", "League" };
 
-            var teams = _context.Teams
+            var teams = from t in _context.Teams
                 .Include(p => p.League)
-                .Include(p => p.PlayerTeams)
-                .AsNoTracking();
+                .Include(p => p.Players)
+                .AsNoTracking()
+                        select t;
 
             #region Filters
             //filters
@@ -118,7 +119,7 @@ namespace PlayerManagement.Controllers
             //Handle Paging
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, "TeamsController");
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
-            var pagedData = await PaginatedList<Team>.CreateAsync(_context.Teams.AsNoTracking(), page ?? 1, pageSize);
+            var pagedData = await PaginatedList<Team>.CreateAsync(teams.AsNoTracking(), page ?? 1, pageSize);
 
             return View(pagedData);
         }
