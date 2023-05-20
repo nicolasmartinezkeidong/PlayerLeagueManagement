@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
 using PlayerManagement.Utilities;
+using Team = PlayerManagement.Models.Team;
 
 namespace PlayerManagement.Controllers
 {
@@ -37,7 +38,7 @@ namespace PlayerManagement.Controllers
 
             var teams = _context.Teams
                 .Include(p => p.League)
-                .Include(p => p.Players)
+                .Include(p => p.PlayerTeams)
                 .AsNoTracking();
 
             #region Filters

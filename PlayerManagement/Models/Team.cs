@@ -24,10 +24,8 @@ namespace PlayerManagement.Models
         public League League { get; set; }
 
         [Display(Name = "Players")]
-        public ICollection<Player> Players { get; set; } = new HashSet<Player>();
+        public ICollection<PlayerTeam> PlayerTeams { get; set; } = new HashSet<PlayerTeam>();
 
-        [Display(Name = "Others Players")]
-        public ICollection<PlayerTeam> PlayersTeams { get; set; } = new HashSet<PlayerTeam>();
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

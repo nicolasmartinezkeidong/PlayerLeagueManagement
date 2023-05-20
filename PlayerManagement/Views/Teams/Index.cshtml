@@ -71,20 +71,20 @@
             </td>
             <td>
                             @{
-                            int playerCount = item.Players.Count;
+                            int playerCount = item.PlayerTeams.Count;
                             if (playerCount > 0)
                             {
-                                string firstPlayer = item.Players.FirstOrDefault().FullName;
+                                string firstPlayer = item.PlayerTeams.FirstOrDefault()?.Player.FullName;
                                 if (playerCount > 1)
                                 {
                                     string playerList = "";
-                                    var c = item.Players.ToList();
-                                    for (int i = 1; i < playerCount; i++)//Skip the first because we have it already
+                                    var c = item.PlayerTeams.ToList();
+                                    for (int i = 0; i < playerCount; i++)//Skip the first because we have it already
                                     {
-                                        playerList += c[i].FullName + " <br />";
+                                        playerList += c[i].Player.FullName + " <br />";
                                     }
                                     <a class="" role="button" data-bs-toggle="collapse" href="#collapseMusicians@(item.Id)"
-                           aria-expanded="false" aria-controls="collapseMusicians@(item.Id)">
+                                        aria-expanded="false" aria-controls="collapseMusicians@(item.Id)">
                                         @firstPlayer <span class="badge bg-info">@playerCount</span>
                                     </a>
                                     <div class="collapse" id="collapseMusicians@(item.Id)">
@@ -99,7 +99,7 @@
                         }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Players.Count)
+                            @Html.DisplayFor(modelItem => item.PlayerTeams.Count)
                         </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -10,14 +10,15 @@ namespace PlayerManagement.Data
                     : base(options)
         {
         }
-        public DbSet<PlayerTeam> PlayerTeams { get; set; }
+
         public DbSet<League> Leagues { get; set; }
         public DbSet<PlayPosition> Plays { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<PlayerPosition> PlayerPositions { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Field> Fields { get; set; }
-        public DbSet<MatchSchedule> MatchSchedules { get; set; } 
+        public DbSet<MatchSchedule> MatchSchedules { get; set; }
+        public DbSet<PlayerTeam> PlayerTeams { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,11 +32,11 @@ namespace PlayerManagement.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             //Prevent Cascade Delete from Team to Player
-            modelBuilder.Entity<Team>()
-                .HasMany<Player>(t => t.Players)
-                .WithOne(t => t.Team)
-                .HasForeignKey(t => t.TeamId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Team>()
+            //    .HasMany<Player>(t => t.Players)
+            //    .WithOne(t => t.Team)
+            //    .HasForeignKey(t => t.TeamId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             //Add a unique index to the Player Email and Phone
             modelBuilder.Entity<Player>()
@@ -48,6 +49,7 @@ namespace PlayerManagement.Data
 
             modelBuilder.Entity<PlayerTeam>()
             .HasKey(p => new { p.PlayerId, p.TeamId });
+
 
             //Add a unique index to the Team Name
             modelBuilder.Entity<Team>()
