@@ -50,7 +50,7 @@
                 <input type="submit" name="actionButton" value="Email" class="btn btn-link" />
             </th>
             <th>
-                <input type="submit" name="actionButton" value="PlayerPosition" class="btn btn-link" />
+                <input type="submit" disabled="disabled" value="Player Position" class="btn btn-link" />
             </th>
             <th>
                 <input type="submit" name="actionButton" value="Team" class="btn btn-link" />
@@ -68,34 +68,34 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                        @*Primary: @Html.DisplayFor(modelItem => item.PlayerPosition.PlayerPos)<br />
+                        Primary: @Html.DisplayFor(modelItem => item.PlayerPosition.PlayerPos)<br />
                             @{
-                                int playCount = item.PlaysAs.Count;
-                                if (playCount > 0)
+                            int playCount = item.Plays.Count;
+                            if (playCount > 0)
+                            {
+                                string firstPlay = item.Plays.FirstOrDefault().PlayerPosition.PlayerPos;
+                                if (playCount > 1)
                                 {
-                                    string firstPlay = item.PlaysAs.FirstOrDefault().PlayerPosition.PlayerPos;
-                                    if (playCount > 1)
+                                    string playList = "";
+                                    var c = item.Plays.ToList();
+                                    for (int i = 1; i < playCount; i++)//Skip the first because we have it already
                                     {
-                                        string playList = "";
-                                        var c = item.PlaysAs.ToList();
-                                        for (int i = 1; i < playCount; i++)//Skip the first because we have it already
-                                        {
-                                            playList += c[i].Instrument.Name + " <br />";
-                                        }
-                                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseHistory@(item.ID)"
-                               aria-expanded="false" aria-controls="collapseHistory@(item.ID)">
-                                            @firstPlay <span class="badge bg-info">@playCount</span>
-                                        </a>
-                                        <div class="collapse" id="collapseHistory@(item.ID)">
-                                            @Html.Raw(playList)
-                                        </div>
+                                        playList += c[i].PlayerPosition.PlayerPos + " <br />";
                                     }
-                                    else
-                                    {
-                                        @firstPlay
-                                    }
+                                    <a class="" role="button" data-bs-toggle="collapse" href="#collapseOther@(item.Id)"
+                           aria-expanded="false" aria-controls="collapseOther@(item.Id)">
+                                        @firstPlay <span class="badge bg-info">@playCount</span>
+                                    </a>
+                                    <div class="collapse" id="collapseOther@(item.Id)">
+                                        @Html.Raw(playList)
+                                    </div>
                                 }
-                            }*@
+                                else
+                                {
+                                    @firstPlay
+                                }
+                            }
+                        }
                     </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Team.Name)

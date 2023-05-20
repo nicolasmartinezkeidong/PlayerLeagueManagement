@@ -38,11 +38,12 @@ namespace PlayerManagement.Controllers
             //List of sort options
             string[] sortOptions = new[] { "Player", "Email", "PlayerPosition", "Team" };
 
-            var players = from p in _context.Players
+            var players = _context.Players
                 .Include(p => p.PlayerPosition)
+                .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
                 .Include(p => p.Team)
-                .AsNoTracking()
-                          select p;
+                .AsNoTracking();
+                          
             #region filters
             //Filters
             if (TeamId.HasValue)

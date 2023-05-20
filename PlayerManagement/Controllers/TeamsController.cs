@@ -35,11 +35,10 @@ namespace PlayerManagement.Controllers
 
             string[] sortOptions = new[] { "Team", "RegistrationDate", "League" };
 
-            var teams = from t in _context.Teams
+            var teams = _context.Teams
                 .Include(p => p.League)
                 .Include(p => p.Players)
-                .AsNoTracking()
-            select t;
+                .AsNoTracking();
 
             #region Filters
             //filters

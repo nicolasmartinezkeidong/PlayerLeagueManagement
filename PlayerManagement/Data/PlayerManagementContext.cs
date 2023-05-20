@@ -10,9 +10,9 @@ namespace PlayerManagement.Data
                     : base(options)
         {
         }
-
+        public DbSet<PlayerTeam> PlayerTeams { get; set; }
         public DbSet<League> Leagues { get; set; }
-        public DbSet<Play> Plays { get; set; }
+        public DbSet<PlayPosition> Plays { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<PlayerPosition> PlayerPositions { get; set; }
         public DbSet<Team> Teams { get; set; }
@@ -43,8 +43,11 @@ namespace PlayerManagement.Data
             .IsUnique();
 
             //Many to Many Primary Key
-            modelBuilder.Entity<Play>()
+            modelBuilder.Entity<PlayPosition>()
             .HasKey(p => new { p.PlayerId, p.PlayerPositionId });
+
+            modelBuilder.Entity<PlayerTeam>()
+            .HasKey(p => new { p.PlayerId, p.TeamId });
 
             //Add a unique index to the Team Name
             modelBuilder.Entity<Team>()

@@ -71,32 +71,32 @@
             </td>
             <td>
                             @{
-                                int playerCount = item.Players.Count;
-                                if (playerCount > 0)
+                            int playerCount = item.Players.Count;
+                            if (playerCount > 0)
+                            {
+                                string firstPlayer = item.Players.FirstOrDefault().FullName;
+                                if (playerCount > 1)
                                 {
-                                    string firstPlayer = item.Players.OrderBy(p=>p.FirstName).FirstOrDefault().FirstName;
-                                    if (playerCount > 1)
+                                    string playerList = "";
+                                    var c = item.Players.ToList();
+                                    for (int i = 1; i < playerCount; i++)//Skip the first because we have it already
                                     {
-                                        string playerList = "";
-                                        var c = item.Players.OrderBy(p => p.FirstName).ToList();
-                                        for (int i = 1; i < playerCount; i++)//Skip the first because we have it already
-                                        {
-                                            playerList += c[i].FullName + " <br />";
-                                        }
-                                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.Id)"
-                                        aria-expanded="false" aria-controls="collapseSpecalty@(item.Id)">
-                                            @firstPlayer <span class="badge bg-info">@playerCount</span>
-                                        </a>
-                                        <div class="collapse" id="collapseSpecalty@(item.Id)">
-                                            @Html.Raw(playerList)
-                                        </div>
+                                        playerList += c[i].FullName + " <br />";
                                     }
-                                    else
-                                    {
-                                        @firstPlayer
-                                    }
+                                    <a class="" role="button" data-bs-toggle="collapse" href="#collapseMusicians@(item.Id)"
+                           aria-expanded="false" aria-controls="collapseMusicians@(item.Id)">
+                                        @firstPlayer <span class="badge bg-info">@playerCount</span>
+                                    </a>
+                                    <div class="collapse" id="collapseMusicians@(item.Id)">
+                                        @Html.Raw(playerList)
+                                    </div>
+                                }
+                                else
+                                {
+                                    @firstPlayer
                                 }
                             }
+                        }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Players.Count)
