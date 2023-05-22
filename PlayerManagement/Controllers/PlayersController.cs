@@ -158,6 +158,7 @@ namespace PlayerManagement.Controllers
 
             var player = await _context.Players
                 .Include(p => p.PlayerPosition)
+                .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
                 .Include(p => p.Team)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
