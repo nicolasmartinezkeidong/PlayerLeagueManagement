@@ -43,10 +43,13 @@
                 <input type="submit" name="actionButton" value="Team" class="btn btn-link" />
             </th>
             <th>
-                <input type="submit" name="actionButton" value="RegistrationDate" class="btn btn-link" />
+                <input type="submit" name="actionButton" value="Registration Date" class="btn btn-link" />
             </th>
             <th>
                 <input type="submit" name="actionButton" value="League" class="btn btn-link" />
+            </th>
+            <th>
+                <input type="submit" disabled="disabled" value="# Players" class="btn btn-link" />
             </th>
             <th></th>
         </tr>
@@ -62,6 +65,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.League.Name)
+            </td>
+            <td style="text-align:center">@*Align text inside the cells*@
+                 @Html.DisplayFor(modelItem => item.Players.Count)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

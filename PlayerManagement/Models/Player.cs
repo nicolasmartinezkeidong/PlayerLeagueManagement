@@ -78,7 +78,7 @@ namespace PlayerManagement.Models
         public PlayerPosition PlayerPosition { get; set; }
 
         [Display(Name = "All Positions")]
-        public ICollection<Play> PlaysAs { get; set; } = new HashSet<Play>();
+        public ICollection<PlayPosition> Plays { get; set; } = new HashSet<PlayPosition>();
 
        
 

@@ -4,11 +4,10 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>Delete Player</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete @Model.FullName</h3>
 <div>
-    <h4>Player</h4>
     <hr />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <dl class="row">
@@ -37,16 +36,48 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DOB)
+            @Html.DisplayNameFor(model => model.Age)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DOB)
+            @Html.DisplayFor(model => model.Age)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PlayerPosition)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PlayerPosition.PlayerPos)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plays)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                int positionsCount = Model.Plays.Count;
+                if (positionsCount > 0)
+                {
+                    string firstPosition = Model.Plays.FirstOrDefault().PlayerPosition.PlayerPos;
+                    if (positionsCount > 1)
+                    {
+                        string positionsList = "";
+                        var c = Model.Plays.ToList();
+                        for (int i = 1; i < positionsCount; i++)//Skip the first because we have it already
+                        {
+                            positionsList += c[i].PlayerPosition.PlayerPos + " <br />";
+                        }
+                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.Id)"
+                        aria-expanded="false" aria-controls="collapseSpecalty@(Model.Id)">
+                            @firstPosition <span class="badge bg-info">@positionsCount</span>
+                        </a>
+                        <div class="collapse" id="collapseSpecalty@(Model.Id)">
+                            @Html.Raw(positionsList)
+                        </div>
+                    }
+                    else
+                    {
+                        @firstPosition
+                    }
+                }
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Team)

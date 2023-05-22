@@ -1,9 +1,9 @@
 ﻿namespace PlayerManagement.Models
 {
-    public class Play
+    public class PlayerTeam
     {
-        public int PlayerPositionId { get; set; }
-        public PlayerPosition PlayerPosition { get; set; }
+        public int TeamId { get; set; }
+        public Team Team { get; set; }
 
         public int PlayerId { get; set; }
         public Player Player { get; set; }

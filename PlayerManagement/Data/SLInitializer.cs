@@ -195,7 +195,7 @@ namespace PlayerManagement.Data
                         for (int j = 1; j <= howMany; j++)
                         {
                             k = (k >= positionIDCount) ? 0 : k;//Resets counter k to 0 if we have run out of positions
-                            Play p = new Play()
+                            PlayPosition p = new PlayPosition()
                             {
                                 PlayerId = i,
                                 PlayerPositionId = positionIDs[k]
@@ -411,6 +411,7 @@ namespace PlayerManagement.Data
                     
                 }
                 #endregion
+
                 
 
             }

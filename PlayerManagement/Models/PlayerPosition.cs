@@ -20,7 +20,7 @@ namespace PlayerManagement.Models
         public ICollection<Player> Players { get; set; } = new HashSet<Player>();
 
         [Display(Name = "Other Players")]
-        public ICollection<Play> Plays { get; set; } = new HashSet<Play>();
+        public ICollection<PlayPosition> Plays { get; set; } = new HashSet<PlayPosition>();
 
         
     }
