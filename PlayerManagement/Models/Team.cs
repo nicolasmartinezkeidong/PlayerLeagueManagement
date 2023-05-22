@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace PlayerManagement.Models
 {
-    public class Team
+    public class Team : Auditable
     {
         public int Id { get; set; }
 
@@ -26,6 +26,8 @@ namespace PlayerManagement.Models
         [Display(Name = "Players")]
         public ICollection<Player> Players { get; set; } = new HashSet<Player>();
 
+        [Timestamp]
+        public Byte[] RowVersion { get; set; }//Added for concurrency
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
