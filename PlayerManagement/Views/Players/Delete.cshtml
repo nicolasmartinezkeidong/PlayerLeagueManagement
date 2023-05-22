@@ -47,6 +47,38 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PlayerPosition.PlayerPos)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plays)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                int positionsCount = Model.Plays.Count;
+                if (positionsCount > 0)
+                {
+                    string firstPosition = Model.Plays.FirstOrDefault().PlayerPosition.PlayerPos;
+                    if (positionsCount > 1)
+                    {
+                        string positionsList = "";
+                        var c = Model.Plays.ToList();
+                        for (int i = 1; i < positionsCount; i++)//Skip the first because we have it already
+                        {
+                            positionsList += c[i].PlayerPosition.PlayerPos + " <br />";
+                        }
+                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.Id)"
+                        aria-expanded="false" aria-controls="collapseSpecalty@(Model.Id)">
+                            @firstPosition <span class="badge bg-info">@positionsCount</span>
+                        </a>
+                        <div class="collapse" id="collapseSpecalty@(Model.Id)">
+                            @Html.Raw(positionsList)
+                        </div>
+                    }
+                    else
+                    {
+                        @firstPosition
+                    }
+                }
+            }
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Team)
         </dt>

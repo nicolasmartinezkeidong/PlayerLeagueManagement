@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
 using PlayerManagement.Utilities;
+using PlayerManagement.ViewModels;
 
 namespace PlayerManagement.Controllers
 {
@@ -176,6 +178,9 @@ namespace PlayerManagement.Controllers
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
 
+            Player player = new Player();
+            //We call method to populate checkbox
+            PopulateAssignedPlayerPositions(player);
             PopulateDropDownLists();
             return View();
         }
@@ -185,19 +190,25 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Phone,Email,DOB,PlayerPositionId,TeamId")] Player player)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Phone,Email,DOB,PlayerPositionId,TeamId")] Player player, 
+            string[] selectedOptions)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
 
             try
             {
+                UpdatePlayerPositions(selectedOptions, player);
                 if (ModelState.IsValid)
                 {
                     _context.Add(player);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
+            }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
             }
             catch (DbUpdateException dex)
             {
@@ -216,6 +227,7 @@ namespace PlayerManagement.Controllers
             }
             
             PopulateDropDownLists(player);
+            PopulateAssignedPlayerPositions(player);
             return View(player);
         }
 
@@ -230,13 +242,17 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
-            var player = await _context.Players.FindAsync(id);
+            var player = await _context.Players
+                .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (player == null)
             {
                 return NotFound();
             }
             
             PopulateDropDownLists(player);
+            PopulateAssignedPlayerPositions(player);
             return View(player);
         }
 
@@ -245,18 +261,22 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
 
-            //Go get the patient to update
-            var playerToUpdate = await _context.Players.FirstOrDefaultAsync(p => p.Id == id);
+            //Go get the Player to update
+            var playerToUpdate = await _context.Players
+                .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playerToUpdate == null)
             {
                 return NotFound();
             }
+
+            UpdatePlayerPositions(selectedOptions, playerToUpdate);
 
             //Try updating it with the values posted
             if (await TryUpdateModelAsync<Player>(playerToUpdate, "",
@@ -267,6 +287,10 @@ namespace PlayerManagement.Controllers
                 {
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
+                }
+                catch (RetryLimitExceededException /* dex */)
+                {
+                    ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -297,6 +321,7 @@ namespace PlayerManagement.Controllers
             }
                 ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", playerToUpdate.PlayerPositionId);
                 PopulateDropDownLists(playerToUpdate);
+                PopulateAssignedPlayerPositions(playerToUpdate);
                 return View(playerToUpdate);
         }
         // GET: Players/Delete/5
@@ -313,6 +338,7 @@ namespace PlayerManagement.Controllers
             var player = await _context.Players
                 .Include(p => p.Team)
                 .Include(p => p.PlayerPosition)
+                .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (player == null)
@@ -371,6 +397,70 @@ namespace PlayerManagement.Controllers
             ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player?.PlayerPositionId);
         }
 
+        private void PopulateAssignedPlayerPositions(Player player)
+        {
+            //Included the child collection in the parent object
+            var allOptions = _context.PlayerPositions;
+            var currentOptionsHS = new HashSet<int>(player.Plays.Select(p => p.PlayerPositionId));
+            //Create two lists
+            var selected = new List<ListOptionVM>();
+            var available = new List<ListOptionVM>();
+            foreach (var p in allOptions)
+            {
+                if (currentOptionsHS.Contains(p.Id))
+                {
+                    selected.Add(new ListOptionVM
+                    {
+                        Id = p.Id,
+                        DisplayText = p.PlayerPos,
+                    });
+                }
+                else
+                {
+                    available.Add(new ListOptionVM
+                    {
+                        Id = p.Id,
+                        DisplayText = p.PlayerPos
+                    });
+                }
+            }
+
+            ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "Id", "DisplayText");
+            ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "Id", "DisplayText");
+        }
+        private void UpdatePlayerPositions(string[] selectedOptions, Player playerToUpdate)
+        {
+            if (selectedOptions == null)
+            {
+                playerToUpdate.Plays = new List<PlayPosition>();
+                return;
+            }
+
+            var selectedOptionsHS = new HashSet<string>(selectedOptions);
+            var currentOptionsHS = new HashSet<int>(playerToUpdate.Plays.Select(b => b.PlayerPositionId));
+            foreach (var p in _context.PlayerPositions)
+            {
+                if (selectedOptionsHS.Contains(p.Id.ToString()))//it is selected
+                {
+                    if (!currentOptionsHS.Contains(p.Id))//but not currently in the PlayerPosition's collection, we add it
+                    {
+                        playerToUpdate.Plays.Add(new PlayPosition
+                        {
+                            PlayerPositionId = p.Id,
+                            PlayerId = playerToUpdate.Id
+                        });
+                    }
+                }
+                else //not selected
+                {
+                    if (currentOptionsHS.Contains(p.Id))//but is currently in the PlayerPosition's collection - we remove it
+                    {
+                        PlayPosition specToRemove = playerToUpdate.Plays.FirstOrDefault(i => i.PlayerPositionId == p.Id);
+                        _context.Remove(specToRemove);
+                    }
+                }
+            }
+        }
 
         private bool PlayerExists(int id)
         {
