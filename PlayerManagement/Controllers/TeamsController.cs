@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
 using PlayerManagement.Utilities;
+using PlayerManagement.ViewModels;
 using Team = PlayerManagement.Models.Team;
 
 namespace PlayerManagement.Controllers
@@ -36,11 +38,10 @@ namespace PlayerManagement.Controllers
 
             string[] sortOptions = new[] { "Team", "RegistrationDate", "League" };
 
-            var teams = from t in _context.Teams
+            var teams = _context.Teams
                 .Include(p => p.League)
                 .Include(p => p.Players)
-                .AsNoTracking()
-                        select t;
+                .AsNoTracking();
 
             #region Filters
             //filters
@@ -154,6 +155,8 @@ namespace PlayerManagement.Controllers
             ViewDataReturnURL();
 
             PopulateDropDownLists();
+            Team team = new Team();
+            PopulateAssignedPlayerData(team);
             return View();
         }
 
@@ -209,7 +212,7 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, Byte[] RowVersion, string[] selectedOptions)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
@@ -222,6 +225,11 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
+            //Put the original RowVersion value in the OriginalValues collection for the entity
+            _context.Entry(teamToUpdate).Property("RowVersion").OriginalValue = RowVersion;
+
+            UpdateTeamPlayers(selectedOptions, teamToUpdate);
+
             //Try updating it with the values posted
             if (await TryUpdateModelAsync<Team>(teamToUpdate, "",
                 t => t.Name, t => t.RegistrationDate, t => t.LeagueId))
@@ -231,15 +239,42 @@ namespace PlayerManagement.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (RetryLimitExceededException /* dex */)
                 {
-                    if (!TeamExists(teamToUpdate.Id))
+                    ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+                }
+                catch (DbUpdateConcurrencyException ex)// Added for concurrency
+                {
+                    var exceptionEntry = ex.Entries.Single();
+                    var clientValues = (Team)exceptionEntry.Entity;
+                    var databaseEntry = exceptionEntry.GetDatabaseValues();
+                    if (databaseEntry == null)
                     {
-                        return NotFound();
+                        ModelState.AddModelError("",
+                            "Unable to save changes. The Team was deleted by another user.");
                     }
                     else
                     {
-                        throw;
+                        var databaseValues = (Team)databaseEntry.ToObject();
+                        if (databaseValues.Name != clientValues.Name)
+                            ModelState.AddModelError("Name", "Current value: "
+                                + databaseValues.Name);
+                        if (databaseValues.RegistrationDate != clientValues.RegistrationDate)
+                            ModelState.AddModelError("RegistrationDate", "Current value: "
+                                + String.Format("{0:d}", databaseValues.RegistrationDate));
+                        //For the foreign key, we need to go to the database to get the information to show
+                        if (databaseValues.LeagueId != clientValues.LeagueId)
+                        {
+                            League databaseLeague = await _context.Leagues.FirstOrDefaultAsync(i => i.Id == databaseValues.LeagueId);
+                            ModelState.AddModelError("LeagueId", $"Current value: {databaseLeague?.Name}");
+                        }
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                                + "was modified by another user after you received your values. The "
+                                + "edit operation was canceled and the current values in the database "
+                                + "have been displayed. If you still want to save your version of this record, click "
+                                + "the Save button again. Otherwise click the 'Back to Team List' hyperlink.");
+                        teamToUpdate.RowVersion = (byte[])databaseValues.RowVersion;
+                        ModelState.Remove("RowVersion");
                     }
                 }
                 catch (DbUpdateException)
@@ -248,6 +283,7 @@ namespace PlayerManagement.Controllers
                 }
 
             }
+            PopulateAssignedPlayerData(teamToUpdate);
             return View(teamToUpdate);
         }
 
@@ -334,6 +370,70 @@ namespace PlayerManagement.Controllers
             ViewData["LeagueId"] = new SelectList(lQuery, "Id", "Name", team?.LeagueId);
         }
 
+        private void PopulateAssignedPlayerData(Team team)
+        {
+            //For this to work, you must have Included the child collection in the parent object
+            var allOptions = _context.Players;
+            var currentOptionsHS = new HashSet<int>(team.Players.Select(b => b.Id));
+            //Instead of one list with a boolean, we will make two lists
+            var selected = new List<ListOptionVM>();
+            var available = new List<ListOptionVM>();
+            foreach (var p in allOptions)
+            {
+                if (currentOptionsHS.Contains(p.Id))
+                {
+                    selected.Add(new ListOptionVM
+                    {
+                        Id = p.Id,
+                        DisplayText = p.FullName
+                    });
+                }
+                else
+                {
+                    available.Add(new ListOptionVM
+                    {
+                        Id = p.Id,
+                        DisplayText = p.FullName
+                    });
+                }
+            }
+
+            ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "Id", "DisplayText");
+            ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "Id", "DisplayText");
+        }
+        private void UpdateTeamPlayers(string[] selectedOptions, Team teamToUpdate)
+        {
+            if (selectedOptions == null)
+            {
+                teamToUpdate.Players = new List<Player>();
+                return;
+            }
+
+            var selectedOptionsHS = new HashSet<string>(selectedOptions);
+            var currentOptionsHS = new HashSet<int>(teamToUpdate.Players.Select(b => b.Id));
+            foreach (var s in _context.Players)
+            {
+                if (selectedOptionsHS.Contains(s.Id.ToString()))//it is selected
+                {
+                    if (!currentOptionsHS.Contains(s.Id))//but not currently in the Team's collection - Add it!
+                    {
+                        teamToUpdate.Players.Add(new Player
+                        {
+                            Id = s.Id,
+                            TeamId = teamToUpdate.Id
+                        });
+                    }
+                }
+                else //not selected
+                {
+                    if (currentOptionsHS.Contains(s.Id))//but is currently in the Team's collection - Remove it!
+                    {
+                        Player playerToRemove = teamToUpdate.Players.FirstOrDefault(d => d.Id == s.Id);
+                        _context.Remove(playerToRemove);
+                    }
+                }
+            }
+        }
 
         private bool TeamExists(int id)
         {

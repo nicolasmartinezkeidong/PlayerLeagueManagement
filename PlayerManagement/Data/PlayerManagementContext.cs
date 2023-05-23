@@ -68,7 +68,9 @@ namespace PlayerManagement.Data
             modelBuilder.Entity<PlayPosition>()
             .HasKey(p => new { p.PlayerId, p.PlayerPositionId });
 
-
+            //Many to Many Primary Key
+            modelBuilder.Entity<PlayerTeam>()
+            .HasKey(p => new { p.PlayerId, p.TeamId });
 
             //Add a unique index to the Team Name
             modelBuilder.Entity<Team>()

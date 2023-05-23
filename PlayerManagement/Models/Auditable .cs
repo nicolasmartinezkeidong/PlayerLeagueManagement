@@ -17,5 +17,9 @@ namespace PlayerManagement.Models
 
         [ScaffoldColumn(false)]
         public DateTime? UpdatedOn { get; set; }
+
+        [ScaffoldColumn(false)]
+        [Timestamp]
+        public Byte[] RowVersion { get; set; }//Added for concurrency
     }
 }

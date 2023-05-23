@@ -26,9 +26,6 @@ namespace PlayerManagement.Models
         [Display(Name = "Players")]
         public ICollection<Player> Players { get; set; } = new HashSet<Player>();
 
-        [Timestamp]
-        public Byte[] RowVersion { get; set; }//Added for concurrency
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 

@@ -27,6 +27,38 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.League.Name)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Players)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                int playerCount = Model.Players.Count;
+                if (playerCount > 0)
+                {
+                    string firstCond = Model.Players.FirstOrDefault().FullName;
+                    if (playerCount > 1)
+                    {
+                        string playerList = "";
+                        var c = Model.Players.ToList();
+                        for (int i = 1; i < playerCount; i++)//Skip the first because we have it already
+                        {
+                            playerList += c[i].FullName + " <br />";
+                        }
+                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.Id)"
+                   aria-expanded="false" aria-controls="collapseSpecalty@(Model.Id)">
+                            @firstCond <span class="badge bg-info">@playerCount</span>
+                        </a>
+                        <div class="collapse" id="collapseSpecalty@(Model.Id)">
+                            @Html.Raw(playerList)
+                        </div>
+                    }
+                    else
+                    {
+                        @firstCond
+                    }
+                }
+            }
+        </dd>
     </dl>
 </div>
 <div>
