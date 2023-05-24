@@ -138,6 +138,7 @@ namespace PlayerManagement.Controllers
 
             var team = await _context.Teams
                 .Include(t => t.League)
+                .Include(p => p.Players)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (team == null)
@@ -145,6 +146,7 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
+            PopulateAssignedPlayerData(team);
             return View(team);
         }
 
@@ -165,13 +167,15 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,RegistrationDate,LeagueId")] Team team)
+        public async Task<IActionResult> Create([Bind("Id,Name,RegistrationDate,LeagueId")] Team team,
+            string[] selectedOptions)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
 
             try
             {
+                UpdateTeamPlayers(selectedOptions, team);
                 if (ModelState.IsValid)
                 {
                     _context.Add(team);
@@ -179,11 +183,15 @@ namespace PlayerManagement.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            catch(DbUpdateException)
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+            }
+            catch (DbUpdateException)
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
             }
-            
+            PopulateAssignedPlayerData(team);
             return View(team);
         }
 
@@ -198,12 +206,16 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.FindAsync(id);
+            var team = await _context.Teams
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (team == null)
             {
                 return NotFound();
             }
             PopulateDropDownLists(team);
+            PopulateAssignedPlayerData(team);
             return View(team);
         }
 
@@ -218,7 +230,9 @@ namespace PlayerManagement.Controllers
             ViewDataReturnURL();
 
             //Go get the Team to update
-            var teamToUpdate = await _context.Teams.SingleOrDefaultAsync(t => t.Id == id);
+            var teamToUpdate = await _context.Teams
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (teamToUpdate == null)
             {
