@@ -13,15 +13,17 @@ namespace PlayerManagement.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string Tab = "PLayerPositions-Tab")
         {
-            ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions.OrderBy(p => p.PlayerPos), "Id", "PlayerPos");
+            //Note: select the tab you want to load by passing in
+            //the ID of the tab such as PlayerPositions-Tab, OtherLookUp-Tab, etc
+            ViewData["Tab"] = Tab;
             return View();
         }
         //Player Positions partial
         public PartialViewResult PLayerPositions()
         {
-            ViewData["PlayerPositionId"] = new
+            ViewData["PlayerPositionsId"] = new
                 SelectList(_context.PlayerPositions
                 .OrderBy(p => p.PlayerPos), "Id", "PlayerPos");
             return PartialView("_PlayerPositions");
