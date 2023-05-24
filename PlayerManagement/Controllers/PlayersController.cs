@@ -420,6 +420,7 @@ namespace PlayerManagement.Controllers
             return View(player);
         }
 
+        //Not needed since we are in a CognizantController
         private string ControllerName()
         {
             return this.ControllerContext.RouteData.Values["controller"].ToString();
