@@ -261,7 +261,7 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string[] selectedOptions)
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
@@ -278,6 +278,9 @@ namespace PlayerManagement.Controllers
 
             UpdatePlayerPositions(selectedOptions, playerToUpdate);
 
+            //Put the original RowVersion value in the OriginalValues collection for the entity
+            _context.Entry(playerToUpdate).Property("RowVersion").OriginalValue = RowVersion;
+
             //Try updating it with the values posted
             if (await TryUpdateModelAsync<Player>(playerToUpdate, "",
                 p => p.FirstName, p => p.LastName, p => p.Phone, p => p.Email, p => p.DOB,
@@ -292,15 +295,53 @@ namespace PlayerManagement.Controllers
                 {
                     ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)// Added for concurrency
                 {
-                    if (!PlayerExists(playerToUpdate.Id))
+                    var exceptionEntry = ex.Entries.Single();
+                    var clientValues = (Player)exceptionEntry.Entity;
+                    var databaseEntry = exceptionEntry.GetDatabaseValues();
+                    if (databaseEntry == null)
                     {
-                        return NotFound();
+                        ModelState.AddModelError("",
+                            "Unable to save changes. The Player was deleted by another user.");
                     }
                     else
                     {
-                        throw;
+                        var databaseValues = (Player)databaseEntry.ToObject();
+                        if (databaseValues.FirstName != clientValues.FirstName)
+                            ModelState.AddModelError("FirstName", "Current value: "
+                                + databaseValues.FirstName);
+                        if (databaseValues.LastName != clientValues.LastName)
+                            ModelState.AddModelError("LastName", "Current value: "
+                                + databaseValues.LastName);
+                        if (databaseValues.DOB != clientValues.DOB)
+                            ModelState.AddModelError("DOB", "Current value: "
+                                + String.Format("{0:d}", databaseValues.DOB));
+                        if (databaseValues.Phone != clientValues.Phone)
+                            ModelState.AddModelError("Phone", "Current value: "
+                                + databaseValues.PhoneFormatted);
+                        if (databaseValues.Email != clientValues.Email)
+                            ModelState.AddModelError("Email", "Current value: "
+                                + databaseValues.Email);
+                        //For the foreign key, we need to go to the database to get the information to show
+                        if (databaseValues.TeamId != clientValues.TeamId)
+                        {
+                            Team databaseTeam = await _context.Teams.FirstOrDefaultAsync(i => i.Id == databaseValues.TeamId);
+                            ModelState.AddModelError("TeamId", $"Current value: {databaseTeam?.Name}");
+                        }
+                        
+                        if (databaseValues.PlayerPositionId != clientValues.PlayerPositionId)
+                        {
+                            PlayerPosition databasePosition = await _context.PlayerPositions.FirstOrDefaultAsync(i => i.Id == databaseValues.PlayerPositionId);
+                            ModelState.AddModelError("PlayerPositionId", $"Current value: {databasePosition?.PlayerPos}");
+                        }
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                                + "was modified by another user after you received your values. The "
+                                + "edit operation was canceled and the current values in the database "
+                                + "have been displayed. If you still want to save your version of this record, click "
+                                + "the Save button again. Otherwise click the 'Back to Player List' hyperlink.");
+                        playerToUpdate.RowVersion = (byte[])databaseValues.RowVersion;
+                        ModelState.Remove("RowVersion");
                     }
                 }
                 catch (DbUpdateException dex)
@@ -455,8 +496,8 @@ namespace PlayerManagement.Controllers
                 {
                     if (currentOptionsHS.Contains(p.Id))//but is currently in the PlayerPosition's collection - we remove it
                     {
-                        PlayPosition specToRemove = playerToUpdate.Plays.FirstOrDefault(i => i.PlayerPositionId == p.Id);
-                        _context.Remove(specToRemove);
+                        PlayPosition positionToRemove = playerToUpdate.Plays.FirstOrDefault(i => i.PlayerPositionId == p.Id);
+                        _context.Remove(positionToRemove);
                     }
                 }
             }

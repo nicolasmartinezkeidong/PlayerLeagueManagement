@@ -3,6 +3,8 @@
 Add-Migration -Context PlayerManagementContext -o Data\PlayerManagementMigrations Initial
 Update-Database -Context PlayerManagementContext 
 
+//Add extra migration before update DB
+ExtraMigration.Steps(migrationBuilder);
 
 Add-Migration -Context ApplicationDbContext -OutputDir Data\Migrations Initial
 Update-Database -Context ApplicationDbContext

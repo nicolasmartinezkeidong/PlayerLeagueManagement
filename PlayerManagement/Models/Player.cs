@@ -80,9 +80,6 @@ namespace PlayerManagement.Models
         [Display(Name = "All Positions")]
         public ICollection<PlayPosition> Plays { get; set; } = new HashSet<PlayPosition>();
 
-        [Timestamp]
-        public Byte[] RowVersion { get; set; }//Added for concurrency
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (DOB > DateTime.Today)
