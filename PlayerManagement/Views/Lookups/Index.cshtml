@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Lookup Index";
+}
+
+<h2>Lookup Values</h2>
+
+<div>
+    <!-- Nav tabs -->
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="PlayerPositions-Tab" data-bs-toggle="tab" data-bs-target="#PlayerPositionsPanel" type="button" role="tab" aria-controls="PlayerPositionsPanel" aria-selected="true">Player Positions</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="PlayerPositionsPanel" role="tabpanel" aria-labelledby="PlayerPositionsTab"><br />1</div>
+    </div>
+
+</div>
+<hr />
+<br />
+@section Scripts {
+    <script type="text/javascript">
+        function refreshTab(activeTab) {
+            switch (activeTab) {
+                case 'PlayerPositions-Tab': $('#PlayerPositionsPanel').load('/Lookups/PlayerPositions');
+                    break;
+                default: break;
+            };
+            return;
+        };
+        $('.nav-link').click(function () {
+            var activeTab = $(this).attr("id");
+            refreshTab(activeTab);
+        });
+        $(".tab-content").on("click", ".linkClick", function (event) {
+            event.preventDefault();
+            var address = $(this).attr("href");
+            var lookup = address.split("/")[1];
+            var id = $("#" + lookup + "Id").val();
+            var caption = $("#" + lookup).html();
+            if (id == null) {
+                alert("Error: no value was selected from the " + caption + " list");
+            } else {
+                window.location.href = address + "/" + id;
+            }
+        });
+        $(function () {
+            setTimeout(function () {
+                $("#@ViewData["Tab"]").trigger('click');
+            }, 10);
+        });
+    </script>
+}
+
+

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using PlayerManagement.CustomControllers;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
 using PlayerManagement.Utilities;
@@ -15,7 +16,7 @@ using Team = PlayerManagement.Models.Team;
 
 namespace PlayerManagement.Controllers
 {
-    public class TeamsController : Controller
+    public class TeamsController : CognizantController
     {
         private readonly PlayerManagementContext _context;
 
@@ -366,10 +367,10 @@ namespace PlayerManagement.Controllers
 
         }
 
-        private string ControllerName()
-        {
-            return this.ControllerContext.RouteData.Values["controller"].ToString();
-        }
+        //private string ControllerName()
+        //{
+        //    return this.ControllerContext.RouteData.Values["controller"].ToString();
+        //}
         private void ViewDataReturnURL()
         {
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, ControllerName());
