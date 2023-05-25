@@ -33,9 +33,9 @@ namespace PlayerManagement.Controllers
             ViewData["Filtering"] = "btn-outline-dark"; //Asume not filtering
             //Then in each "test" for filtering, add ViewData["Filtering"] = "btn-danger" if true;
 
-            var playerDocuments = from d in _context.PlayerDocuments
+            var playerDocuments = from p in _context.PlayerDocuments
                 .Include(p => p.Player)
-                                  select d;
+                                  select p;
             
             if (PlayerId.HasValue)
             {

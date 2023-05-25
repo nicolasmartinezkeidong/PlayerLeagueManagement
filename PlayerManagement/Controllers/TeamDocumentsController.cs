@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
+using PlayerManagement.Utilities;
 
 namespace PlayerManagement.Controllers
 {
-    public class TeamDocumentsController : Controller
+    public class TeamDocumentsController : CustomControllers.ElephantController
     {
         private readonly PlayerManagementContext _context;
 
@@ -20,53 +21,41 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: TeamDocuments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? pageSizeID,
+            int? TeamId, string SearchString)
         {
-            var playerManagementContext = _context.TeamDocuments.Include(t => t.Team);
-            return View(await playerManagementContext.ToListAsync());
-        }
+            //Clear the sort/filter/paging URL Cookie for Controller
+            CookieHelper.CookieSet(HttpContext, ControllerName() + "URL", "", -1);
 
-        // GET: TeamDocuments/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.TeamDocuments == null)
-            {
-                return NotFound();
-            }
+            PopulateDropDownLists();
 
-            var teamDocument = await _context.TeamDocuments
+            //Toggle the Open/Closed state of the collapse depending on if we are filtering
+            ViewData["Filtering"] = "btn-outline-dark"; //Asume not filtering
+            //Then in each "test" for filtering, add ViewData["Filtering"] = "btn-danger" if true;
+
+            var teamDocuments = from t in _context.TeamDocuments
                 .Include(t => t.Team)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (teamDocument == null)
+                                  select t;
+
+            if (TeamId.HasValue)
             {
-                return NotFound();
+                teamDocuments = teamDocuments.Where(p => p.TeamId == TeamId);
+                ViewData["Filtering"] = "btn-danger";
             }
-
-            return View(teamDocument);
-        }
-
-        // GET: TeamDocuments/Create
-        public IActionResult Create()
-        {
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
-            return View();
-        }
-
-        // POST: TeamDocuments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TeamId,Id,FileName,MimeType")] TeamDocument teamDocument)
-        {
-            if (ModelState.IsValid)
+            if (!String.IsNullOrEmpty(SearchString))
             {
-                _context.Add(teamDocument);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                teamDocuments = teamDocuments.Where(p => p.FileName.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = "btn-danger";
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", teamDocument.TeamId);
-            return View(teamDocument);
+            // Always sort by File Name
+            teamDocuments = teamDocuments.OrderBy(m => m.FileName);
+
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<TeamDocument>.CreateAsync(teamDocuments.AsNoTracking(), page ?? 1, pageSize);
+
+
+            return View(pagedData);
         }
 
         // GET: TeamDocuments/Edit/5
@@ -77,12 +66,16 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
-            var teamDocument = await _context.TeamDocuments.FindAsync(id);
+            var teamDocument = await _context.TeamDocuments
+                .Include(t => t.Team)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == id);
+            
             if (teamDocument == null)
             {
                 return NotFound();
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", teamDocument.TeamId);
+            PopulateDropDownLists(teamDocument);
             return View(teamDocument);
         }
 
@@ -91,23 +84,28 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TeamId,Id,FileName,MimeType")] TeamDocument teamDocument)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != teamDocument.Id)
+            var teamDocumentToUpdate = await _context.TeamDocuments
+                .Include(m => m.Team)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (teamDocumentToUpdate == null)
             {
                 return NotFound();
             }
+            if (await TryUpdateModelAsync<TeamDocument>(teamDocumentToUpdate, "",
+                d => d.FileName))
 
-            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(teamDocument);
                     await _context.SaveChangesAsync();
+                    return Redirect(ViewData["returnURL"].ToString());
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeamDocumentExists(teamDocument.Id))
+                    if (!TeamDocumentExists(teamDocumentToUpdate.Id))
                     {
                         return NotFound();
                     }
@@ -116,10 +114,13 @@ namespace PlayerManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save the update. Try again, and if the problem persists see your system administrator.");
+                }
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", teamDocument.TeamId);
-            return View(teamDocument);
+            PopulateDropDownLists(teamDocumentToUpdate);
+            return View(teamDocumentToUpdate);
         }
 
         // GET: TeamDocuments/Delete/5
@@ -133,6 +134,7 @@ namespace PlayerManagement.Controllers
             var teamDocument = await _context.TeamDocuments
                 .Include(t => t.Team)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (teamDocument == null)
             {
                 return NotFound();
@@ -151,13 +153,42 @@ namespace PlayerManagement.Controllers
                 return Problem("Entity set 'PlayerManagementContext.TeamDocuments'  is null.");
             }
             var teamDocument = await _context.TeamDocuments.FindAsync(id);
-            if (teamDocument != null)
+            try
             {
-                _context.TeamDocuments.Remove(teamDocument);
+                if (teamDocument != null)
+                {
+                    _context.TeamDocuments.Remove(teamDocument);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save the update. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(teamDocument);
+        }
+
+        public async Task<FileContentResult> Download(int id)
+        {
+            var theFile = await _context.UploadedFiles
+                .Include(d => d.FileContent)
+                .Where(f => f.Id == id)
+                .FirstOrDefaultAsync();
+            return File(theFile.FileContent.Content, theFile.MimeType, theFile.FileName);
+        }
+
+        private SelectList TeamSelectList(int? id)
+        {
+            var dQuery = from t in _context.Teams
+                         orderby t.Name
+                         select t;
+            return new SelectList(dQuery, "Id", "Name", id);
+        }
+        private void PopulateDropDownLists(TeamDocument teamDocument = null)
+        {
+            ViewData["TeamID"] = TeamSelectList(teamDocument?.TeamId);
         }
 
         private bool TeamDocumentExists(int id)

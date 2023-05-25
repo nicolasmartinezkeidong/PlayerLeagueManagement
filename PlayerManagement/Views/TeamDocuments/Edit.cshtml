@@ -4,41 +4,38 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h2>Edit Team Document</h2>
 
-<h4>TeamDocument</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
             <div class="form-group">
-                <label asp-for="TeamId" class="control-label"></label>
-                <select asp-for="TeamId" class="form-control" asp-items="ViewBag.TeamId"></select>
-                <span asp-validation-for="TeamId" class="text-danger"></span>
+                <label class="control-label">Team: @Model.Team.Name</label>
             </div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="FileName" class="control-label"></label>
                 <input asp-for="FileName" class="form-control" />
                 <span asp-validation-for="FileName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MimeType" class="control-label"></label>
-                <input asp-for="MimeType" class="form-control" />
-                <span asp-validation-for="MimeType" class="text-danger"></span>
+                <label class="control-label">Type of File: @Model.MimeType</label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a href='@ViewData["returnURL"]'>Back to Document List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
