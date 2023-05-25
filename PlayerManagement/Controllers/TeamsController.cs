@@ -42,6 +42,7 @@ namespace PlayerManagement.Controllers
             var teams = _context.Teams
                 .Include(p => p.League)
                 .Include(p => p.Players)
+                .Include(d => d.TeamDocuments)//Just if we want to show documents on Index view
                 .AsNoTracking();
 
             #region Filters
@@ -169,7 +170,7 @@ namespace PlayerManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,RegistrationDate,LeagueId")] Team team,
-            string[] selectedOptions)
+            string[] selectedOptions, List<IFormFile> theFiles)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
@@ -179,6 +180,7 @@ namespace PlayerManagement.Controllers
                 UpdateTeamPlayers(selectedOptions, team);
                 if (ModelState.IsValid)
                 {
+                    await AddDocumentsAsync(team, theFiles);
                     _context.Add(team);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -209,6 +211,7 @@ namespace PlayerManagement.Controllers
 
             var team = await _context.Teams
                 .Include(t => t.Players)
+                .Include(d => d.TeamDocuments)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (team == null)
@@ -225,7 +228,8 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Byte[] RowVersion, string[] selectedOptions)
+        public async Task<IActionResult> Edit(int id, Byte[] RowVersion, string[] selectedOptions
+            , List<IFormFile> theFiles)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
@@ -233,6 +237,7 @@ namespace PlayerManagement.Controllers
             //Go get the Team to update
             var teamToUpdate = await _context.Teams
                 .Include(t => t.Players)
+                .Include(d => d.TeamDocuments)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (teamToUpdate == null)
@@ -251,6 +256,7 @@ namespace PlayerManagement.Controllers
             {
                 try
                 {
+                    await AddDocumentsAsync(teamToUpdate, theFiles);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -365,6 +371,42 @@ namespace PlayerManagement.Controllers
             }
             return View(team);
 
+        }
+
+        public async Task<FileContentResult> Download(int id)
+        {
+            var theFile = await _context.UploadedFiles
+                .Include(d => d.FileContent)
+                .Where(f => f.Id == id)
+                .FirstOrDefaultAsync();
+            return File(theFile.FileContent.Content, theFile.MimeType, theFile.FileName);
+        }
+
+        private async Task AddDocumentsAsync(Team team, List<IFormFile> theFiles)
+        {
+            foreach (var f in theFiles)
+            {
+                if (f != null)
+                {
+                    string mimeType = f.ContentType;
+                    string fileName = Path.GetFileName(f.FileName);
+                    long fileLength = f.Length;
+                    //Note: you could filter for mime types if you only want to allow
+                    //certain types of files.  I am allowing everything.
+                    if (!(fileName == "" || fileLength == 0))//Looks like we have a file!!!
+                    {
+                        TeamDocument t = new TeamDocument();
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await f.CopyToAsync(memoryStream);
+                            t.FileContent.Content = memoryStream.ToArray();
+                        }
+                        t.MimeType = mimeType;
+                        t.FileName = fileName;
+                        team.TeamDocuments.Add(t);
+                    };
+                }
+            }
         }
 
         //private string ControllerName()
