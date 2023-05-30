@@ -41,7 +41,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Lookups" asp-route-Tab="@Context.GetRouteValue("controller").ToString()-Tab">Back to Lookup List</a>
 </div>
 
 @section Scripts {

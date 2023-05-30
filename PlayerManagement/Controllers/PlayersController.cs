@@ -45,6 +45,7 @@ namespace PlayerManagement.Controllers
                 .Include(p => p.PlayerPosition)
                 .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
                 .Include(p => p.Team)
+                .Include(d => d.PlayerDocuments)//Just if we want to show documents on Index view
                 .AsNoTracking();
                           
             #region filters
@@ -192,7 +193,7 @@ namespace PlayerManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Phone,Email,DOB,PlayerPositionId,TeamId")] Player player, 
-            string[] selectedOptions)
+            string[] selectedOptions, List<IFormFile> theFiles)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
@@ -202,6 +203,7 @@ namespace PlayerManagement.Controllers
                 UpdatePlayerPositions(selectedOptions, player);
                 if (ModelState.IsValid)
                 {
+                    await AddDocumentsAsync(player, theFiles);
                     _context.Add(player);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -244,6 +246,7 @@ namespace PlayerManagement.Controllers
             }
 
             var player = await _context.Players
+                .Include(d => d.PlayerDocuments)
                 .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -262,13 +265,15 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion)
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion
+            , List<IFormFile> theFiles)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
 
             //Go get the Player to update
             var playerToUpdate = await _context.Players
+                .Include(d => d.PlayerDocuments)
                 .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -289,6 +294,7 @@ namespace PlayerManagement.Controllers
             {
                 try
                 {
+                    await AddDocumentsAsync(playerToUpdate, theFiles);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -419,6 +425,40 @@ namespace PlayerManagement.Controllers
                 ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists contact your system administrator.");
             }
             return View(player);
+        }
+
+        public async Task<FileContentResult> Download(int id)
+        {
+            var theFile = await _context.UploadedFiles
+                .Include(d => d.FileContent)
+                .Where(f => f.Id == id)
+                .FirstOrDefaultAsync();
+            return File(theFile.FileContent.Content, theFile.MimeType, theFile.FileName);
+        }
+
+        private async Task AddDocumentsAsync(Player player, List<IFormFile> theFiles)
+        {
+            foreach (var f in theFiles)
+            {
+                if (f != null)
+                {
+                    string mimeType = f.ContentType;
+                    string fileName = Path.GetFileName(f.FileName);
+                    long fileLength = f.Length;
+                    if (!(fileName == "" || fileLength == 0))//we have a file
+                    {
+                        PlayerDocument p = new PlayerDocument();
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await f.CopyToAsync(memoryStream);
+                            p.FileContent.Content = memoryStream.ToArray();
+                        }
+                        p.MimeType = mimeType;
+                        p.FileName = fileName;
+                        player.PlayerDocuments.Add(p);
+                    };
+                }
+            }
         }
 
         //Not needed since we are in a CognizantController

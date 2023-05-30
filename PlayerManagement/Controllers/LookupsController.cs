@@ -28,5 +28,14 @@ namespace PlayerManagement.Controllers
                 .OrderBy(p => p.PlayerPos), "Id", "PlayerPos");
             return PartialView("_PlayerPositions");
         }
+        //League partial
+        public PartialViewResult Leagues()
+        {
+            ViewData["LeaguesId"] = new
+                SelectList(_context.Leagues
+                .OrderBy(l => l.Name), "Id", "Name");
+            return PartialView("_Leagues");
+        }
+
     }
 }

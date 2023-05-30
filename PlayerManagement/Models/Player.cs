@@ -80,6 +80,9 @@ namespace PlayerManagement.Models
         [Display(Name = "All Positions")]
         public ICollection<PlayPosition> Plays { get; set; } = new HashSet<PlayPosition>();
 
+        [Display(Name = "Documents")]
+        public ICollection<PlayerDocument> PlayerDocuments { get; set; } = new HashSet<PlayerDocument>();
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (DOB > DateTime.Today)

@@ -13,7 +13,7 @@ namespace PlayerManagement.Models
         {
             get
             {
-                return Name + " - " + LeagueFoundation;
+                return Name + " - " + "League Foundation: " + LeagueFoundation;
             }
         }
 

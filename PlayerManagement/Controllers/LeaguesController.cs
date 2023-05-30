@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PlayerManagement.CustomControllers;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
 
 namespace PlayerManagement.Controllers
 {
-    public class LeaguesController : Controller
+    public class LeaguesController : CognizantController
     {
         private readonly PlayerManagementContext _context;
 
@@ -20,9 +21,9 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: Leagues
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-              return View(await _context.Leagues.ToListAsync());
+            return RedirectToAction("Index", "Lookups", new { Tab = ControllerName() + "-Tab" });
         }
 
         // GET: Leagues/Details/5
@@ -60,7 +61,7 @@ namespace PlayerManagement.Controllers
             {
                 _context.Add(league);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Lookups", new { Tab = ControllerName() + "-Tab" });
             }
             return View(league);
         }
@@ -111,7 +112,7 @@ namespace PlayerManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Lookups", new { Tab = ControllerName() + "-Tab" });
             }
             return View(league);
         }
@@ -150,7 +151,7 @@ namespace PlayerManagement.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Lookups", new { Tab = ControllerName() + "-Tab" });
         }
 
         private bool LeagueExists(int id)

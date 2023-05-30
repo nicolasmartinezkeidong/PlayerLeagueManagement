@@ -40,6 +40,10 @@ namespace PlayerManagement.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<Field> Fields { get; set; }
         public DbSet<MatchSchedule> MatchSchedules { get; set; }
+        public DbSet<PlayerDocument> PlayerDocuments { get; set; }
+        public DbSet<TeamDocument> TeamDocuments { get; set; }
+        public DbSet<UploadedFile> UploadedFiles { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

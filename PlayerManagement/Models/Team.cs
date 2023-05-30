@@ -26,6 +26,9 @@ namespace PlayerManagement.Models
         [Display(Name = "Players")]
         public ICollection<Player> Players { get; set; } = new HashSet<Player>();
 
+        [Display(Name = "Documents")]
+        public ICollection<TeamDocument> TeamDocuments { get; set; } = new HashSet<TeamDocument>();
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 
