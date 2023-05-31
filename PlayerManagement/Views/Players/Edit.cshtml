@@ -6,7 +6,18 @@
 
 <h2>Team: @Model.FullName</h2>
 
-
+<hr />
+@{
+    var hasPicture = (Model.PlayerPhoto?.Content != null);
+    if (hasPicture)
+        {
+            @:<div>
+                string imageBase64 = Convert.ToBase64String(Model.PlayerPhoto.Content);
+                string imageSrc = string.Format("data:" + Model.PlayerPhoto.MimeType + ";base64,{0}", imageBase64);
+                <img src="@imageSrc" alt="Profile Picture of @Model.FullName" title="Profile Picture of @Model.FullName" class="img-fluid rounded" />
+            @:</div><hr />
+        }
+    }
 <hr />
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -14,6 +25,21 @@
     <div class="col-md-4">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="RowVersion" />
+            <div>
+        @{
+            if (hasPicture)
+            {
+                <div class="row">
+                    <div class="form-check m-3">
+                        <input class="form-check-input" type="checkbox" id="chkRemoveImage" name="chkRemoveImage">
+                        <label class="form-check-label" for="chkRemoveImage">
+                        <strong>Check to remove Image</strong>
+                        </label>
+                    </div>
+                </div>
+            }
+        }
+    </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -39,6 +65,12 @@
                 <input asp-for="DOB" class="form-control" />
                 <span asp-validation-for="DOB" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                    <label class="control-label custom-file-label">Picture File:</label>
+                    <div class="input-group mb-3">
+                      <input type="file" class="form-control" name="thePicture" id="thePicture">
+                    </div>
+                </div>
             <div class="form-group">
                 <label asp-for="TeamId" class="control-label"></label>
                 <select asp-for="TeamId" class ="form-control" asp-items="ViewBag.TeamId">

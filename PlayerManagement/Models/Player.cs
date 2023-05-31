@@ -83,6 +83,10 @@ namespace PlayerManagement.Models
         [Display(Name = "Documents")]
         public ICollection<PlayerDocument> PlayerDocuments { get; set; } = new HashSet<PlayerDocument>();
 
+        public PlayerPhoto PlayerPhoto { get; set; }
+
+        public PlayerThumbnail PlayerThumbnail { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (DOB > DateTime.Today)

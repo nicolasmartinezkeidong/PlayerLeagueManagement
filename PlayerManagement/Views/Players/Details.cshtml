@@ -8,6 +8,17 @@
 
 <div>
     <hr />
+    <hr />
+    @{
+        if (Model.PlayerPhoto?.Content != null)
+        {
+            @:<div>
+                string imageBase64 = Convert.ToBase64String(Model.PlayerPhoto.Content);
+                string imageSrc = string.Format("data:" + Model.PlayerPhoto.MimeType + ";base64,{0}", imageBase64);
+                <img src="@imageSrc" alt="Profile Picture of @Model.FullName" title="Profile Picture of @Model.FullName" class="img-fluid rounded" />
+            @:</div><hr />
+        }
+    }
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)

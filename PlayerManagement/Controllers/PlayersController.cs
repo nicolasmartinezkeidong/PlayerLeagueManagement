@@ -46,6 +46,7 @@ namespace PlayerManagement.Controllers
                 .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
                 .Include(p => p.Team)
                 .Include(d => d.PlayerDocuments)//Just if we want to show documents on Index view
+                .Include(p => p.PlayerThumbnail)
                 .AsNoTracking();
                           
             #region filters
@@ -164,6 +165,7 @@ namespace PlayerManagement.Controllers
                 .Include(p => p.PlayerPosition)
                 .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
                 .Include(p => p.Team)
+                .Include(p => p.PlayerPhoto)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (player == null)
@@ -193,7 +195,7 @@ namespace PlayerManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Phone,Email,DOB,PlayerPositionId,TeamId")] Player player, 
-            string[] selectedOptions, List<IFormFile> theFiles)
+            string[] selectedOptions, List<IFormFile> theFiles, IFormFile thePicture)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
@@ -203,6 +205,7 @@ namespace PlayerManagement.Controllers
                 UpdatePlayerPositions(selectedOptions, player);
                 if (ModelState.IsValid)
                 {
+                    await AddPicture(player, thePicture);
                     await AddDocumentsAsync(player, theFiles);
                     _context.Add(player);
                     await _context.SaveChangesAsync();
@@ -248,6 +251,7 @@ namespace PlayerManagement.Controllers
             var player = await _context.Players
                 .Include(d => d.PlayerDocuments)
                 .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
+                .Include(p => p.PlayerPhoto)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (player == null)
@@ -266,7 +270,7 @@ namespace PlayerManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion
-            , List<IFormFile> theFiles)
+            , List<IFormFile> theFiles, string chkRemoveImage, IFormFile thePicture)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
@@ -275,6 +279,7 @@ namespace PlayerManagement.Controllers
             var playerToUpdate = await _context.Players
                 .Include(d => d.PlayerDocuments)
                 .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
+                .Include(p => p.PlayerPhoto)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playerToUpdate == null)
@@ -294,6 +299,20 @@ namespace PlayerManagement.Controllers
             {
                 try
                 {
+                    //For the image
+                    if (chkRemoveImage != null)
+                    {
+                        //If we are just deleting the two versions of the photo, we need to make sure the Change Tracker knows
+                        //about them both so go get the Thumbnail since we did not include it.
+                        playerToUpdate.PlayerThumbnail = _context.PlayerThumbnails.Where(p => p.PlayerId == playerToUpdate.Id).FirstOrDefault();
+                        //Then, setting them to null will cause them to be deleted from the database.
+                        playerToUpdate.PlayerPhoto = null;
+                        playerToUpdate.PlayerThumbnail = null;
+                    }
+                    else
+                    {
+                        await AddPicture(playerToUpdate, thePicture);
+                    }
                     await AddDocumentsAsync(playerToUpdate, theFiles);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -457,6 +476,49 @@ namespace PlayerManagement.Controllers
                         p.FileName = fileName;
                         player.PlayerDocuments.Add(p);
                     };
+                }
+            }
+        }
+
+        private async Task AddPicture(Player player, IFormFile thePicture)
+        {
+            //Get the picture and save it with the Player (2 sizes)
+            if (thePicture != null)
+            {
+                string mimeType = thePicture.ContentType;
+                long fileLength = thePicture.Length;
+                if (!(mimeType == "" || fileLength == 0))//Looks like we have a file
+                {
+                    if (mimeType.Contains("image"))
+                    {
+                        using var memoryStream = new MemoryStream();
+                        await thePicture.CopyToAsync(memoryStream);
+                        var pictureArray = memoryStream.ToArray();//Gives us the Byte[]
+
+                        //Check if we are replacing or creating new
+                        if (player.PlayerPhoto != null)
+                        {
+                            //We already have pictures so just replace the Byte[]
+                            player.PlayerPhoto.Content = ResizeImage.shrinkImageWebp(pictureArray, 500, 600);
+
+                            //Get the Thumbnail so we can update it.  Remember we didn't include it
+                            player.PlayerThumbnail = _context.PlayerThumbnails.Where(p => p.PlayerId == player.Id).FirstOrDefault();
+                            player.PlayerThumbnail.Content = ResizeImage.shrinkImageWebp(pictureArray, 100, 120);
+                        }
+                        else //No pictures saved so start new
+                        {
+                            player.PlayerPhoto = new PlayerPhoto
+                            {
+                                Content = ResizeImage.shrinkImageWebp(pictureArray, 500, 600),
+                                MimeType = "image/webp"
+                            };
+                            player.PlayerThumbnail = new PlayerThumbnail
+                            {
+                                Content = ResizeImage.shrinkImageWebp(pictureArray, 100, 120),
+                                MimeType = "image/webp"
+                            };
+                        }
+                    }
                 }
             }
         }
