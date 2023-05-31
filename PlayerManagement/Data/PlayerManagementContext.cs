@@ -43,6 +43,8 @@ namespace PlayerManagement.Data
         public DbSet<PlayerDocument> PlayerDocuments { get; set; }
         public DbSet<TeamDocument> TeamDocuments { get; set; }
         public DbSet<UploadedFile> UploadedFiles { get; set; }
+        public DbSet<PlayerPhoto> PlayerPhotos { get; set; }
+        public DbSet<PlayerThumbnail> PlayerThumbnails { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

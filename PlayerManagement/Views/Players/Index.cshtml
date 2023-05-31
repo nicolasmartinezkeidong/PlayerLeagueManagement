@@ -43,6 +43,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>
                 <input type="submit" name="actionButton" value="Player" class="btn btn-link" />
             </th>
@@ -61,6 +62,20 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                    @{
+                        if (item.PlayerThumbnail?.Content != null)
+                        {
+                            string imageBase64 = Convert.ToBase64String(item.PlayerThumbnail.Content);
+                            string imageSrc = string.Format("data:" + item.PlayerThumbnail.MimeType + ";base64,{0}", imageBase64);
+                                <img src="@imageSrc" alt="Profile Picture of @item.FullName" title="Profile Picture of @item.FullName" class="img-fluid rounded" />
+                        }
+                        else
+                        {
+                            <img src="~/images/blankProfile.jpg" style="max-height: 80px; max-width: 96px" class="img-fluid rounded" />
+                        }
+                    }
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>

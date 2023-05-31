@@ -37,6 +37,12 @@
                 <span asp-validation-for="DOB" class="text-danger"></span>
             </div>
             <div class="form-group">
+                    <label class="control-label custom-file-label">Picture File:</label>
+                    <div class="input-group mb-3">
+                      <input type="file" class="form-control" name="thePicture" id="thePicture">
+                    </div>
+                </div>
+            <div class="form-group">
                 <label asp-for="TeamId" class="control-label"></label>
                 <select asp-for="TeamId" class ="form-control" asp-items="ViewBag.TeamId">
                     <option value="">Select a Team</option>
