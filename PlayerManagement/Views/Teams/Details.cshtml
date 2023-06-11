@@ -4,64 +4,81 @@
     ViewData["Title"] = "Team Details";
 }
 
-<h2>Team: @Model.Name</h2>
-
+<h2>Team Details</h2>
 <div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RegistrationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RegistrationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.League)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.League.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Players)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                int playerCount = Model.Players.Count;
-                if (playerCount > 0)
-                {
-                    string firstCond = Model.Players.FirstOrDefault().FullName;
-                    if (playerCount > 1)
-                    {
-                        string playerList = "";
-                        var c = Model.Players.ToList();
-                        for (int i = 1; i < playerCount; i++)//Skip the first because we have it already
-                        {
-                            playerList += c[i].FullName + " <br />";
-                        }
-                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.Id)"
-                   aria-expanded="false" aria-controls="collapseSpecalty@(Model.Id)">
-                            @firstCond <span class="badge bg-info">@playerCount</span>
-                        </a>
-                        <div class="collapse" id="collapseSpecalty@(Model.Id)">
-                            @Html.Raw(playerList)
-                        </div>
-                    }
-                    else
-                    {
-                        @firstCond
-                    }
-                }
-            }
-        </dd>
-    </dl>
+<h2>Team: @Model.Name</h2>
 </div>
+<div>
+
+    <!-- Nav tabs -->
+    <nav>
+        <div class="nav nav-tabs" id="myTabs" role="tablist">
+            <button class="nav-link active" id="Basic-Tab" data-bs-toggle="tab" data-bs-target="#basic"
+                    type="button" role="tab" aria-controls="BasicPanel" aria-selected="true">
+                Basic Details
+            </button>
+            <button class="nav-link" id="Players-Tab" data-bs-toggle="tab" data-bs-target="#players"
+                    type="button" role="tab" aria-controls="PlayersPanel" aria-selected="false">
+                Players
+            </button>
+            <button class="nav-link" id="Documents-Tab" data-bs-toggle="tab" data-bs-target="#documents"
+                    type="button" role="tab" aria-controls="DocumentsPanel" aria-selected="false">
+                Documents
+            </button>
+        </div>
+    </nav>
+
+    <!-- Tab panes -->
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" role="tabpanel" id="basic">
+            <br />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.League)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.League.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    # of Players
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Players.Count)
+                </dd>
+            </dl>
+        </div>
+        <div class="tab-pane fade ml-3" role="tabpanel" id="players" aria-labelledby="players-tab">
+            <br />1
+        </div>
+        <div class="tab-pane fade ml-3" role="tabpanel" id="documents" aria-labelledby="documents-tab">
+            <br />2
+        </div>
+    </div>
+</div>
+<hr />
+<br />
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a href='@ViewData["returnURL"]'>Back to List</a>
+    <a asp-action="Index">Back to Teams List</a>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('.nav-link').click(function () {
+            var activeTab = $(this).attr("id");
+            switch (activeTab) {
+                case 'Players-Tab': $('#players').load('/Teams/ListOfPlayersDetails/@Model.Id');
+                    break;
+                case 'Documents-Tab': $('#documents').load('/Teams/ListOfDocumentsDetails/@Model.Id');
+                    break;
+                default: break;
+            };
+        })
+    </script>
+}

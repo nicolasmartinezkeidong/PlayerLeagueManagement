@@ -28,7 +28,6 @@ namespace PlayerManagement.Models
             }
         }
 
-
         [Display(Name = "Phone")]
         public string PhoneFormatted
         {

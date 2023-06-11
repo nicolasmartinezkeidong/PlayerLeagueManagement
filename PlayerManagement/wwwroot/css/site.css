@@ -20,3 +20,11 @@ body {
 .form-group {
     margin-bottom: 1rem;
 }
+
+/* Scrollable Panel
+-------------------------------------------------- */
+.scrollable-panel {
+    height: 300px;
+    overflow-y: scroll;
+    width: 100%;
+}
