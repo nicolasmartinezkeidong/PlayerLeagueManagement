@@ -1,0 +1,30 @@
+﻿@model IEnumerable<PlayerManagement.Models.Player>
+<br />
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title">List of Players</h4>
+    </div>
+    <div class="panel-body scrollable-panel">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FullName)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-controller="Players" asp-route-ID="@item.Id">
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

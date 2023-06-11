@@ -139,7 +139,7 @@ namespace PlayerManagement.Controllers
             }
 
             var team = await _context.Teams
-                .Include(t => t.League)
+                .Include(l => l.League)
                 .Include(p => p.Players)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -150,6 +150,24 @@ namespace PlayerManagement.Controllers
 
             PopulateAssignedPlayerData(team);
             return View(team);
+        }
+
+        public PartialViewResult ListOfPlayersDetails(int id)
+        {
+            var query = from p in _context.Players
+                        where p.TeamId == id
+                        orderby p.LastName, p.FirstName
+                        select p;
+            return PartialView("_ListOfPlayers", query.ToList());
+        }
+
+        public PartialViewResult ListOfDocumentsDetails(int id)
+        {
+            var query = from p in _context.TeamDocuments
+                        where p.TeamId == id
+                        orderby p.FileName
+                        select p;
+            return PartialView("_ListOfDocuments", query.ToList());
         }
 
         // GET: Teams/Create
