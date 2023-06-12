@@ -22,10 +22,90 @@ namespace PlayerManagement.Controllers
         }
 
         // GET: PlayerStats
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, int? MatchId, string actionButton,
+            string SearchString, string sortDirection = "desc", string sortField = "Match")
         {
-            var playerManagementContext = _context.PlayerMatchs.Include(p => p.Match).Include(p => p.Player);
-            return View(await playerManagementContext.ToListAsync());
+            //Clear the sort/filter/paging URL Cookie for Controller
+            CookieHelper.CookieSet(HttpContext, ControllerName() + "URL", "", -1);
+
+            PopulateDropDownLists();
+
+            //Toggle the Open/Closed state of the collapse depending on if we are filtering
+            ViewData["Filtering"] = "btn-outline-dark"; //Asume not filtering
+            //Then in each "test" for filtering, add ViewData["Filtering"] = "btn-danger" if true;
+
+            //NOTE: make sure this array has matching values to the column headings
+            string[] sortOptions = new[] { "Match", "Player"};
+
+            var stats = from s in _context.PlayerMatchs
+                .Include(p => p.Match)
+                .Include(p => p.Player)
+                select s;
+            
+            if (MatchId.HasValue)
+            {
+                stats = stats.Where(p => p.MatchId == MatchId);
+                ViewData["Filtering"] = "btn-danger";
+            }
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                stats = stats.Where(p => p.Player.LastName.ToUpper().Contains(SearchString.ToUpper())
+                                       || p.Player.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+                ViewData["Filtering"] = "btn-danger";
+            }
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted so lets sort!
+            {
+                page = 1;//Reset back to first page when sorting or filtering
+
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+            //Now we know which field and direction to sort by.
+            if (sortField == "Match")
+            {
+                if (sortDirection == "asc")
+                {
+                    stats = stats
+                        .OrderBy(p => p.Match.Id);
+                }
+                else
+                {
+                    stats = stats
+                        .OrderByDescending(p => p.Match.Id);
+                }
+            }
+            else //Player
+            {
+                if (sortDirection == "asc")
+                {
+                    stats = stats
+                        .OrderByDescending(p => p.Player.FirstName);
+                }
+                else
+                {
+                    stats = stats
+                        .OrderBy(p => p.Player.FirstName);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+
+            //Handle Paging
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+
+            var pagedData = await PaginatedList<PlayerMatch>.CreateAsync(stats.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: PlayerStats/Details/5
@@ -171,9 +251,9 @@ namespace PlayerManagement.Controllers
         private SelectList MatchSchedulesSelectList(int? id)
         {
             var dQuery = from d in _context.MatchSchedules
-                         orderby d.Summary
+                         orderby d.Id
                          select d;
-            return new SelectList(dQuery, "Id", "Summary", id);
+            return new SelectList(dQuery, "Id", "Id", id);
         }
         private void PopulateDropDownLists(PlayerMatch playerMatch = null)
         {

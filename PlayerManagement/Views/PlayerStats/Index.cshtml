@@ -1,59 +1,126 @@
 ﻿@model IEnumerable<PlayerManagement.Models.PlayerMatch>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Player Stats";
 }
+<form asp-action="Index" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+    <div class="form-horizontal">
+        <button class="btn @(ViewData["Filtering"])" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+            Filter
+        </button>
+        <div class="form-horizontal">
+            <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 5px;" id="collapseFilter">
+                <div class="row">
+                    <div class="form-group col-md-4 ml-md-3">
+                        <label class="control-label">Reason:</label>
+                        @Html.DropDownList("MatchId", null, "All Reasons", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Search Notes:</label>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4 align-self-end">
+                        <input type="submit" name="actionButton" value="Apply" class="btn btn-primary" />
+                        <a asp-action="Index">Clear</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table">
+                <colgroup>
+                    <col span="1" />
+                    <col span="1" />
+                    <col span="1" />
+                    <col span="1" />
+                    <col span="1" width="400" />
+                    <col span="1" />
+                </colgroup>
+                <tr>
+                    <th>
+                        <input type="submit" name="actionButton" value="Player" class="btn btn-link" />
+                    </th>
+                    <th>
+                        <input type="submit" name="actionButton" value="Match" class="btn btn-link" />
+                    </th>
+                    <th>
+                        <input type="submit" disabled="disabled" value="Goals" class="btn btn-link" />
+                        @{
+                            int? goals = 0;
+                        }
+                    </th>
+                    <th>
+                        <input type="submit" disabled="disabled" value="YellowCards" class="btn btn-link" />
+                        @{
+                            int? yellowCards = 0;
+                        }
+                    </th>
+                    <th>
+                        <input type="submit" disabled="disabled" value="RedCards" class="btn btn-link" />
+                        @{
+                            int? redCards = 0;
+                        }
+                    </th>
+                    <th>
+                        <a asp-controller="PlayerStats" asp-action="Add" >
+                            <span class="btn btn-success" data-bs-toggle="tooltip"
+                                  title="Add Appointment"><strong>&#x271A; Add</strong></span>
+                        </a>
+                    </th>
+                </tr>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Goals)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RedCards)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.YellowCards)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Match)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Player)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Goals)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RedCards)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YellowCards)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Match.Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Player.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Player.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Match.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Goals)
+                            @{
+                                goals += item.Goals;
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.YellowCards)
+                            @{
+                                yellowCards += item.YellowCards;
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RedCards)
+                            @{
+                                redCards += item.RedCards;
+                            }
+                        </td>
+                        <td>
+                            <a asp-controller="PatientAppts" asp-action="Update" asp-route-id="@item.Id">
+                                <span class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Edit Appointment">&#x270D;</span>
+                            </a>
+                            <a asp-controller="PatientAppts" asp-action="Remove" asp-route-id="@item.Id">
+                                <span class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete Appointment">&#x274C;</span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+             @*   <tr>
+                    <td></td>
+                    <td align="right">
+                        Total Fees:
+                    </td>
+                    <td>
+                        <strong>@goals.ToString()</strong>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>*@
+            </table>
+        </div>
+    </div>
+    <partial name="_PagingNavBar" />
+</form>
