@@ -253,7 +253,7 @@ namespace PlayerManagement.Controllers
             var dQuery = from d in _context.MatchSchedules
                          orderby d.Id
                          select d;
-            return new SelectList(dQuery, "Id", "Id", id);
+            return new SelectList(dQuery, "Id", "MatchDay", id);
         }
         private void PopulateDropDownLists(PlayerMatch playerMatch = null)
         {

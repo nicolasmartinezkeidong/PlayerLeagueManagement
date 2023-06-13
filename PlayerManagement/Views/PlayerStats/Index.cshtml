@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="form-group col-md-4 ml-md-3">
                         <label class="control-label">Reason:</label>
-                        @Html.DropDownList("MatchId", null, "All Reasons", htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("MatchId", null, "All Games", htmlAttributes: new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Search Notes:</label>
@@ -64,6 +64,9 @@
                         }
                     </th>
                     <th>
+                        <input type="submit" disabled="disabled" value="Notes" class="btn btn-link" />
+                    </th>
+                    <th>
                         <a asp-controller="PlayerStats" asp-action="Add" >
                             <span class="btn btn-success" data-bs-toggle="tooltip"
                                   title="Add Appointment"><strong>&#x271A; Add</strong></span>
@@ -96,6 +99,26 @@
                             @Html.DisplayFor(modelItem => item.RedCards)
                             @{
                                 redCards += item.RedCards;
+                            }
+                        </td>
+                        <td>
+                            @{
+                                string[] noteWords = item.Notes.Split(' ');
+                                if (noteWords.Count() > 5)
+                                {
+                                    <a class="" role="button" data-bs-toggle="collapse" href="#collapseSum@(item.Id)" aria-expanded="false" aria-controls="collapseSum@(item.Id)">
+                                        @(string.Join(" ", noteWords.Take(5)) + "...")
+                                    </a>
+                                    <div class="collapse" id="collapseSum@(item.Id)">
+                                        <div class="well">
+                                            @(string.Join(" ", noteWords.Skip(5)))
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @item.Notes
+                                }
                             }
                         </td>
                         <td>
