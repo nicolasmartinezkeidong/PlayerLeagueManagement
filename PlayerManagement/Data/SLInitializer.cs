@@ -115,23 +115,33 @@ namespace PlayerManagement.Data
 
 
                 #region Players
-                //Look for any Player
                 if (!context.Players.Any())
                 {
-                    // Start birthdate for randomly produced players 
-                    // We will subtract a random number of days from today
-                    DateTime startDOB = DateTime.Today;
+                    DateTime startDOB = DateTime.Today;// 
 
-                    // Loop through the teams
-                    for (int teamIndex = 0; teamIndex < teamIDCount; teamIndex++)
+                    List<string> usedNames = new List<string>();
+
+                    foreach (int teamID in teamIDs)
                     {
-                        int playerCount = 0;
-
-                        // Loop until the team has 13 players
-                        while (playerCount < 13)
+                        for (int i = 0; i < 13; i++)
                         {
-                            string firstName = firstNames[playerCount % firstNames.Length];
-                            string lastName = lastNames[playerCount % lastNames.Length];
+                            string firstName = string.Empty;
+                            string lastName = string.Empty;
+                            bool isUniqueName = false;
+
+                            // Generate a unique player name
+                            while (!isUniqueName)
+                            {
+                                firstName = firstNames[random.Next(firstNames.Length)];
+                                lastName = lastNames[random.Next(lastNames.Length)];
+                                string fullName = firstName + lastName;
+
+                                if (!usedNames.Contains(fullName))
+                                {
+                                    usedNames.Add(fullName);
+                                    isUniqueName = true;
+                                }
+                            }
 
                             Player p = new Player()
                             {
@@ -141,13 +151,13 @@ namespace PlayerManagement.Data
                                 Phone = random.Next(2, 10).ToString() + random.Next(213214131, 989898989).ToString(),
                                 PlayerPositionId = positionIDs[random.Next(positionIDCount)],
                                 Email = $"{firstName}{lastName}@outlook.com",
-                                TeamId = teamIDs[teamIndex]
+                                TeamId = teamID
                             };
-                            context.Players.Add(p);
 
-                            playerCount++;
+                            context.Players.Add(p);
                         }
                     }
+
                     context.SaveChanges();
                 }
                 #endregion
