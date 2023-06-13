@@ -113,51 +113,41 @@ namespace PlayerManagement.Data
                 int[] teamIDs = context.Teams.Select(p => p.Id).ToArray();
                 int teamIDCount = teamIDs.Length;
 
-                int firstNameCount = firstNames.Length;
-                DateTime startDOB = DateTime.Today;
 
                 #region Players
                 //Look for any Player
                 if (!context.Players.Any())
                 {
-                    int counter = 1; // Used to help add some Players to Teams
+                    // Start birthdate for randomly produced players 
+                    // We will subtract a random number of days from today
+                    DateTime startDOB = DateTime.Today;
 
-                    foreach (string lastName in lastNames)
+                    // Loop through the teams
+                    for (int teamIndex = 0; teamIndex < teamIDCount; teamIndex++)
                     {
-                        // Choose a random HashSet of 13 (Unique) first names
-                        HashSet<string> selectedFirstNames = new HashSet<string>();
-                        while (selectedFirstNames.Count < 13)
-                        {
-                            selectedFirstNames.Add(firstNames[random.Next(firstNameCount)]);
-                        }
+                        int playerCount = 0;
 
-                        foreach (string firstName in selectedFirstNames)
+                        // Loop until the team has 13 players
+                        while (playerCount < 13)
                         {
-                            // Construct some Player details
-                            Player player = new Player()
+                            string firstName = firstNames[playerCount % firstNames.Length];
+                            string lastName = lastNames[playerCount % lastNames.Length];
+
+                            Player p = new Player()
                             {
                                 FirstName = firstName,
                                 LastName = lastName,
-                                DOB = startDOB.AddDays(-random.Next(60, 34675)),
+                                DOB = startDOB.AddDays(-random.Next(7400, 25000)),
                                 Phone = random.Next(2, 10).ToString() + random.Next(213214131, 989898989).ToString(),
                                 PlayerPositionId = positionIDs[random.Next(positionIDCount)],
-                                Email = $"{firstName}{lastName}@outlook.com"
+                                Email = $"{firstName}{lastName}@outlook.com",
+                                TeamId = teamIDs[teamIndex]
                             };
+                            context.Players.Add(p);
 
-                            if (counter <= teamIDCount)
-                            {
-                                player.TeamId = teamIDs[counter - 1];
-                            }
-                            else
-                            {
-                                player.TeamId = teamIDs[random.Next(teamIDCount)];
-                            }
-                            counter++;
-
-                            context.Players.Add(player);
+                            playerCount++;
                         }
                     }
-
                     context.SaveChanges();
                 }
                 #endregion
