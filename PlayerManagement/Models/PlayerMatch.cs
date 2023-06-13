@@ -10,6 +10,11 @@ namespace PlayerManagement.Models
         [Range(0, int.MaxValue, ErrorMessage = "Goals must be a positive number.")]
         public int? Goals { get; set; }
 
+        [Required(ErrorMessage = "You cannot leave the notes blank.")]
+        [StringLength(2000, ErrorMessage = "Only 2000 characters for notes.")]
+        [DataType(DataType.MultilineText)]
+        public string Notes { get; set; }
+
         [Required(ErrorMessage = "You must enter the number of red cards received.")]
         [Range(0, int.MaxValue, ErrorMessage = "Red cards must be a positive number.")]
         public int? RedCards { get; set; }
