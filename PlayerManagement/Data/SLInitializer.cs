@@ -281,8 +281,11 @@ namespace PlayerManagement.Data
                 {
                     //Times when the games are played
                     string[] matchTime = { "3:50", "5:10", "6:30", "7:50", "9:00" };
+
+                    int matchDay = 1;
+
                     //Unique date to sample the seed data for match 1 date
-                    DateTime matchDate = new DateTime(2022, 05, 29);
+                    DateTime matchDate = new DateTime(2022, 05, 28);
 
                     List<string> availableTeams = teamNamesIntermediate.ToList();
                     List<string> scheduledTeams = new List<string>();
@@ -336,7 +339,8 @@ namespace PlayerManagement.Data
                                         HomeTeamId = context.Teams.FirstOrDefault(l => l.Name == homeTeam).Id,
                                         AwayTeamId = context.Teams.FirstOrDefault(l => l.Name == awayTeam).Id,
                                         HomeTeamScore = random.Next(0, 7),
-                                        AwayTeamScore = random.Next(0, 7)
+                                        AwayTeamScore = random.Next(0, 7),
+                                        MatchDay = matchDay
                                     });
 
                                     //Add the scheduled time to the list for this field
@@ -350,6 +354,8 @@ namespace PlayerManagement.Data
                                     // All available teams have been scheduled, so break the loop
                                     break;
                                 }
+
+                                matchDay++;
                             }
                             context.SaveChanges();
                         }
@@ -361,6 +367,9 @@ namespace PlayerManagement.Data
                     string lastHomeTeamRec = null;
                     string lastAwayTeamRec = null;
 
+                    List<int> availableFieldIndexes = new List<int>(fieldIDs);
+                    List<int> availableTimeIndexes = new List<int>(Enumerable.Range(0, matchTime.Length));
+
                     //Create teams for Recreational League
                     foreach (string homeTeam in teamNamesRecreational)
                     {
@@ -368,12 +377,29 @@ namespace PlayerManagement.Data
                         {
                             foreach(int fields in fieldIDs)
                             {
-                                if (scheduledTimes[fields].Contains(times))
-                                    continue;
+                                if (availableFieldIndexes.Count == 0 || availableTimeIndexes.Count == 0)
+                                {
+                                    // All available fields or times have been scheduled, so break the loop
+                                    break;
+                                }
+
+                                int randomFieldIndex = random.Next(availableFieldIndexes.Count);
+                                int randomTimeIndex = random.Next(availableTimeIndexes.Count);
+
+                                int fieldIndex = availableFieldIndexes[randomFieldIndex];
+                                int timeIndex = availableTimeIndexes[randomTimeIndex];
+
+                                availableFieldIndexes.RemoveAt(randomFieldIndex);
+                                availableTimeIndexes.RemoveAt(randomTimeIndex);
 
                                 if (homeTeam == lastHomeTeamRec || homeTeam == lastAwayTeamRec)
+                                {
+                                    // Add the field and time back to the available lists since the match is not scheduled
+                                    availableFieldIndexes.Add(fieldIndex);
+                                    availableTimeIndexes.Add(timeIndex);
                                     continue;
-                                availableTeamsRec.Remove(homeTeam);
+                                }
+
                                 string awayTeam = availableTeamsRec.FirstOrDefault(t => t != homeTeam && t != lastHomeTeamRec && t != lastAwayTeamRec);
 
 
@@ -399,8 +425,9 @@ namespace PlayerManagement.Data
                                 }
                                 else
                                 {
-                                    // All available teams have been scheduled, so break the loop
-                                    break;
+                                    // Add the field and time back to the available lists since the match is not scheduled
+                                    availableFieldIndexes.Add(fieldIndex);
+                                    availableTimeIndexes.Add(timeIndex);
                                 }
 
                             }
@@ -412,14 +439,53 @@ namespace PlayerManagement.Data
                 }
                 #endregion
 
-                
+                #region PlayerStats
+                //Create 5 notes from Bacon ipsum
+                string[] baconNotes = new string[] { "Bacon ipsum dolor amet meatball corned beef kevin, alcatra kielbasa biltong drumstick strip steak spare ribs swine." };
+                //Create collections of the primary keys of the two Parents
+                int[] matchIDs = context.MatchSchedules.Select(s => s.Id).ToArray();
+                int matchIDCount = matchIDs.Length;
 
-            }
+                //Appointments - the Intersection
+                //Add a few appointments to each patient
+                if (!context.PlayerMatchs.Any())
+                {
+                    foreach (int i in playerIDs)
+                    {
+                        //i loops through the primary keys of the Patients
+                        //j is just a counter so we add some Appointments to a Patient
+                        //k lets us step through all AppointmentReasons so we can make sure each gets used
+                        int k = 0;//Start with the first AppointmentReason
+                        int howMany = random.Next(1, matchIDCount);
+                        for (int j = 1; j <= howMany; j++)
+                        {
+                            PlayerMatch p = new PlayerMatch()
+                            {
+                                PlayerId = i,
+                                MatchId = matchIDs[k],
+                                RedCards = 0,
+                                YellowCards = 0,
+                                Goals = 0,
+                                Notes = baconNotes[random.Next(1)]
+                            };
+
+                            context.PlayerMatchs.Add(p);
+                            k++; // Increment k to move to the next matchID
+                            if (k >= matchIDCount)
+                            {
+                                k = 0; // Reset k if it exceeds the number of matchIDs
+                            }
+                        }
+                        context.SaveChanges();
+                    }
+                    #endregion
+                }
+
+                }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.GetBaseException().Message);
             }
-}
-
+        }
     }
 }

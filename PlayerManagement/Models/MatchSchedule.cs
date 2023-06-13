@@ -15,6 +15,8 @@ namespace PlayerManagement.Models
             }
         }
 
+        public int MatchDay { get; set; }//Track Match Day #
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "You must enter a date for the game.")]
@@ -39,10 +41,10 @@ namespace PlayerManagement.Models
         public Team AwayTeam { get; set; }
 
         [Display(Name = "HT Score")]
-        public int? HomeTeamScore { get; set; }
+        public int? HomeTeamScore { get; set; } = 0;
 
-        [Display(Name = "AT Score")]
-        public int? AwayTeamScore { get; set; }
+        [Display(Name = "AT Score")] 
+        public int? AwayTeamScore { get; set; } = 0;
 
         public ICollection<MatchSchedule> Matches { get; set; }
 
