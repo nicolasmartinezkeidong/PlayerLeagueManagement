@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Policy;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace PlayerManagement.Data
 {
@@ -18,7 +20,7 @@ namespace PlayerManagement.Data
             try
             {
                 //Delete the database if you need to apply a new Migration
-                context.Database.EnsureDeleted();
+                //context.Database.EnsureDeleted();
                 //Create the database if it does not exist and apply the Migration
                 context.Database.Migrate();
 
@@ -302,6 +304,12 @@ namespace PlayerManagement.Data
                                 MatchDay = matchDay
                             };
 
+                            if (matchDay <= 1) // Populate random scores for 3 first dates 
+                            {
+                                match.HomeTeamScore = random.Next(6);
+                                match.AwayTeamScore = random.Next(6);
+                            }
+
                             context.MatchSchedules.Add(match);
                         }
 
@@ -331,38 +339,107 @@ namespace PlayerManagement.Data
 
                 #endregion
 
-                #region PlayerStats
+                #region PlayerStats Seed Data for PlayerStats
                 // Create 5 notes from Bacon ipsum
-                //string[] baconNotes = new string[]
-                //{
-                //    "Bacon ipsum dolor amet meatball corned beef kevin, alcatra kielbasa biltong drumstick strip steak spare ribs swine.",
-                //    "Bacon ipsum dolor amet doner ham hock shoulder venison, beef ribs pastrami biltong short loin strip steak tongue meatball shankle ground round.",
-                //    "Bacon ipsum dolor amet sausage strip steak jerky kevin ham hock, beef alcatra filet mignon tenderloin.",
-                //    "Bacon ipsum dolor amet venison pancetta short loin porchetta bresaola turducken drumstick tri-tip ham hock.",
-                //    "Bacon ipsum dolor amet porchetta buffalo bacon, bresaola prosciutto shankle pork loin pork chop salami tri-tip."
-                //};
+                string[] baconNotes = new string[]
+                {
+                    "Bacon ipsum dolor amet meatball corned beef kevin, alcatra kielbasa biltong drumstick strip steak spare ribs swine.",
+                    "Bacon ipsum dolor amet doner ham hock shoulder venison, beef ribs pastrami biltong short loin strip steak tongue meatball shankle ground round.",
+                    "Bacon ipsum dolor amet sausage strip steak jerky kevin ham hock, beef alcatra filet mignon tenderloin.",
+                    "Bacon ipsum dolor amet venison pancetta short loin porchetta bresaola turducken drumstick tri-tip ham hock.",
+                    "Bacon ipsum dolor amet porchetta buffalo bacon, bresaola prosciutto shankle pork loin pork chop salami tri-tip."
+                };
 
-                //if (!context.PlayerMatchs.Any())
-                //{
-                    
-                //        // Create a player match record
-                //        PlayerMatch playerMatch = new PlayerMatch()
-                //        {
-                //            PlayerId = ,
-                //            MatchId = ,
-                //            Goals = ,
-                //            RedCards = ,
-                //            YellowCards = ,
-                //            Notes = 
-                //        };
+                if (!context.PlayerMatchs.Any())
+                {
+                    // Retrieve all match schedules where matchDay <= 1 and either the HomeTeamScore or AwayTeamScore is >= 1
+                    var matchSchedules = context.MatchSchedules.Where(m => m.MatchDay <= 1 && (m.HomeTeamScore >= 1 || m.AwayTeamScore >= 1));
 
-                //        // Add the player match record to the database
-                //        context.PlayerMatchs.Add(playerMatch);
-                    
+                    foreach (var matchSchedule in matchSchedules)
+                    {
+                        // Check if the home team scored
+                        if (matchSchedule.HomeTeamScore >= 1)
+                        {
+                            // Get the list of player IDs for the home team
+                            var homeTeamPlayerIds = matchSchedule.HomeTeam.Players.Select(p => p.Id).ToList();
 
-                //    context.SaveChanges();
-                //}
+                            // Assign goals to home team players
+                            int homeTeamGoalsAssigned = 0;
 
+                            while (homeTeamGoalsAssigned < matchSchedule.HomeTeamScore && homeTeamPlayerIds.Count > 0)
+                            {
+                                int randomPlayerIndex = random.Next(homeTeamPlayerIds.Count);
+                                int playerId = homeTeamPlayerIds[randomPlayerIndex];
+                                homeTeamPlayerIds.RemoveAt(randomPlayerIndex);
+
+                                int goalsToAssign = random.Next(0, (int)(matchSchedule.HomeTeamScore - homeTeamGoalsAssigned)) + 1;
+                                homeTeamGoalsAssigned += goalsToAssign;
+
+                                PlayerMatch playerMatch = new PlayerMatch()
+                                {
+                                    PlayerId = playerId,
+                                    MatchId = matchSchedule.Id,
+                                    Goals = goalsToAssign,
+                                    RedCards = 0,
+                                    YellowCards = random.Next(0, 3),
+                                    Notes = baconNotes[random.Next(0, baconNotes.Length)]
+                                };
+
+                                // Check if the player received 2 yellow cards
+                                if (playerMatch.YellowCards >= 2)
+                                {
+                                    playerMatch.RedCards = 1;
+                                    playerMatch.YellowCards = 2;
+                                }
+
+                                // Add the player match record to the database
+                                context.PlayerMatchs.Add(playerMatch);
+                            }
+                        }
+
+                        // Check if the away team scored
+                        if (matchSchedule.AwayTeamScore >= 1)
+                        {
+                            // Get the list of player IDs for the away team
+                            var awayTeamPlayerIds = matchSchedule.AwayTeam.Players.Select(p => p.Id).ToList();
+
+                            // Assign goals to away team players
+                            int awayTeamGoalsAssigned = 0;
+
+                            while (awayTeamGoalsAssigned < matchSchedule.AwayTeamScore && awayTeamPlayerIds.Count > 0)
+                            {
+                                int randomPlayerIndex = random.Next(awayTeamPlayerIds.Count);
+                                int playerId = awayTeamPlayerIds[randomPlayerIndex];
+                                awayTeamPlayerIds.RemoveAt(randomPlayerIndex);
+
+                                int goalsToAssign = random.Next(0, (int)matchSchedule.AwayTeamScore - awayTeamGoalsAssigned) + 1;
+                                awayTeamGoalsAssigned += goalsToAssign;
+
+                                PlayerMatch playerMatch = new PlayerMatch()
+                                {
+                                    PlayerId = playerId,
+                                    MatchId = matchSchedule.Id,
+                                    Goals = goalsToAssign,
+                                    RedCards = 0,
+                                    YellowCards = random.Next(0, 3),
+                                    Notes = baconNotes[random.Next(0, baconNotes.Length)]
+                                };
+
+                                // Check if the player received 2 yellow cards
+                                if (playerMatch.YellowCards >= 2)
+                                {
+                                    playerMatch.RedCards = 1;
+                                    playerMatch.YellowCards = 2;
+                                }
+
+                                // Add the player match record to the database
+                                context.PlayerMatchs.Add(playerMatch);
+                            }
+                        }
+                    }
+
+                    context.SaveChanges();
+                }
                 #endregion
             }
 

@@ -8,7 +8,7 @@ namespace PlayerManagement.Models
 
         //[Required(ErrorMessage = "You must enter the number of goals scored.")]
         [Range(0, int.MaxValue, ErrorMessage = "Goals must be a positive number.")] 
-        public int? Goals { get; set; } = 0;
+        public int Goals { get; set; } = 0;
 
         [Required(ErrorMessage = "You cannot leave the notes blank.")]
         [StringLength(2000, ErrorMessage = "Only 2000 characters for notes.")]
