@@ -167,192 +167,205 @@ namespace PlayerManagement.Data
                 int playerIDCount = playerIDs.Length;
 
                 #region Play
-                    //Play
-                    //Add a few positions to each player
-                    if (!context.Plays.Any())
+                //Play
+                //Add a few positions to each player
+                if (!context.Plays.Any())
+                {
+                    //i loops through the primary keys of the players
+                    //j is just a counter so we add a few positions to a player
+                    //k lets us step through all positions so we can make sure each gets used
+                    int k = 0;//Start with the first positions
+                    foreach (int i in playerIDs)
                     {
-                        //i loops through the primary keys of the players
-                        //j is just a counter so we add a few positions to a player
-                        //k lets us step through all positions so we can make sure each gets used
-                        int k = 0;//Start with the first positions
-                        foreach (int i in playerIDs)
+                        int howMany = random.Next(1, positionIDCount);//add a few positions to a player
+                        for (int j = 1; j <= howMany; j++)
                         {
-                            int howMany = random.Next(1, positionIDCount);//add a few positions to a player
-                            for (int j = 1; j <= howMany; j++)
+                            k = (k >= positionIDCount) ? 0 : k;//Resets counter k to 0 if we have run out of positions
+                            PlayPosition p = new PlayPosition()
                             {
-                                k = (k >= positionIDCount) ? 0 : k;//Resets counter k to 0 if we have run out of positions
-                                PlayPosition p = new PlayPosition()
-                                {
-                                    PlayerId = i,
-                                    PlayerPositionId = positionIDs[k]
-                                };
-                                context.Plays.Add(p);
-                                k++;
-                            }
+                                PlayerId = i,
+                                PlayerPositionId = positionIDs[k]
+                            };
+                            context.Plays.Add(p);
+                            k++;
                         }
-                        context.SaveChanges();
                     }
-                    #endregion
+                    context.SaveChanges();
+                }
+                #endregion
 
                 #region Fields
-                    if (!context.Fields.Any())
-                    {
-                        context.Fields.AddRange(
-                            new Field
-                            {
-                                Name = "West Park 1",
-                                Address = "78 Louth St, St Catharines, ON",
-                                Comments = "Parking off of Louth Street for Field 1 & Powerview Ave for field 2",
-                                GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&ie=UTF-8&q=west+park+st.+catharines&fb=1&gl=ca&hq=west+park&hnear=0x89d35054bb6a5a4b:0x37563636c082837,St+Catharines,+ON&cid=0,0,3582645329997063709&ei=FegtUuejAsr4qAGB1IC4Cw&ved=0CIABEPwSMAo"
-                            },
-                            new Field
-                            {
-                                Name = "West Park 2",
-                                Address = "78 Louth St, St Catharines, ON",
-                                Comments = "Parking off of Louth Street for Field 1 & Powerview Ave for field 2",
-                                GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&ie=UTF-8&q=west+park+st.+catharines&fb=1&gl=ca&hq=west+park&hnear=0x89d35054bb6a5a4b:0x37563636c082837,St+Catharines,+ON&cid=0,0,3582645329997063709&ei=FegtUuejAsr4qAGB1IC4Cw&ved=0CIABEPwSMAo"
-                            },
-                            new Field
-                            {
-                                Name = "Berkley Park",
-                                Address = "44 Ridgeview Avenue (Just off of Bunting), St. Catharines, ON",
-                                Comments = "",
-                                GoogleMapsLink = "http://maps.google.ca/maps?sugexp=chrome,mod%3D15&um=1&ie=UTF-8&q=berkley+park+st.+catharines+ontario&fb=1&gl=ca&hq=berkley+park+st.+catharines+ontario&hnear=berkley+park+st.+catharines+ontario&cid=0,0,1601090874100366313&ei=Tp27T8GyNcXCgAfV_JysCg&sa=X&oi=local_result&ct=image&resnum=1&ved=0CAkQ_BIwAA"
-                            },
-                            new Field
-                            {
-                                Name = "Grantham Lions Park",
-                                Address = "732 Niagara Street, St Catharines, ON",
-                                Comments = "",
-                                GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&channel=rcs&ie=UTF-8&q=Grantham+Lions+Park&fb=1&gl=ca&hq=Grantham+Lions+Park&cid=8286619720609870366&ei=ZL4YU9ftCIqJrAH_p4HADg&ved=0CHkQ_BIwCg"
-                            },
-                            new Field
-                            {
-                                Name = "Pearson Park West",
-                                Address = "352 Niagara St, St Catharines, ON",
-                                Comments = "",
-                                GoogleMapsLink = "https://www.google.ca/maps/place/Lester+B.+Pearson+Park/@43.183219,-79.2246726,15z/data=!4m2!3m1!1s0x0:0x5843290380bf4151"
-                            },
-                            new Field
-                            {
-                                Name = "Pearson Park East",
-                                Address = "352 Niagara St, St Catharines, ON",
-                                Comments = "",
-                                GoogleMapsLink = "https://www.google.ca/maps/place/Lester+B.+Pearson+Park/@43.183219,-79.2246726,15z/data=!4m2!3m1!1s0x0:0x5843290380bf4151"
-                            },
-                            new Field
-                            {
-                                Name = "Lancaster Park ",
-                                Address = "31 Wood St, St Catharines, ON",
-                                Comments = "",
-                                GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&rls=org.mozilla:en-GB:official&client=firefox-a&gfe_rd=cr&um=1&ie=UTF-8&fb=1&gl=ca&q=Lancaster+Park&cid=11421773781498883178&sa=X&ei=P9uRU4PqB5eNqAbVz4HICg&ved=0CJUBEPwSMA4"
-                            },
-                            new Field
-                            {
-                                Name = "Bermuda Park ",
-                                Address = "16 Bermuda Drive St, St Catharines, ON",
-                                Comments = "",
-                                GoogleMapsLink = "https://www.google.com/maps/place/Bermuda+Dr,+St.+Catharines,+ON/@43.1911051,-79.2083083,331m/data=!3m1!1e3!4m5!3m4!1s0x89d350a4f9061ced:0x622dd0779088811f!8m2!3d43.1914735!4d-79.2087968"
-                            });
-                        context.SaveChanges();
-                    }
-                    #endregion
+                if (!context.Fields.Any())
+                {
+                    context.Fields.AddRange(
+                        new Field
+                        {
+                            Name = "West Park 1",
+                            Address = "78 Louth St, St Catharines, ON",
+                            Comments = "Parking off of Louth Street for Field 1 & Powerview Ave for field 2",
+                            GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&ie=UTF-8&q=west+park+st.+catharines&fb=1&gl=ca&hq=west+park&hnear=0x89d35054bb6a5a4b:0x37563636c082837,St+Catharines,+ON&cid=0,0,3582645329997063709&ei=FegtUuejAsr4qAGB1IC4Cw&ved=0CIABEPwSMAo"
+                        },
+                        new Field
+                        {
+                            Name = "West Park 2",
+                            Address = "78 Louth St, St Catharines, ON",
+                            Comments = "Parking off of Louth Street for Field 1 & Powerview Ave for field 2",
+                            GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&ie=UTF-8&q=west+park+st.+catharines&fb=1&gl=ca&hq=west+park&hnear=0x89d35054bb6a5a4b:0x37563636c082837,St+Catharines,+ON&cid=0,0,3582645329997063709&ei=FegtUuejAsr4qAGB1IC4Cw&ved=0CIABEPwSMAo"
+                        },
+                        new Field
+                        {
+                            Name = "Berkley Park",
+                            Address = "44 Ridgeview Avenue (Just off of Bunting), St. Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "http://maps.google.ca/maps?sugexp=chrome,mod%3D15&um=1&ie=UTF-8&q=berkley+park+st.+catharines+ontario&fb=1&gl=ca&hq=berkley+park+st.+catharines+ontario&hnear=berkley+park+st.+catharines+ontario&cid=0,0,1601090874100366313&ei=Tp27T8GyNcXCgAfV_JysCg&sa=X&oi=local_result&ct=image&resnum=1&ved=0CAkQ_BIwAA"
+                        },
+                        new Field
+                        {
+                            Name = "Grantham Lions Park",
+                            Address = "732 Niagara Street, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&client=firefox-a&channel=rcs&ie=UTF-8&q=Grantham+Lions+Park&fb=1&gl=ca&hq=Grantham+Lions+Park&cid=8286619720609870366&ei=ZL4YU9ftCIqJrAH_p4HADg&ved=0CHkQ_BIwCg"
+                        },
+                        new Field
+                        {
+                            Name = "Pearson Park West",
+                            Address = "352 Niagara St, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://www.google.ca/maps/place/Lester+B.+Pearson+Park/@43.183219,-79.2246726,15z/data=!4m2!3m1!1s0x0:0x5843290380bf4151"
+                        },
+                        new Field
+                        {
+                            Name = "Pearson Park East",
+                            Address = "352 Niagara St, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://www.google.ca/maps/place/Lester+B.+Pearson+Park/@43.183219,-79.2246726,15z/data=!4m2!3m1!1s0x0:0x5843290380bf4151"
+                        },
+                        new Field
+                        {
+                            Name = "Lancaster Park ",
+                            Address = "31 Wood St, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://maps.google.ca/maps?oe=utf-8&rls=org.mozilla:en-GB:official&client=firefox-a&gfe_rd=cr&um=1&ie=UTF-8&fb=1&gl=ca&q=Lancaster+Park&cid=11421773781498883178&sa=X&ei=P9uRU4PqB5eNqAbVz4HICg&ved=0CJUBEPwSMA4"
+                        },
+                        new Field
+                        {
+                            Name = "Bermuda Park ",
+                            Address = "16 Bermuda Drive St, St Catharines, ON",
+                            Comments = "",
+                            GoogleMapsLink = "https://www.google.com/maps/place/Bermuda+Dr,+St.+Catharines,+ON/@43.1911051,-79.2083083,331m/data=!3m1!1e3!4m5!3m4!1s0x89d350a4f9061ced:0x622dd0779088811f!8m2!3d43.1914735!4d-79.2087968"
+                        });
+                    context.SaveChanges();
+                }
+                #endregion
 
                 //Create a collection of the primary keys of the Fields
                 int[] fieldIDs = context.Fields.Select(a => a.Id).ToArray();
                 int fieldIDCount = fieldIDs.Length;
 
                 #region MatchSchedules
-                if (!context.MatchSchedules.Any())
                 {
                     // Times when the games are played
                     string[] matchTime = { "3:50", "5:10", "6:30", "7:50", "9:00" };
 
+                    // Get the list of team IDs
+                    List<int> teamIds = context.Teams.Select(t => t.Id).ToList();
+
+                    // Get the list of field IDs
+                    List<int> fieldIds = context.Fields.Select(f => f.Id).ToList();
+
+                    // Set the start and end dates for the match schedule
+                    DateTime startDate = new DateTime(2023, 5, 28);
+                    DateTime endDate = new DateTime(2023, 8, 27);
+
                     int matchDay = 1;
 
-                    // Retrieve existing teams from the database
-                    List<Team> teams = context.Teams.ToList();
-
-                    // Create and add the matches to the database
-                    for (int i = 0; i < teams.Count - 1; i++)
+                    // Generate match schedules
+                    for (DateTime date = startDate; date <= endDate; date = date.AddDays(7))
                     {
-                        for (int j = i + 1; j < teams.Count; j++)
+                        // Shuffle the team and field IDs for random assignment
+                        ShuffleList(teamIds);
+                        ShuffleList(fieldIds);
+
+                        // Generate matches for the current date
+                        for (int i = 0; i < teamIds.Count; i += 2)
                         {
-                            DateTime startDate = new DateTime(2023, 5, 28);
-                            DateTime endDate = new DateTime(2023, 8, 27);
-                            TimeSpan span = endDate - startDate;
-                            int totalDays = span.Days;
-
-                            // Distribute matches evenly throughout the available days
-                            DateTime matchDate = startDate.AddDays((matchDay - 1) % totalDays);
-
+                            // Create and add the match to the database
                             MatchSchedule match = new MatchSchedule
                             {
-                                HomeTeam = teams[i],
-                                AwayTeam = teams[j],
-                                Date = matchDate,
-                                Time = matchTime[matchDay % matchTime.Length],
-                                FieldId = (matchDay % 8) + 1, // Assign fields based on the match day
-                                HomeTeamScore = 0,
-                                AwayTeamScore = 0,
+                                HomeTeamId = teamIds[i],
+                                AwayTeamId = teamIds[i + 1],
+                                Date = date,
+                                Time = matchTime[i / 2 % matchTime.Length],
+                                FieldId = fieldIds[i / 2 % fieldIds.Count],
+                                HomeTeamScore = 0, // Initialize with 0 because as the games are played we will know the score
+                                AwayTeamScore = 0, // Initialize with 0 because as the games are played we will know the score
                                 MatchDay = matchDay
                             };
 
                             context.MatchSchedules.Add(match);
-
-                            matchDay++;
                         }
+
+                        matchDay++;
                     }
 
                     context.SaveChanges();
                 }
 
+                // Helper method to shuffle a list
+                void ShuffleList<T>(List<T> list)
+                {
+                    // Create a new instance of the Random class
+                    Random random = new Random();
+
+                    // Fisher-Yates shuffle algorithm
+                    int n = list.Count; // Get the number of elements in the list
+                    while (n > 1) // Iterate through the list from the last element to the second element
+                    {
+                        n--; // Decrement the index by 1
+                        int k = random.Next(n + 1); // Generate a random index between 0 and n (inclusive)
+                        T value = list[k]; // Get the value at index k
+                        list[k] = list[n]; // Swap the value at index k with the value at index n
+                        list[n] = value; // Assign the original value from index k to index n
+                    }
+                }
+
                 #endregion
 
                 #region PlayerStats
-                //Create 5 notes from Bacon ipsum
-                string[] baconNotes = new string[] { "Bacon ipsum dolor amet meatball corned beef kevin, alcatra kielbasa biltong drumstick strip steak spare ribs swine." };
-                    //Create collections of the primary keys of the two Parents
-                    int[] matchIDs = context.MatchSchedules.Select(s => s.Id).ToArray();
-                    int matchIDCount = matchIDs.Length;
+                // Create 5 notes from Bacon ipsum
+                //string[] baconNotes = new string[]
+                //{
+                //    "Bacon ipsum dolor amet meatball corned beef kevin, alcatra kielbasa biltong drumstick strip steak spare ribs swine.",
+                //    "Bacon ipsum dolor amet doner ham hock shoulder venison, beef ribs pastrami biltong short loin strip steak tongue meatball shankle ground round.",
+                //    "Bacon ipsum dolor amet sausage strip steak jerky kevin ham hock, beef alcatra filet mignon tenderloin.",
+                //    "Bacon ipsum dolor amet venison pancetta short loin porchetta bresaola turducken drumstick tri-tip ham hock.",
+                //    "Bacon ipsum dolor amet porchetta buffalo bacon, bresaola prosciutto shankle pork loin pork chop salami tri-tip."
+                //};
 
-                    //Appointments - the Intersection
-                    //Add a few appointments to each patient
-                    if (!context.PlayerMatchs.Any())
-                    {
-                        foreach (int i in playerIDs)
-                        {
-                            //i loops through the primary keys of the Patients
-                            //j is just a counter so we add some Appointments to a Patient
-                            //k lets us step through all AppointmentReasons so we can make sure each gets used
-                            int k = 0;//Start with the first AppointmentReason
-                            int howMany = random.Next(1, matchIDCount);
-                            for (int j = 1; j <= howMany; j++)
-                            {
-                                PlayerMatch p = new PlayerMatch()
-                                {
-                                    PlayerId = i,
-                                    MatchId = matchIDs[k],
-                                    RedCards = 0,
-                                    YellowCards = 0,
-                                    Goals = 0,
-                                    Notes = baconNotes[random.Next(1)]
-                                };
+                //if (!context.PlayerMatchs.Any())
+                //{
+                    
+                //        // Create a player match record
+                //        PlayerMatch playerMatch = new PlayerMatch()
+                //        {
+                //            PlayerId = ,
+                //            MatchId = ,
+                //            Goals = ,
+                //            RedCards = ,
+                //            YellowCards = ,
+                //            Notes = 
+                //        };
 
-                                context.PlayerMatchs.Add(p);
-                                k++; // Increment k to move to the next matchID
-                                if (k >= matchIDCount)
-                                {
-                                    k = 0; // Reset k if it exceeds the number of matchIDs
-                                }
-                            }
-                            context.SaveChanges();
-                        }
-                        #endregion
-                    }
+                //        // Add the player match record to the database
+                //        context.PlayerMatchs.Add(playerMatch);
+                    
 
-                }
-            
+                //    context.SaveChanges();
+                //}
+
+                #endregion
+            }
+
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.GetBaseException().Message);
