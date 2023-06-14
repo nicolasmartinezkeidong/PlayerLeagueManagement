@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Policy;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace PlayerManagement.Data
 {
@@ -17,7 +20,7 @@ namespace PlayerManagement.Data
             try
             {
                 //Delete the database if you need to apply a new Migration
-                context.Database.EnsureDeleted();
+                //context.Database.EnsureDeleted();
                 //Create the database if it does not exist and apply the Migration
                 context.Database.Migrate();
 
@@ -27,7 +30,7 @@ namespace PlayerManagement.Data
 
                 //Prepare some string arrays for building objects
                 string[] firstNames = new string[] { "Lyric", "Antoinette", "Kendal", "Vivian", "Ruth", "Jamison", "Emilia", "Natalee", "Yadiel", "Jakayla", "Lukas", "Moses", "Kyler", "Karla", "Chanel", "Tyler", "Camilla", "Quintin", "Braden", "Clarence", "Dave", "Tim", "Elton", "Paul", "Shania", "Bruce" };
-                string[] lastsNames = new string[] { "Stovell", "Jones", "Bloggs", "Watts", "Randall", "Arias", "Weber", "Stone", "Carlson", "Robles", "Frederick", "Parker", "Morris", "Soto", "Bruce", "Orozco", "Boyer", "Burns", "Cobb", "Houston", "Rubble", "Brown", "John", "McCartney", "Twain", "Cockburn" };
+                string[] lastNames = new string[] { "Stovell", "Jones", "Bloggs", "Watts", "Randall", "Arias", "Weber", "Stone", "Carlson", "Robles", "Frederick", "Parker", "Morris", "Soto", "Bruce", "Orozco", "Boyer", "Burns", "Cobb", "Houston", "Rubble", "Brown", "John", "McCartney", "Twain", "Cockburn" };
                 string[] playerPositions = new string[] { "Goalkeeper", "Right Fullback", "Left Fullback", "Center Back", "Holding Midfielder", "Right Midfielder", "Left Midfielder", "Box-to-Box Midfielder", "Striker", "Attacking Midfielder", "Winger" };
 
                 #region PlayerPositions
@@ -55,13 +58,6 @@ namespace PlayerManagement.Data
                     context.Leagues.AddRange(
                         new League
                         {
-                            Name = "Intermediate",
-                            LeagueFoundation = "2020",
-                            NumberOfTeams = 0,
-                            LeagueBudget = 0
-                        },
-                        new League
-                        {
                             Name = "Recreational",
                             LeagueFoundation = "2015",
                             NumberOfTeams = 0,
@@ -75,24 +71,14 @@ namespace PlayerManagement.Data
                 DateTime registrationDate = new DateTime(2023, 01, 01);
 
                 //Team names
-                string[] teamNamesIntermediate = new string[] { "Monstars", "PFC", "PDHC", "Past Our Prime", "Squad Goals", "Monarch FC", "Vas Defenses", "Sorry In Advance", "Niacon FC", "Chelsea Farm Team", "Strikers", "Proactive", "Bunny Rabbits FC", "Summer FC", "Niagara FC", "Willow FC", "Blue Jays", "TBD" };
+                //string[] teamNamesIntermediate = new string[] { "Monstars", "PFC", "PDHC", "Past Our Prime", "Squad Goals", "Monarch FC", "Vas Defenses", "Sorry In Advance", "Niacon FC", "Chelsea Farm Team", "Strikers", "Proactive", "Bunny Rabbits FC", "Summer FC", "Niagara FC", "Willow FC", "Blue Jays", "TBD" };
                 string[] teamNamesRecreational = new string[] { "Niagara 55ers", "Dolls and Balls", "Back That Pass Up", "Multiple Score", "Your keepers", "Threat Level Midnight", "Pink Slips", "The Tigers", "FISA FC", "InterCorsica", "Cleats Up", "Niagara Munchën", "Blue Balls FC", "Goon Squad", "Balotelli-tubbies", "BallStars FC", "Individuals 2", "For Kicks and Giggles", "Dom Pérignon", "Fake Madrid", "Beers and Balls", "Ball Busters", "Shooting Blanks", "Rum Runners" };
 
                 #region Teams
                 // Look for any Teams.
                 if (!context.Teams.Any())
                 {
-                    //Create teams for Intermediate League
-                    foreach (string team in teamNamesIntermediate)
-                    {
-                        context.Teams.Add(
-                        new Team
-                        {
-                            Name = team,
-                            RegistrationDate = registrationDate,
-                            League = context.Leagues.FirstOrDefault(l => l.Name == "Intermediate")
-                        });
-                    }
+
                     //Create teams for Recreational League
                     foreach (string team in teamNamesRecreational)
                     {
@@ -107,17 +93,12 @@ namespace PlayerManagement.Data
 
                     context.SaveChanges();
 
-                    // get leagues
-                    var intermediateLeague = context.Leagues.FirstOrDefault(l => l.Name == "Intermediate");
+                    // get league
                     var recreationalLeague = context.Leagues.FirstOrDefault(l => l.Name == "Recreational");
 
-                    int countTeamsInt = context.Teams.Count(t => t.League.Name == "Intermediate");
                     int countTeamsRec = context.Teams.Count(t => t.League.Name == "Recreational");
 
                     // update number of teams and league budget for each league
-                    intermediateLeague.NumberOfTeams = countTeamsInt;
-                    intermediateLeague.LeagueBudget = intermediateLeague.NumberOfTeams * 1500.00;
-
                     recreationalLeague.NumberOfTeams = countTeamsRec;
                     recreationalLeague.LeagueBudget = recreationalLeague.NumberOfTeams * 1500.00;
 
@@ -134,44 +115,51 @@ namespace PlayerManagement.Data
                 int[] teamIDs = context.Teams.Select(p => p.Id).ToArray();
                 int teamIDCount = teamIDs.Length;
 
+
                 #region Players
-                //Look for any Player
                 if (!context.Players.Any())
                 {
-                    // Start birthdate for randomly produced players 
-                    // We will subtract a random number of days from today
-                    DateTime startDOB = DateTime.Today;
+                    DateTime startDOB = DateTime.Today;// 
 
+                    List<string> usedNames = new List<string>();
 
-                    //Double loop through the arrays of names 
-                    //to build Players as the loops is running
-                    int playerCount = 0;
-
-                    //Double loop through the arrays of names 
-                    //and build the Player as we go
-                    foreach (string f in firstNames)
+                    foreach (int teamID in teamIDs)
                     {
-                        foreach (string l in lastsNames)
+                        for (int i = 0; i < 13; i++)
                         {
-                            if (playerCount % 13 == 0)// if multiple of 13 we change team
+                            string firstName = string.Empty;
+                            string lastName = string.Empty;
+                            bool isUniqueName = false;
+
+                            // Generate a unique player name
+                            while (!isUniqueName)
                             {
-                                teamIDCount = (teamIDCount + 1) % teamIDs.Length;
+                                firstName = firstNames[random.Next(firstNames.Length)];
+                                lastName = lastNames[random.Next(lastNames.Length)];
+                                string fullName = firstName + lastName;
+
+                                if (!usedNames.Contains(fullName))
+                                {
+                                    usedNames.Add(fullName);
+                                    isUniqueName = true;
+                                }
                             }
+
                             Player p = new Player()
                             {
-                                FirstName = f,
-                                LastName = l,
+                                FirstName = firstName,
+                                LastName = lastName,
                                 DOB = startDOB.AddDays(-random.Next(7400, 25000)),
                                 Phone = random.Next(2, 10).ToString() + random.Next(213214131, 989898989).ToString(),
                                 PlayerPositionId = positionIDs[random.Next(positionIDCount)],
-                                Email = $"{f}{l}@outlook.com",
-                                TeamId = teamIDs[random.Next(teamIDCount)]
+                                Email = $"{firstName}{lastName}@outlook.com",
+                                TeamId = teamID
                             };
-                            context.Players.Add(p);
 
-                            playerCount++;
+                            context.Players.Add(p);
                         }
                     }
+
                     context.SaveChanges();
                 }
                 #endregion
@@ -277,211 +265,184 @@ namespace PlayerManagement.Data
                 int fieldIDCount = fieldIDs.Length;
 
                 #region MatchSchedules
-                if (!context.MatchSchedules.Any())
                 {
-                    //Times when the games are played
+                    // Times when the games are played
                     string[] matchTime = { "3:50", "5:10", "6:30", "7:50", "9:00" };
+
+                    // Get the list of team IDs
+                    List<int> teamIds = context.Teams.Select(t => t.Id).ToList();
+
+                    // Get the list of field IDs
+                    List<int> fieldIds = context.Fields.Select(f => f.Id).ToList();
+
+                    // Set the start and end dates for the match schedule
+                    DateTime startDate = new DateTime(2023, 5, 28);
+                    DateTime endDate = new DateTime(2023, 8, 27);
 
                     int matchDay = 1;
 
-                    //Unique date to sample the seed data for match 1 date
-                    DateTime matchDate = new DateTime(2022, 05, 28);
-
-                    List<string> availableTeams = teamNamesIntermediate.ToList();
-                    List<string> scheduledTeams = new List<string>();
-
-                    //name of the last home team scheduled
-                    string lastHomeTeam = null;
-                    //name of the last away team scheduled
-                    string lastAwayTeam = null;
-
-
-                    //hold scheduled match times for each field
-                    Dictionary<int, List<string>> scheduledTimes = new Dictionary<int, List<string>>();
-                    foreach (int fieldId in fieldIDs)
+                    // Generate match schedules
+                    for (DateTime date = startDate; date <= endDate; date = date.AddDays(7))
                     {
-                        scheduledTimes.Add(fieldId, new List<string>());
-                    }
+                        // Shuffle the team and field IDs for random assignment
+                        ShuffleList(teamIds);
+                        ShuffleList(fieldIds);
 
-                    //Create teams for Intermediate League
-                    foreach (string homeTeam in teamNamesIntermediate)
-                    {
-                        foreach (string times in matchTime)
+                        // Generate matches for the current date
+                        for (int i = 0; i < teamIds.Count; i += 2)
                         {
-                            foreach (int fields in fieldIDs)
+                            // Create and add the match to the database
+                            MatchSchedule match = new MatchSchedule
                             {
-                                //Check if this time has already been scheduled for this field
-                                if (scheduledTimes[fields].Contains(times))
-                                    continue;
-
-                                //Check if this home team has already played in the last match or is the same as the last away team
-                                if (homeTeam == lastHomeTeam || homeTeam == lastAwayTeam)
-                                    continue;
-
-
-                                // Remove the home team from the available teams list
-                                availableTeams.Remove(homeTeam);
-                                // Get the first available away team that is not the same as the home team, the last home team, or the last away team
-                                string awayTeam = availableTeams.FirstOrDefault(t => t != homeTeam && t != lastHomeTeam && t != lastAwayTeam);
-
-                                if (awayTeam != null)
-                                {
-                                    scheduledTeams.Add(homeTeam);
-                                    scheduledTeams.Add(awayTeam);
-                                    availableTeams.Remove(awayTeam);
-
-                                    context.MatchSchedules.Add(
-                                    new MatchSchedule
-                                    {
-                                        Date = matchDate,
-                                        Time = times,
-                                        FieldId = fields,
-                                        HomeTeamId = context.Teams.FirstOrDefault(l => l.Name == homeTeam).Id,
-                                        AwayTeamId = context.Teams.FirstOrDefault(l => l.Name == awayTeam).Id,
-                                        HomeTeamScore = random.Next(0, 7),
-                                        AwayTeamScore = random.Next(0, 7),
-                                        MatchDay = matchDay
-                                    });
-
-                                    //Add the scheduled time to the list for this field
-                                    scheduledTimes[fields].Add(times);
-
-                                    lastHomeTeam = homeTeam;
-                                    lastAwayTeam = awayTeam;
-                                }
-                                else
-                                {
-                                    // All available teams have been scheduled, so break the loop
-                                    break;
-                                }
-
-                                matchDay++;
-                            }
-                            context.SaveChanges();
-                        }
-
-                    }
-
-                    List<string> availableTeamsRec = teamNamesRecreational.ToList();
-
-                    string lastHomeTeamRec = null;
-                    string lastAwayTeamRec = null;
-
-                    List<int> availableFieldIndexes = new List<int>(fieldIDs);
-                    List<int> availableTimeIndexes = new List<int>(Enumerable.Range(0, matchTime.Length));
-
-                    //Create teams for Recreational League
-                    foreach (string homeTeam in teamNamesRecreational)
-                    {
-                        foreach(string times in matchTime)
-                        {
-                            foreach(int fields in fieldIDs)
-                            {
-                                if (availableFieldIndexes.Count == 0 || availableTimeIndexes.Count == 0)
-                                {
-                                    // All available fields or times have been scheduled, so break the loop
-                                    break;
-                                }
-
-                                int randomFieldIndex = random.Next(availableFieldIndexes.Count);
-                                int randomTimeIndex = random.Next(availableTimeIndexes.Count);
-
-                                int fieldIndex = availableFieldIndexes[randomFieldIndex];
-                                int timeIndex = availableTimeIndexes[randomTimeIndex];
-
-                                availableFieldIndexes.RemoveAt(randomFieldIndex);
-                                availableTimeIndexes.RemoveAt(randomTimeIndex);
-
-                                if (homeTeam == lastHomeTeamRec || homeTeam == lastAwayTeamRec)
-                                {
-                                    // Add the field and time back to the available lists since the match is not scheduled
-                                    availableFieldIndexes.Add(fieldIndex);
-                                    availableTimeIndexes.Add(timeIndex);
-                                    continue;
-                                }
-
-                                string awayTeam = availableTeamsRec.FirstOrDefault(t => t != homeTeam && t != lastHomeTeamRec && t != lastAwayTeamRec);
-
-
-                                if (awayTeam != null)
-                                {
-                                    scheduledTeams.Add(homeTeam);
-                                    scheduledTeams.Add(awayTeam);
-                                    availableTeamsRec.Remove(awayTeam);
-                                    context.MatchSchedules.Add(
-                                    new MatchSchedule
-                                    {
-                                        Date = matchDate,
-                                        Time = matchTime[random.Next(matchTime.Length)],
-                                        FieldId = fieldIDs[random.Next(fieldIDCount)],
-                                        HomeTeamId = context.Teams.FirstOrDefault(l => l.Name == homeTeam).Id,
-                                        AwayTeamId = context.Teams.FirstOrDefault(l => l.Name == awayTeam).Id,
-                                        HomeTeamScore = random.Next(0, 7),
-                                        AwayTeamScore = random.Next(0, 7)
-                                    });
-
-                                    lastHomeTeamRec = homeTeam;
-                                    lastAwayTeamRec = awayTeam;
-                                }
-                                else
-                                {
-                                    // Add the field and time back to the available lists since the match is not scheduled
-                                    availableFieldIndexes.Add(fieldIndex);
-                                    availableTimeIndexes.Add(timeIndex);
-                                }
-
-                            }
-                            context.SaveChanges();
-                        }
-                        
-                    }
-                    
-                }
-                #endregion
-
-                #region PlayerStats
-                //Create 5 notes from Bacon ipsum
-                string[] baconNotes = new string[] { "Bacon ipsum dolor amet meatball corned beef kevin, alcatra kielbasa biltong drumstick strip steak spare ribs swine." };
-                //Create collections of the primary keys of the two Parents
-                int[] matchIDs = context.MatchSchedules.Select(s => s.Id).ToArray();
-                int matchIDCount = matchIDs.Length;
-
-                //Appointments - the Intersection
-                //Add a few appointments to each patient
-                if (!context.PlayerMatchs.Any())
-                {
-                    foreach (int i in playerIDs)
-                    {
-                        //i loops through the primary keys of the Patients
-                        //j is just a counter so we add some Appointments to a Patient
-                        //k lets us step through all AppointmentReasons so we can make sure each gets used
-                        int k = 0;//Start with the first AppointmentReason
-                        int howMany = random.Next(1, matchIDCount);
-                        for (int j = 1; j <= howMany; j++)
-                        {
-                            PlayerMatch p = new PlayerMatch()
-                            {
-                                PlayerId = i,
-                                MatchId = matchIDs[k],
-                                RedCards = 0,
-                                YellowCards = 0,
-                                Goals = 0,
-                                Notes = baconNotes[random.Next(1)]
+                                HomeTeamId = teamIds[i],
+                                AwayTeamId = teamIds[i + 1],
+                                Date = date,
+                                Time = matchTime[i / 2 % matchTime.Length],
+                                FieldId = fieldIds[i / 2 % fieldIds.Count],
+                                HomeTeamScore = 0, // Initialize with 0 because as the games are played we will know the score
+                                AwayTeamScore = 0, // Initialize with 0 because as the games are played we will know the score
+                                MatchDay = matchDay
                             };
 
-                            context.PlayerMatchs.Add(p);
-                            k++; // Increment k to move to the next matchID
-                            if (k >= matchIDCount)
+                            if (matchDay <= 1) // Populate random scores for 3 first dates 
                             {
-                                k = 0; // Reset k if it exceeds the number of matchIDs
+                                match.HomeTeamScore = random.Next(6);
+                                match.AwayTeamScore = random.Next(6);
                             }
+
+                            context.MatchSchedules.Add(match);
                         }
-                        context.SaveChanges();
+
+                        matchDay++;
                     }
-                    #endregion
+
+                    context.SaveChanges();
                 }
 
+                // Helper method to shuffle a list
+                void ShuffleList<T>(List<T> list)
+                {
+                    // Create a new instance of the Random class
+                    Random random = new Random();
+
+                    // Fisher-Yates shuffle algorithm
+                    int n = list.Count; // Get the number of elements in the list
+                    while (n > 1) // Iterate through the list from the last element to the second element
+                    {
+                        n--; // Decrement the index by 1
+                        int k = random.Next(n + 1); // Generate a random index between 0 and n (inclusive)
+                        T value = list[k]; // Get the value at index k
+                        list[k] = list[n]; // Swap the value at index k with the value at index n
+                        list[n] = value; // Assign the original value from index k to index n
+                    }
                 }
+
+                #endregion
+
+                #region PlayerStats Seed Data for PlayerStats
+                // Create 5 notes from Bacon ipsum
+                string[] baconNotes = new string[]
+                {
+                    "Bacon ipsum dolor amet meatball corned beef kevin, alcatra kielbasa biltong drumstick strip steak spare ribs swine.",
+                    "Bacon ipsum dolor amet doner ham hock shoulder venison, beef ribs pastrami biltong short loin strip steak tongue meatball shankle ground round.",
+                    "Bacon ipsum dolor amet sausage strip steak jerky kevin ham hock, beef alcatra filet mignon tenderloin.",
+                    "Bacon ipsum dolor amet venison pancetta short loin porchetta bresaola turducken drumstick tri-tip ham hock.",
+                    "Bacon ipsum dolor amet porchetta buffalo bacon, bresaola prosciutto shankle pork loin pork chop salami tri-tip."
+                };
+
+                if (!context.PlayerMatchs.Any())
+                {
+                    // Retrieve all match schedules where matchDay <= 1 and either the HomeTeamScore or AwayTeamScore is >= 1
+                    var matchSchedules = context.MatchSchedules.Where(m => m.MatchDay <= 1 && (m.HomeTeamScore >= 1 || m.AwayTeamScore >= 1));
+
+                    foreach (var matchSchedule in matchSchedules)
+                    {
+                        // Check if the home team scored
+                        if (matchSchedule.HomeTeamScore >= 1)
+                        {
+                            // Get the list of player IDs for the home team
+                            var homeTeamPlayerIds = matchSchedule.HomeTeam.Players.Select(p => p.Id).ToList();
+
+                            // Assign goals to home team players
+                            int homeTeamGoalsAssigned = 0;
+
+                            while (homeTeamGoalsAssigned < matchSchedule.HomeTeamScore && homeTeamPlayerIds.Count > 0)
+                            {
+                                int randomPlayerIndex = random.Next(homeTeamPlayerIds.Count);
+                                int playerId = homeTeamPlayerIds[randomPlayerIndex];
+                                homeTeamPlayerIds.RemoveAt(randomPlayerIndex);
+
+                                int goalsToAssign = random.Next(0, (int)(matchSchedule.HomeTeamScore - homeTeamGoalsAssigned)) + 1;
+                                homeTeamGoalsAssigned += goalsToAssign;
+
+                                PlayerMatch playerMatch = new PlayerMatch()
+                                {
+                                    PlayerId = playerId,
+                                    MatchId = matchSchedule.Id,
+                                    Goals = goalsToAssign,
+                                    RedCards = 0,
+                                    YellowCards = random.Next(0, 3),
+                                    Notes = baconNotes[random.Next(0, baconNotes.Length)]
+                                };
+
+                                // Check if the player received 2 yellow cards
+                                if (playerMatch.YellowCards >= 2)
+                                {
+                                    playerMatch.RedCards = 1;
+                                    playerMatch.YellowCards = 2;
+                                }
+
+                                // Add the player match record to the database
+                                context.PlayerMatchs.Add(playerMatch);
+                            }
+                        }
+
+                        // Check if the away team scored
+                        if (matchSchedule.AwayTeamScore >= 1)
+                        {
+                            // Get the list of player IDs for the away team
+                            var awayTeamPlayerIds = matchSchedule.AwayTeam.Players.Select(p => p.Id).ToList();
+
+                            // Assign goals to away team players
+                            int awayTeamGoalsAssigned = 0;
+
+                            while (awayTeamGoalsAssigned < matchSchedule.AwayTeamScore && awayTeamPlayerIds.Count > 0)
+                            {
+                                int randomPlayerIndex = random.Next(awayTeamPlayerIds.Count);
+                                int playerId = awayTeamPlayerIds[randomPlayerIndex];
+                                awayTeamPlayerIds.RemoveAt(randomPlayerIndex);
+
+                                int goalsToAssign = random.Next(0, (int)matchSchedule.AwayTeamScore - awayTeamGoalsAssigned) + 1;
+                                awayTeamGoalsAssigned += goalsToAssign;
+
+                                PlayerMatch playerMatch = new PlayerMatch()
+                                {
+                                    PlayerId = playerId,
+                                    MatchId = matchSchedule.Id,
+                                    Goals = goalsToAssign,
+                                    RedCards = 0,
+                                    YellowCards = random.Next(0, 3),
+                                    Notes = baconNotes[random.Next(0, baconNotes.Length)]
+                                };
+
+                                // Check if the player received 2 yellow cards
+                                if (playerMatch.YellowCards >= 2)
+                                {
+                                    playerMatch.RedCards = 1;
+                                    playerMatch.YellowCards = 2;
+                                }
+
+                                // Add the player match record to the database
+                                context.PlayerMatchs.Add(playerMatch);
+                            }
+                        }
+                    }
+
+                    context.SaveChanges();
+                }
+                #endregion
+            }
+
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.GetBaseException().Message);

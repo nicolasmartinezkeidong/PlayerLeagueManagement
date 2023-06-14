@@ -46,23 +46,11 @@ namespace PlayerManagement.Models
         [Display(Name = "AT Score")] 
         public int? AwayTeamScore { get; set; } = 0;
 
-        public ICollection<MatchSchedule> Matches { get; set; }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Matches.Any(m => m.FieldId == FieldId && m.Time == Time))
-            {
-                yield return new ValidationResult("There is already a match scheduled for field.", new[] { "FieldId", "Time" });
-            }
-
-            else if (HomeTeam.Name == AwayTeam.Name)
+            if (HomeTeam.Name == AwayTeam.Name)
             {
                 yield return new ValidationResult("A team cannot play against itself.", new[] { "HomeTeamId", "AwayTeamId" });
-            }
-
-            else if (Matches.Any(m => m.Date == Date && (m.HomeTeamId == HomeTeamId || m.AwayTeamId == AwayTeamId)))
-            {
-                yield return new ValidationResult("One of the teams has already have a match scheduled.", new[] { "Date", "HomeTeamId", "AwayTeamId" });
             }
         }
     }
