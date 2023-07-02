@@ -1,14 +1,16 @@
 # Player League Management
-PLM is an MVC application to manage a soccer league. Currently, I'm working on this project but so far we have things like auditing, CRUD operations, among others. Therefore, if you clone this project you will have something to play. The models at the moment are:
+PLM is an MVC application to manage a soccer league. Currently, I'm working on this project but so far we have things like auditing, CRUD operations, among others. Therefore, if you clone this project you will have something to play. The models(so far) are:
 
-![Models](https://github.com/NicolasKeidong/PlayerLeagueManagement/assets/122652469/9d087c09-dd11-49a9-be95-b58be7a817aa)
+![Models](https://github.com/NicolasKeidong/PlayerLeagueManagement/assets/122652469/d37882c7-2b66-4174-8133-b24132a87822)
 
-**Views from the app**
-![SoccerLeague1](https://github.com/NicolasKeidong/PlayerLeagueManagement/assets/122652469/20bb27fd-cb37-46df-b7b1-67418c815af1)
 
-![SoccerLeague2](https://github.com/NicolasKeidong/PlayerLeagueManagement/assets/122652469/bca18515-50ff-4c87-a033-a76ec60a2a23)
+**Sample views**
+![SoccerLeague1](https://github.com/NicolasKeidong/PlayerLeagueManagement/assets/122652469/08f1f755-6dce-4826-9969-2c808ea2da09)
 
-![SoccerLeague3](https://github.com/NicolasKeidong/PlayerLeagueManagement/assets/122652469/9e055c9a-ae62-485a-ac25-eae18626fb46)
+![SoccerLeague2](https://github.com/NicolasKeidong/PlayerLeagueManagement/assets/122652469/0ed96ec3-4698-463f-bfb9-373c842464fe)
+
+![SoccerLeague3](https://github.com/NicolasKeidong/PlayerLeagueManagement/assets/122652469/e07d7563-92ef-46e8-9c3a-eb77489dfe59)
+
 
 ## Installation
 - Clone this repository.
