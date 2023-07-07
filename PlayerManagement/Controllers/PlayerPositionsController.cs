@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using PlayerManagement.CustomControllers;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
@@ -185,6 +186,36 @@ namespace PlayerManagement.Controllers
                 }
             }
             return View(playerPosition);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InsertFromExcel(IFormFile theExcel)
+        {
+            ExcelPackage excel;
+            using (var memoryStream = new MemoryStream())
+            {
+                await theExcel.CopyToAsync(memoryStream);
+                excel = new ExcelPackage(memoryStream);
+            }
+            var workSheet = excel.Workbook.Worksheets[0];
+            var start = workSheet.Dimension.Start;
+            var end = workSheet.Dimension.End;
+
+            //Start a new list to hold imported objects
+            List<PlayerPosition> playerPositions = new List<PlayerPosition>();
+
+            for (int row = start.Row; row <= end.Row; row++)
+            {
+                // Row by row...
+                PlayerPosition p = new PlayerPosition
+                {
+                    PlayerPos = workSheet.Cells[row, 1].Text
+                };
+                playerPositions.Add(p);
+            }
+            _context.PlayerPositions.AddRange(playerPositions);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
         }
 
         private bool PlayerPositionExists(int id)

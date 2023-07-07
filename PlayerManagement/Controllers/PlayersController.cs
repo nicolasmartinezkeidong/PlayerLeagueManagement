@@ -538,7 +538,7 @@ namespace PlayerManagement.Controllers
                         {
                            FirstName = p.FirstName,
                            LastName = p.LastName,
-                           DOB = p.DOB,
+                           Age = p.Age,
                            PlayerPosition = p.PlayerPosition.PlayerPos
                         };
             //How many rows?
@@ -546,25 +546,9 @@ namespace PlayerManagement.Controllers
 
             if (numRows > 0) //We have data
             {
-                //Create a new spreadsheet from scratch.
+                //Create a new spreadsheet
                 using (ExcelPackage excel = new ExcelPackage())
                 {
-
-                    //Note: you can also pull a spreadsheet out of the database if you
-                    //have saved it in the normal way we do, as a Byte Array in a Model
-                    //such as the UploadedFile class.
-                    //
-                    // Suppose...
-                    //
-                    // var theSpreadsheet = _context.UploadedFiles.Include(f => f.FileContent).Where(f => f.ID == id).SingleOrDefault();
-                    //
-                    //    //Pass the Byte[] FileContent to a MemoryStream
-                    //
-                    // using (MemoryStream memStream = new MemoryStream(theSpreadsheet.FileContent.Content))
-                    // {
-                    //     ExcelPackage package = new ExcelPackage(memStream);
-                    // }
-
                     var workSheet = excel.Workbook.Worksheets.Add("Appointments");
 
                     //Note: Cells[row, column]
@@ -577,11 +561,8 @@ namespace PlayerManagement.Controllers
                     workSheet.Column(4).Style.Numberformat.Format = "###,##0.00";
 
                     //Note: You can define a BLOCK of cells: Cells[startRow, startColumn, endRow, endColumn]
-                    //Make Date and Patient Bold
                     workSheet.Cells[4, 1, numRows + 3, 2].Style.Font.Bold = true;
 
-                    //Note: these are fine if you are only 'doing' one thing to the range of cells.
-                    //Otherwise you should USE a range object for efficiency
                     using (ExcelRange totalfees = workSheet.Cells[numRows + 4, 4])//
                     {
                         totalfees.Formula = "Sum(" + workSheet.Cells[4, 4].Address + ":" + workSheet.Cells[numRows + 3, 4].Address + ")";
@@ -598,31 +579,11 @@ namespace PlayerManagement.Controllers
                         fill.BackgroundColor.SetColor(Color.LightBlue);
                     }
 
-                    ////Boy those notes are BIG!
-                    ////Lets put them in comments instead.
-                    //for (int i = 4; i < numRows + 4; i++)
-                    //{
-                    //    using (ExcelRange Rng = workSheet.Cells[i, 7])
-                    //    {
-                    //        string[] commentWords = Rng.Value.ToString().Split(' ');
-                    //        Rng.Value = commentWords[0] + "...";
-                    //        //This LINQ adds a newline every 7 words
-                    //        string comment = string.Join(Environment.NewLine, commentWords
-                    //            .Select((word, index) => new { word, index })
-                    //            .GroupBy(x => x.index / 7)
-                    //            .Select(grp => string.Join(" ", grp.Select(x => x.word))));
-                    //        ExcelComment cmd = Rng.AddComment(comment, "Apt. Notes");
-                    //        cmd.AutoFit = true;
-                    //    }
-                    //}
-
                     //Autofit columns
                     workSheet.Cells.AutoFitColumns();
-                    //Note: You can manually set width of columns as well
-                    //workSheet.Column(7).Width = 10;
 
                     //Add a title and timestamp at the top of the report
-                    workSheet.Cells[1, 1].Value = "Appointment Report";
+                    workSheet.Cells[1, 1].Value = "Players Report";
                     using (ExcelRange Rng = workSheet.Cells[1, 1, 1, 6])
                     {
                         Rng.Merge = true; //Merge columns start and end range
@@ -644,12 +605,12 @@ namespace PlayerManagement.Controllers
                         Rng.Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                     }
 
-                    //Ok, time to download the Excel
-
+                    //Download the Excel
                     try
                     {
+                        DateTime todaysDate = DateTime.Today.ToLocalTime();
                         Byte[] theData = excel.GetAsByteArray();
-                        string filename = "Appointments.xlsx";
+                        string filename = $"{todaysDate.ToString("MM/dd/yyyy")}Players.xlsx";
                         string mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                         return File(theData, mimeType, filename);
                     }

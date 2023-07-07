@@ -4,6 +4,25 @@
     <h4 class="card-header" id="PlayerPositions">Player Positions</h4>
     <div class="card-body">
         @Html.DropDownList("PlayerPositionsId", null, htmlAttributes: new { @size = 6, @class = "form-control" })
+
+        @*//Upload Excel*@
+        <br />
+        <form asp-action="InsertFromExcel" asp-controller="PlayerPositions" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label custom-file-label">Upload Excel File:</label>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" name="theExcel" id="theExcel">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Upload Data" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
     </div>
     <div class="card-footer">
         <a asp-controller="PlayerPositions" asp-action="Create">Create</a> |
