@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using OfficeOpenXml;
 using PlayerManagement.CustomControllers;
 using PlayerManagement.Data;
@@ -68,9 +69,20 @@ namespace PlayerManagement.Controllers
                     return RedirectToAction("Index", "Lookups", new { Tab = ControllerName() + "-Tab" });
                 }
             }
-            catch (DbUpdateException)
+            catch (RetryLimitExceededException /* dex */)
             {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PlayerPosition.PlayerPos"))
+                {
+                    ModelState.AddModelError("PlayerPos", "Unable to save changes. You cannot have duplicate Player Positions.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
 
             return View(playerPosition);
@@ -204,15 +216,38 @@ namespace PlayerManagement.Controllers
             //Start a new list to hold imported objects
             List<PlayerPosition> playerPositions = new List<PlayerPosition>();
 
-            for (int row = start.Row; row <= end.Row; row++)
+            try
             {
-                // Row by row...
-                PlayerPosition p = new PlayerPosition
+                if (ModelState.IsValid)
                 {
-                    PlayerPos = workSheet.Cells[row, 1].Text
-                };
-                playerPositions.Add(p);
+                    for (int row = start.Row; row <= end.Row; row++)
+                    {
+                        // Row by row...
+                        PlayerPosition p = new PlayerPosition
+                        {
+                            PlayerPos = workSheet.Cells[row, 1].Text
+                        };
+
+                        playerPositions.Add(p);
+                    }
+                }
             }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PlayerPosition.PlayerPos"))
+                {
+                    ModelState.AddModelError("PlayerPos", "Unable to save changes. You cannot have duplicate Player Positions.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+
             _context.PlayerPositions.AddRange(playerPositions);
             _context.SaveChanges();
             return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
