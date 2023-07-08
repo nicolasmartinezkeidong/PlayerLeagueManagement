@@ -75,7 +75,7 @@ namespace PlayerManagement.Controllers
             }
             catch (DbUpdateException dex)
             {
-                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PlayerPosition.PlayerPos"))
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PlayerPositions.PlayerPos"))
                 {
                     ModelState.AddModelError("PlayerPos", "Unable to save changes. You cannot have duplicate Player Positions.");
                 }
@@ -203,53 +203,74 @@ namespace PlayerManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> InsertFromExcel(IFormFile theExcel)
         {
-            ExcelPackage excel;
-            using (var memoryStream = new MemoryStream())
+            if (theExcel != null)
             {
-                await theExcel.CopyToAsync(memoryStream);
-                excel = new ExcelPackage(memoryStream);
-            }
-            var workSheet = excel.Workbook.Worksheets[0];
-            var start = workSheet.Dimension.Start;
-            var end = workSheet.Dimension.End;
+                //ModelState.AddModelError("", "No file was uploaded. Please select a file and try again.");
+                ExcelPackage excel;
+                using (var memoryStream = new MemoryStream())
+                {
+                    await theExcel.CopyToAsync(memoryStream);
+                    excel = new ExcelPackage(memoryStream);
+                }
 
-            //Start a new list to hold imported objects
-            List<PlayerPosition> playerPositions = new List<PlayerPosition>();
+                var workSheet = excel.Workbook.Worksheets[0];
+                var start = workSheet.Dimension.Start;
+                var end = workSheet.Dimension.End;
 
-            try
-            {
+                // Start a new list to hold imported objects
+                List<PlayerPosition> playerPositions = new List<PlayerPosition>();
+
                 if (ModelState.IsValid)
                 {
                     for (int row = start.Row; row <= end.Row; row++)
                     {
                         // Row by row...
-                        PlayerPosition p = new PlayerPosition
-                        {
-                            PlayerPos = workSheet.Cells[row, 1].Text
-                        };
+                        string playerPos = workSheet.Cells[row, 1].Text;
 
-                        playerPositions.Add(p);
+                        // Check if the value exists in the database (case sensitive)
+                        if (_context.PlayerPositions.Any(p => p.PlayerPos.ToLower() == playerPos.ToLower()))
+                        {
+                            ModelState.AddModelError("", "The file was not updated because there is a duplicate value: " + playerPos);
+                        }
+                        else
+                        {
+                            // Create a new PlayerPosition object
+                            PlayerPosition p = new PlayerPosition
+                            {
+                                PlayerPos = playerPos
+                            };
+
+                            playerPositions.Add(p);
+                        }
                     }
                 }
-            }
-            catch (RetryLimitExceededException /* dex */)
-            {
-                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
-            }
-            catch (DbUpdateException dex)
-            {
-                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PlayerPosition.PlayerPos"))
+                try
                 {
-                    ModelState.AddModelError("PlayerPos", "Unable to save changes. You cannot have duplicate Player Positions.");
+                    _context.PlayerPositions.AddRange(playerPositions);
+                    _context.SaveChanges();
+                    ViewBag.Message = "The file was successfully uploaded.";
                 }
-                else
+                catch (RetryLimitExceededException /* dex */)
                 {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
                 }
-            }
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PlayerPositions.PlayerPos"))
+                    {
+                        ModelState.AddModelError("PlayerPos", "Unable to save changes. You cannot have duplicate Player Positions.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                    }
 
-            _context.PlayerPositions.AddRange(playerPositions);
-            _context.SaveChanges();
+                }
+            }
+            else
+            {
+                ViewBag.Message= "No file was uploaded. Please select a file and try again.";
+            }
             return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
         }
 

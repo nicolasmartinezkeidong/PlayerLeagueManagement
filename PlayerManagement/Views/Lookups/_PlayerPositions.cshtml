@@ -19,6 +19,28 @@
                     <div class="form-group">
                         <input type="submit" value="Upload Data" class="btn btn-primary" />
                     </div>
+                    <div>
+                        @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger">
+                                    <h4>Error:</h4>
+                                    <ul>
+                                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                        {
+                                            <li>@error.ErrorMessage</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+
+                            @if (TempData["Message"] != null)
+                            {
+                                <div class="alert alert-success">
+                                    <h4>Success:</h4>
+                                    <p>@TempData["Message"]</p>
+                                </div>
+                            }
+                    </div>
                 </div>
             </div>
         </form>
