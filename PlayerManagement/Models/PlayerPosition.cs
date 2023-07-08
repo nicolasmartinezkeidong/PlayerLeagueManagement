@@ -10,6 +10,7 @@ namespace PlayerManagement.Models
         [Display(Name = "Player Position")]
         [Required(ErrorMessage = "You cannot leave the name of the player position blank.")]
         [StringLength(50, ErrorMessage = "Player position name cannot be more than 50 characters long.")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "You can only enter letters and numbers.")]
         public string PlayerPos { get; set; }
 
         //[RegularExpression("^\\[A-Z]{2}$", ErrorMessage = "Code must be only letters.")]

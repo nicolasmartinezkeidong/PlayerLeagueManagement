@@ -87,6 +87,11 @@ namespace PlayerManagement.Data
             modelBuilder.Entity<League>()
             .HasIndex(p => new { p.Name })
             .IsUnique();
+
+            //Add a unique index to the Position Name
+            modelBuilder.Entity<PlayerPosition>()
+            .HasIndex(p => new { p.PlayerPos })
+            .IsUnique();
         }
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
