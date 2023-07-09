@@ -203,7 +203,8 @@ namespace PlayerManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> InsertFromExcel(IFormFile theExcel)
         {
-            if (theExcel != null)
+            //Check if file is null & Excel extension
+            if (theExcel != null || Path.GetExtension(theExcel.FileName) == "xlsx" || Path.GetExtension(theExcel.FileName) == "xls")
             {
                 //ModelState.AddModelError("", "No file was uploaded. Please select a file and try again.");
                 ExcelPackage excel;
@@ -227,7 +228,7 @@ namespace PlayerManagement.Controllers
                         // Row by row...
                         string playerPos = workSheet.Cells[row, 1].Text;
 
-                        // Check if the value exists in the database (case sensitive)
+                        // Check if the value exists in the database
                         if (_context.PlayerPositions.Any(p => p.PlayerPos.ToLower() == playerPos.ToLower()))
                         {
                             ModelState.AddModelError("", "The file was not updated because there is a duplicate value: " + playerPos);
@@ -248,7 +249,7 @@ namespace PlayerManagement.Controllers
                 {
                     _context.PlayerPositions.AddRange(playerPositions);
                     _context.SaveChanges();
-                    ViewBag.Message = "The file was successfully uploaded.";
+                    TempData["MessageSucc"] = "The file was successfully uploaded.";
                 }
                 catch (RetryLimitExceededException /* dex */)
                 {
@@ -269,7 +270,7 @@ namespace PlayerManagement.Controllers
             }
             else
             {
-                ViewBag.Message= "No file was uploaded. Please select a file and try again.";
+                TempData["MessageFail"] = "No file was uploaded. Please select a file and try again.";
             }
             return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
         }
