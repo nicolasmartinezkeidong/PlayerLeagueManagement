@@ -33,11 +33,16 @@
                                 </div>
                             }
 
-                            @if (TempData["Message"] != null)
+                            @if (TempData["MessageFail"] != null)
+                            {
+                                <div class="alert alert-danger">
+                                    <p>@TempData["MessageFail"]</p>
+                                </div>
+                            }
+                            else
                             {
                                 <div class="alert alert-success">
-                                    <h4>Success:</h4>
-                                    <p>@TempData["Message"]</p>
+                                    <p>@TempData["MessageSucc"]</p>
                                 </div>
                             }
                     </div>
