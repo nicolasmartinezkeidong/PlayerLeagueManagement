@@ -20,31 +20,33 @@
                         <input type="submit" value="Upload Data" class="btn btn-primary" />
                     </div>
                     <div>
-                        @if (!ViewData.ModelState.IsValid)
-                            {
-                                <div class="alert alert-danger">
-                                    <h4>Error:</h4>
-                                    <ul>
-                                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                                        {
-                                            <li>@error.ErrorMessage</li>
-                                        }
-                                    </ul>
-                                </div>
-                            }
+                        @if (ViewData["ModelErrors"] != null)
+                        {
+                            <div class="alert alert-danger">
+                                <h4>Error:</h4>
+                                <ul>
+                                    @foreach (var error in ViewData["ModelErrors"] as List<string>)
+                                    {
+                                        <li>@error</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
 
-                            @if (TempData["MessageFail"] != null)
-                            {
-                                <div class="alert alert-danger">
-                                    <p>@TempData["MessageFail"]</p>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="alert alert-success">
-                                    <p>@TempData["MessageSucc"]</p>
-                                </div>
-                            }
+                        @if (TempData["MessageFail"] != null)
+                        {
+                            <div class="alert alert-danger">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                                <p>@TempData["MessageFail"]</p>
+                            </div>
+                        }
+                        else if (TempData["MessageSucc"] != null)
+                        {
+                            <div class="alert alert-success">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                                <p>@TempData["MessageSucc"]</p>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -57,3 +59,10 @@
         <a asp-controller="PlayerPositions" asp-action="Delete" class="linkClick">Delete</a>
     </div>
 </div>
+@section Scripts
+    {
+    <script>
+     $(".alert").delay(2500).slideUp(200, function () {
+       $(this).alert('close');}
+     </script>
+}
