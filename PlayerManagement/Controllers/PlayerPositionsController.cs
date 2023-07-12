@@ -268,14 +268,39 @@ namespace PlayerManagement.Controllers
                 else
                 {
                     // Some records were added
-                    TempData["MessageSucc"] = "The file was successfully uploaded. Number of records added: " + playerPositions.Count;
+                    try
+                    {
+                        _context.PlayerPositions.AddRange(playerPositions);
+                        await _context.SaveChangesAsync();
+
+                        TempData["MessageSucc"] = "The file was successfully uploaded. Number of records added: " + playerPositions.Count;
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                        TempData["MessageFail"] = "An error occurred while saving the records to the database: " + ex.Message;
+                        return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
+                    }
+
                     ViewData["ModelErrors"] = modelErrors;
                 }
             }
             else
             {
                 // All records were added
-                TempData["MessageSucc"] = "The file was successfully uploaded. Number of records added: " + playerPositions.Count;
+                try
+                {
+                    _context.PlayerPositions.AddRange(playerPositions);
+                    await _context.SaveChangesAsync();
+
+                    TempData["MessageSucc"] = "The file was successfully uploaded. Number of records added: " + playerPositions.Count;
+                }
+                catch (Exception ex)
+                {
+                    
+                    TempData["MessageFail"] = "An error occurred while saving the records to the database: " + ex.Message;
+                    return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
+                }
             }
 
             return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });

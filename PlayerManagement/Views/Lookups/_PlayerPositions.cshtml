@@ -22,7 +22,7 @@
                     <div>
                         @if (ViewData["ModelErrors"] != null)
                         {
-                            <div class="alert alert-danger">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <h4>Error:</h4>
                                 <ul>
                                     @foreach (var error in ViewData["ModelErrors"] as List<string>)
@@ -35,20 +35,21 @@
 
                         @if (TempData["MessageFail"] != null)
                         {
-                            <div class="alert alert-danger">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <a href="#" class="alert-close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <p>@TempData["MessageFail"]</p>
                             </div>
                         }
                         else if (TempData["MessageSucc"] != null)
                         {
-                            <div class="alert alert-success">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            <a href="#" class="alert-close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <p>@TempData["MessageSucc"]</p>
                             </div>
                         }
                         <script type="text/javascript">
-                            $(".alert").delay(1000).slideUp(200, function () {
+                            $(".alert").delay(4000).slideUp(200, function () {
                                 $(this).alert('close');
                             });
                         </script>
@@ -65,12 +66,26 @@
     </div>
 </div>
 @section Scripts
-    {
-    <script>
+{
+    @*<script type="text/javascript">
         $(document).ready(function () {
-            $(".alert").delay(1000).slideUp(200, function () {
-                $(this).alert('close');
+            $(".alert").on("close.bs.alert", function () {
+                clearTimeout($(this).data("timer"));
+            });
+
+            $(".alert").each(function () {
+                var delay = 7000; // 7 seconds
+                var alert = $(this);
+
+                alert.data("timer", setTimeout(function () {
+                    alert.alert("close");
+                }, delay));
+            });
+
+            $(".alert .alert-close").on("click", function () {
+                $(this).closest(".alert").alert("close");
             });
         });
-    </script>
+    </script>*@
 }
+                  
