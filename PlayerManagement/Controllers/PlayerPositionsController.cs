@@ -302,7 +302,6 @@ namespace PlayerManagement.Controllers
                     return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
                 }
             }
-
             return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
         }
 
