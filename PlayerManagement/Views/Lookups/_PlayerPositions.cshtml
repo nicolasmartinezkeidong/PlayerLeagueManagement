@@ -47,6 +47,11 @@
                                 <p>@TempData["MessageSucc"]</p>
                             </div>
                         }
+                        <script type="text/javascript">
+                            $(".alert").delay(1000).slideUp(200, function () {
+                                $(this).alert('close');
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -62,7 +67,10 @@
 @section Scripts
     {
     <script>
-     $(".alert").delay(2500).slideUp(200, function () {
-       $(this).alert('close');}
-     </script>
+        $(document).ready(function () {
+            $(".alert").delay(1000).slideUp(200, function () {
+                $(this).alert('close');
+            });
+        });
+    </script>
 }

@@ -260,30 +260,22 @@ namespace PlayerManagement.Controllers
 
             if (modelErrors.Count > 0)
             {
-                ViewData["ModelErrors"] = modelErrors;
-            }
-
-            try
-            {
-                _context.PlayerPositions.AddRange(playerPositions);
-                await _context.SaveChangesAsync();
-
-                TempData["MessageSucc"] = "The file was successfully uploaded. Number of records added: " + playerPositions.Count;
-            }
-            catch (RetryLimitExceededException /* dex */)
-            {
-                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
-            }
-            catch (DbUpdateException dex)
-            {
-                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PlayerPositions.PlayerPos"))
+                if (playerPositions.Count == 0)
                 {
-                    ModelState.AddModelError("PlayerPos", "Unable to save changes. You cannot have duplicate Player Positions.");
+                    // No records were added
+                    TempData["MessageFail"] = "The file was not updated. " + modelErrors.Count + " duplicate value(s) found.";
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                    // Some records were added
+                    TempData["MessageSucc"] = "The file was successfully uploaded. Number of records added: " + playerPositions.Count;
+                    ViewData["ModelErrors"] = modelErrors;
                 }
+            }
+            else
+            {
+                // All records were added
+                TempData["MessageSucc"] = "The file was successfully uploaded. Number of records added: " + playerPositions.Count;
             }
 
             return RedirectToAction("Index", "Lookups", new { Tab = "PlayerPositions-Tab" });
