@@ -711,5 +711,21 @@ namespace PlayerManagement.Controllers
         {
           return _context.Players.Any(e => e.Id == id);
         }
+
+        //public IActionResult TeamStats()
+        //{
+        //    var sumQ = _context.MatchSchedules
+        //        .Select(grp => new TeamStatsVM
+        //        {
+        //            ID = grp.Id,
+        //            TeamName = grp.,
+        //            Goals = grp.,
+        //            RedCards = grp.,
+        //            YellowCards = grp.
+
+        //        }).OrderBy(s => s.TeamName).ThenBy(s => s.Goals);
+
+        //    return View(sumQ.AsNoTracking().ToList());
+        //}
     }
 }
