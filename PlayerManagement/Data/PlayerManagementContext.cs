@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Models;
 using System.Numerics;
+using PlayerManagement.ViewModels;
 
 namespace PlayerManagement.Data
 {
@@ -130,5 +131,7 @@ namespace PlayerManagement.Data
                 }
             }
         }
+
+        public DbSet<PlayerManagement.ViewModels.TeamStatsVM> TeamStatsVM { get; set; }
     }
 }
