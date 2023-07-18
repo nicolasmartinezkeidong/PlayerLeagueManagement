@@ -719,9 +719,9 @@ namespace PlayerManagement.Controllers
                 {
                     ID = team.Id,
                     TeamName = team.Name,
-                    Goals = _context.PlayerMatches.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.Goals),
-                    RedCards = _context.PlayerMatches.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.RedCards ?? 0),
-                    YellowCards = _context.PlayerMatches.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.YellowCards ?? 0)
+                    Goals = _context.PlayerMatchs.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.Goals),
+                    RedCards = _context.PlayerMatchs.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.RedCards ?? 0),
+                    YellowCards = _context.PlayerMatchs.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.YellowCards ?? 0)
                 })
                 .OrderBy(s => s.TeamName)
                 .ToList();
