@@ -712,20 +712,21 @@ namespace PlayerManagement.Controllers
           return _context.Players.Any(e => e.Id == id);
         }
 
-        //public IActionResult TeamStats()
-        //{
-        //    var sumQ = _context.MatchSchedules
-        //        .Select(grp => new TeamStatsVM
-        //        {
-        //            ID = grp.Id,
-        //            TeamName = grp.,
-        //            Goals = grp.,
-        //            RedCards = grp.,
-        //            YellowCards = grp.
+        public IActionResult TeamStats()
+        {
+            var teamStats = _context.Teams
+                .Select(team => new TeamStatsVM
+                {
+                    ID = team.Id,
+                    TeamName = team.Name,
+                    Goals = _context.PlayerMatches.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.Goals),
+                    RedCards = _context.PlayerMatches.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.RedCards ?? 0),
+                    YellowCards = _context.PlayerMatches.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.YellowCards ?? 0)
+                })
+                .OrderBy(s => s.TeamName)
+                .ToList();
 
-        //        }).OrderBy(s => s.TeamName).ThenBy(s => s.Goals);
-
-        //    return View(sumQ.AsNoTracking().ToList());
-        //}
+            return View(teamStats);
+        }
     }
 }
