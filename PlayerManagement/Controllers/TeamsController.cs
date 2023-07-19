@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -513,6 +514,26 @@ namespace PlayerManagement.Controllers
         private bool TeamExists(int id)
         {
           return _context.Teams.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> TeamStatsAsync(int? page, int? pageSizeID)
+        {
+            var teamStats = _context.Teams
+                .Select(team => new TeamStatsVM
+                {
+                    Id = team.Id,
+                    TeamName = team.Name,
+                    Goals = _context.PlayerMatchs.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.Goals),
+                    RedCards = _context.PlayerMatchs.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.RedCards ?? 0),
+                    YellowCards = _context.PlayerMatchs.Where(pm => pm.Match.HomeTeamId == team.Id || pm.Match.AwayTeamId == team.Id).Sum(pm => pm.YellowCards ?? 0)
+                })
+                .OrderBy(s => s.TeamName);
+
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, "TeamStats");
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<TeamStatsVM>.CreateAsync(teamStats.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
     }
 }
