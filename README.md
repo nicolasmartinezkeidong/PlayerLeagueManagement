@@ -15,7 +15,6 @@ PLM is an MVC application to manage a soccer league. Currently, I'm working on t
 ## Installation
 - Clone this repository.
 - Add your scripts.
-- Have fun. :smiley:
 
 ## Usage
 At the moment, there are no additional steps other than running the application to start using it.
@@ -28,7 +27,7 @@ At the moment, there are no additional steps other than running the application 
 - [x] Auditable and concurrency control
 - [x] M:N for lookups maintenance table
 - [x] Upload and download documents
-- [ ] Report creation(Excel files)
+- [x] Report creation(Excel files)
 - [ ] Identity & roles
 - [ ] Convert to a Progressive Web App (PWA)
 - [ ] Add send email option
