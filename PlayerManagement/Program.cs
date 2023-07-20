@@ -84,5 +84,5 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 SLInitializer.Seed(app);
-
+ApplicationDbInitializer.Seed(app);
 app.Run();
