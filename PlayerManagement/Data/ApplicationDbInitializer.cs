@@ -13,7 +13,7 @@ namespace PlayerManagement.Data
             try
             {
                 ////Delete the database if you need to apply a new Migration
-                //context.Database.EnsureDeleted();
+                context.Database.EnsureDeleted();
                 //Create the database if it does not exist and apply the Migration
                 context.Database.Migrate();
 
