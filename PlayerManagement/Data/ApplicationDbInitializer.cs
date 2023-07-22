@@ -20,7 +20,7 @@ namespace PlayerManagement.Data
                 //Create Roles
                 var RoleManager = applicationBuilder.ApplicationServices.CreateScope()
                     .ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                string[] roleNames = { "Admin", "Capitain" };
+                string[] roleNames = { "Admin", "Captain" };
                 IdentityResult roleResult;
                 foreach (var roleName in roleNames)
                 {
@@ -52,15 +52,15 @@ namespace PlayerManagement.Data
                 {
                     IdentityUser user = new IdentityUser
                     {
-                        UserName = "capatain1@outlook.com",
-                        Email = "capatain1@outlook.com"
+                        UserName = "captain1@outlook.com",
+                        Email = "captain1@outlook.com"
                     };
 
                     IdentityResult result = userManager.CreateAsync(user, "password").Result;
 
                     if (result.Succeeded)
                     {
-                        userManager.AddToRoleAsync(user, "Capitain").Wait();
+                        userManager.AddToRoleAsync(user, "Captain").Wait();
                     }
                 }
                 if (userManager.FindByEmailAsync("user1@outlook.com").Result == null)
