@@ -1,0 +1,17 @@
+{
+  "name": "Players Management",
+  "short_name": "Play. Management",
+  "description": "Application to manage a soccer league.",
+  "icons": [
+    {
+      "src": "/images/strategy_192x192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/strategy_512x512.png",
+      "sizes": "512x512"
+    }
+  ],
+  "display": "standalone",
+  "start_url": "/"
+}
