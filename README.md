@@ -28,7 +28,7 @@ At the moment, there are no additional steps other than running the application 
 - [x] M:N for lookups maintenance table
 - [x] Upload and download documents
 - [x] Report creation(Excel files)
-- [ ] Identity & roles
+- [x] Identity & roles
 - [ ] Convert to a Progressive Web App (PWA)
 - [ ] Add send email option
 - [ ] \(Optional) Push notifications
