@@ -29,13 +29,14 @@ namespace PlayerManagement.Controllers
 
         // GET: Players
         public async Task<IActionResult> Index(int? page,int? pageSizeID,string SearchString, int? TeamId, int? PlayerPositionId,
-            string actionButton, string sortDirection = "asc", string sortField = "Player")
+            string actionButton, string sortDirectionCheck, string sortFieldID, string sortDirection = "asc", string sortField = "Player")
         {
             //Clear the sort/filter/paging URL Cookie for Controller
             CookieHelper.CookieSet(HttpContext, ControllerName() + "URL", "", -1);
 
-            //Toggle the Open/Closed state of the collapse depending on if we are filtering
+            //Change colour of the button when filtering by setting this default
             ViewData["Filtering"] = "btn-outline-secondary";
+            //and then in each "test" for filtering, add ViewData["Filtering"] = "btn-danger" if true;
 
 
             // Populate the filter for Team and Position
@@ -73,8 +74,10 @@ namespace PlayerManagement.Controllers
                 ViewData["Filtering"] = "btn-danger";
             }
             //Before we sort, see if we have called for a change of filtering or sorting
-            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted so lets sort!
             {
+                page = 1;//Reset page to start
+
                 if (sortOptions.Contains(actionButton))//Change of sort is requested
                 {
                     if (actionButton == sortField) //Reverse order on same field
@@ -83,7 +86,13 @@ namespace PlayerManagement.Controllers
                     }
                     sortField = actionButton;//Sort by the button clicked
                 }
+                else //Sort by the controls in the filter area
+                {
+                    sortDirection = String.IsNullOrEmpty(sortDirectionCheck) ? "asc" : "desc";
+                    sortField = sortFieldID;
+                }
             }
+
 
             #endregion
 
@@ -143,6 +152,8 @@ namespace PlayerManagement.Controllers
             //Set sort for next time
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
+            //SelectList for Sorting Options
+            ViewBag.sortFieldID = new SelectList(sortOptions, sortField.ToString());
             #endregion
 
             //Handle Paging
