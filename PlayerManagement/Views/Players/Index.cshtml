@@ -40,7 +40,47 @@
             </div>
         </div>
     </div>
+    <br />
+    <div class="container-fluid d-block d-md-none">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="card mb-sm-3" style="min-width: 18rem;">
+                    <h5 class="card-header"><strong>@Html.DisplayFor(modelItem => item.FullName)</strong></h5>
+                    <div class="card-body">
+                        <figure class="row">
+                            <p class="col-auto">
+                                @{
+                                    if (item.PlayerThumbnail?.Content != null)
+                                    {
+                                        string imageBase64 = Convert.ToBase64String(item.PlayerThumbnail.Content);
+                                        string imageSrc = string.Format("data:" + item.PlayerThumbnail.MimeType + ";base64,{0}", imageBase64);
+                                        <img src="@imageSrc" alt="Profile Picture of @item.FullName" title="Profile Picture of @item.FullName" style="max-height: 80px; max-width: 96px" class="img-fluid rounded" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/blankProfile.jpg" style="max-height: 80px; max-width: 96px" class="img-fluid rounded" />
+                                    }
+                                }
+                            </p>
+                            <figcaption class="col">
+                                <p class="card-text">
+                                    @*Card Text goes Here*@
 
+                                </p>
+                            </figcaption>
+                        </figure>
+                        <div class="card-footer">
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="d-none d-md-block">
 <table class="table">
     <thead>
         <tr>
@@ -125,5 +165,6 @@
 }
     </tbody>
 </table>
+</div>
 <partial name="_PagingNavBar"/>
 </form>
