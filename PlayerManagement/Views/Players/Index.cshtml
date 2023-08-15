@@ -66,7 +66,59 @@
                             <figcaption class="col">
                                 <p class="card-text">
                                     @*Card Text goes Here*@
-
+                                    <dl class="row lh-1">
+                                        <dt class="col-3 text-truncate">
+                                            @Html.DisplayNameFor(model => model.Age)
+                                        </dt>
+                                        <dd class="col-9">
+                                            @Html.DisplayFor(modelItem => item.Age)
+                                        </dd>
+                                        <dt class="col-3 text-truncate">
+                                            @Html.DisplayNameFor(model => model.FullName)
+                                        </dt>
+                                        <dd class="col-9">
+                                            @Html.DisplayFor(modelItem => item.FullName)
+                                        </dd>
+                                        <dt class="col-3 text-truncate">
+                                            @Html.DisplayNameFor(model => model.Team)
+                                        </dt>
+                                        <dd class="col-9">
+                                            @Html.DisplayFor(modelItem => item.Team.Name)
+                                        </dd>
+                                        <dt class="col-3 text-truncate">
+                                            @Html.DisplayNameFor(model => item.PlayerPosition)
+                                        </dt>
+                                        <dd class="col-9">
+                                            Primary: @Html.DisplayFor(modelItem => item.PlayerPosition.PlayerPos)<br />
+                                            @{
+                                                int playCount = item.Plays.Count;
+                                                if (playCount > 0)
+                                                {
+                                                    string firstPlay = item.Plays.FirstOrDefault().PlayerPosition.PlayerPos;
+                                                    if (playCount > 1)
+                                                    {
+                                                        string playList = "";
+                                                        var c = item.Plays.ToList();
+                                                        for (int i = 1; i < playCount; i++)//Skip the first because we have it already
+                                                        {
+                                                            playList += c[i].PlayerPosition.PlayerPos + " <br />";
+                                                        }
+                                                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseOther@(item.Id)"
+                                                           aria-expanded="false" aria-controls="collapseOther@(item.Id)">
+                                                            @firstPlay <span class="badge bg-info">@playCount</span>
+                                                        </a>
+                                                        <div class="collapse" id="collapseOther@(item.Id)">
+                                                            @Html.Raw(playList)
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        @firstPlay
+                                                    }
+                                                }
+                                            }
+                                        </dd>
+                                    </dl>
                                 </p>
                             </figcaption>
                         </figure>
