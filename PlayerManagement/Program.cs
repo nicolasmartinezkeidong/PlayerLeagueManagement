@@ -61,7 +61,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
-
+//Email with added methods for production use.
+builder.Services.AddTransient<IMyEmailSender, MyEmailSender>();
 
 builder.Services.AddControllersWithViews();
 
