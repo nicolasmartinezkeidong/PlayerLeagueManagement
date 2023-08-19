@@ -32,16 +32,15 @@ namespace PlayerManagement.Utilities
             message.To.Add(new MailboxAddress(name, email));
             message.From.Add(new MailboxAddress(_emailConfiguration.SmtpFromName, _emailConfiguration.SmtpUsername));
 
-            message.Subject = subject;
-            //We will say we are sending HTML. But there are options for plaintext etc. 
+            message.Subject = subject; 
             message.Body = new TextPart(TextFormat.Html)
             {
                 Text = htmlMessage
             };
 
-            //Be careful that the SmtpClient class is the one from Mailkit not the framework!
+            //Used the SmtpClient class is the one from Mailkit
             using var emailClient = new SmtpClient();
-            //The last parameter here is to use SSL (Which you should!)
+            //The last parameter here is to use SSL
             emailClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, false);
 
             //Remove any OAuth functionality as we won't be using it. 
@@ -66,15 +65,15 @@ namespace PlayerManagement.Utilities
             message.From.Add(new MailboxAddress(_emailConfiguration.SmtpFromName, _emailConfiguration.SmtpUsername));
 
             message.Subject = emailMessage.Subject;
-            //We will say we are sending HTML. But there are options for plaintext etc. 
+            //We will say we are sending HTML.
             message.Body = new TextPart(TextFormat.Html)
             {
                 Text = emailMessage.Content
             };
 
-            //Be careful that the SmtpClient class is the one from Mailkit not the framework!
+            //Use the SmtpClient class from Mailkit not the framework
             using var emailClient = new SmtpClient();
-            //The last parameter here is to use SSL (Which you should!)
+            //The last parameter here is to use SSL
             emailClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, false);
 
             //Remove any OAuth functionality as we won't be using it. 
