@@ -24,15 +24,12 @@ namespace PlayerManagement.Controllers
         //for sending email
         private readonly IMyEmailSender _emailSender;
 
+
+
         public TeamsController(PlayerManagementContext context, IMyEmailSender emailSender)
         {
             _context = context;
             _emailSender = emailSender;
-        }
-
-        public TeamsController(PlayerManagementContext context)
-        {
-            _context = context;
         }
 
         // GET: Teams
@@ -399,6 +396,64 @@ namespace PlayerManagement.Controllers
             }
             return View(team);
 
+        }
+
+        // GET/POST: Teams/Notification/5
+        public async Task<IActionResult> Notification(int? id, string Subject, string emailContent)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Team t = await _context.Teams.FindAsync(id);
+
+            ViewData["id"] = id;
+            ViewData["name"] = t.Name;
+
+            if (string.IsNullOrEmpty(Subject) || string.IsNullOrEmpty(emailContent))
+            {
+                ViewData["Message"] = "You must enter both a Subject and a message Content before sending the message.";
+            }
+            else
+            {
+                int playersCount = 0;
+                try
+                {
+                    //Send a Notice.
+                    List<EmailAddress> players = (from p in _context.Players
+                                                where p.TeamId == id
+                                                select new EmailAddress
+                                                {
+                                                    Name = p.FullName,
+                                                    Address = p.Email
+                                                }).ToList();
+                    playersCount = players.Count();
+                    if (playersCount > 0)
+                    {
+                        var msg = new EmailMessage()
+                        {
+                            ToAddresses = players,
+                            Subject = Subject,
+                            Content = "<p>" + emailContent + "</p><p>Please access the <strong>Player Management</strong> web site to review.</p>"
+
+                        };
+                        await _emailSender.SendToManyAsync(msg);
+                        ViewData["Message"] = "Message sent to " + playersCount + " Patient"
+                            + ((playersCount == 1) ? "." : "s.");
+                    }
+                    else
+                    {
+                        ViewData["Message"] = "Message NOT sent!  No Patients in medical trial.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string errMsg = ex.GetBaseException().Message;
+                    ViewData["Message"] = "Error: Could not send email message to the " + playersCount + " Patient"
+                        + ((playersCount == 1) ? "" : "s") + " in the trial.";
+                }
+            }
+            return View();
         }
 
         public async Task<FileContentResult> Download(int id)

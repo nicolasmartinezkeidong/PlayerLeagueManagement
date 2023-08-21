@@ -65,7 +65,9 @@
 <br />
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to Teams List</a>
+    <a asp-action="Index">Back to Teams List</a> |
+    <a asp-controller="Teams" asp-action="Notification" class="linkClick">Send Email Notification</a>
+
 </div>
 
 @section Scripts {
