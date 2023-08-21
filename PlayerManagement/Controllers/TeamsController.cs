@@ -21,6 +21,15 @@ namespace PlayerManagement.Controllers
     {
         private readonly PlayerManagementContext _context;
 
+        //for sending email
+        private readonly IMyEmailSender _emailSender;
+
+        public TeamsController(PlayerManagementContext context, IMyEmailSender emailSender)
+        {
+            _context = context;
+            _emailSender = emailSender;
+        }
+
         public TeamsController(PlayerManagementContext context)
         {
             _context = context;
