@@ -469,6 +469,12 @@ namespace PlayerManagement.Controllers
             return File(theFile.FileContent.Content, theFile.MimeType, theFile.FileName);
         }
 
+        [HttpGet]
+        public JsonResult GetPlayerPositions(int? id)
+        {
+            return Json(PlayerPositionList(id));
+        }
+
         private async Task AddDocumentsAsync(Player player, List<IFormFile> theFiles)
         {
             foreach (var f in theFiles)
@@ -716,6 +722,12 @@ namespace PlayerManagement.Controllers
                     }
                 }
             }
+        }
+        private SelectList PlayerPositionList(int? selectId)
+        {
+            return new SelectList(_context
+                .PlayerPositions
+                .OrderBy(p => p.PlayerPos), "Id", "PlayerPos", selectId);
         }
 
         private bool PlayerExists(int id)
