@@ -438,19 +438,19 @@ namespace PlayerManagement.Controllers
 
                         };
                         await _emailSender.SendToManyAsync(msg);
-                        ViewData["Message"] = "Message sent to " + playersCount + " Patient"
+                        ViewData["Message"] = "Message sent to " + playersCount + " player(s)"
                             + ((playersCount == 1) ? "." : "s.");
                     }
                     else
                     {
-                        ViewData["Message"] = "Message NOT sent!  No Patients in medical trial.";
+                        ViewData["Message"] = "Message not sent.  No players in the Team.";
                     }
                 }
                 catch (Exception ex)
                 {
                     string errMsg = ex.GetBaseException().Message;
-                    ViewData["Message"] = "Error: Could not send email message to the " + playersCount + " Patient"
-                        + ((playersCount == 1) ? "" : "s") + " in the trial.";
+                    ViewData["Message"] = "Error: Could not send email message to the " + playersCount + " players"
+                        + ((playersCount == 1) ? "" : "s") + " in the team.";
                 }
             }
             return View();
