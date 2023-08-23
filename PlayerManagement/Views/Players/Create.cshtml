@@ -7,6 +7,7 @@
 <h2>Create Player</h2>
 
 <hr />
+<partial name="_addPlayerPositionModal" />
 <form asp-action="Create" method="post" enctype="multipart/form-data">
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="row">
@@ -51,10 +52,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="PlayerPositionId" class="control-label"></label>
-                <select asp-for="PlayerPositionId" class ="form-control" asp-items="ViewBag.PlayerPositionId">
-                    <option value="">Select a Position</option>
-                </select>
-                <span asp-validation-for="PlayerPositionId" class="text-danger"></span>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary" id="nowAddPlayerPosition" data-bs-toggle="modal" data-bs-target="#addPlayerPositionModal" type="button"><strong>+</strong></button>
+                    </div>
+                    <select asp-for="PlayerPositionId" class="form-control" asp-items="ViewBag.PlayerPositionId">
+                        <option value="">None</option>
+                    </select>
+                </div>
             </div>
             </div>
             <div class="col-md-8">
@@ -94,4 +99,30 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/multiselect.js"></script>
+    <script src="~/js/refreshDDL.js"></script>
+
+    <script type="text/javascript">
+        $('#submitPlayerPositionCreate').click(function (event) {
+            event.preventDefault();
+            var form = $('#createPlayerPositionForm');
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function () {
+                        $('#addPlayerPositionModal').modal('hide');
+                    },
+                    error: function () {
+                        alert("Create Failed.  There was a problem adding the record.");
+                    }
+                });
+            }
+            return false;
+        });
+        $('#addPlayerPositionModal').on('hide.bs.modal', function () {
+            $('#createPlayerPositionForm').find("input[type=text], textarea, select").val("");//to clear the data in the popup
+            refreshDDL('PlayerPositionId', '/Players/GetPlayerPositions', false, null, true, 'None', true);
+        });
+    </script>
 }
