@@ -1,0 +1,16 @@
+﻿@model PlayerManagement.Models.PlayerPosition
+<form asp-controller="PlayerPositions" asp-action="Create" id="createPlayerPositionForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="PlayerPos" class="control-label"></label>
+                <textarea asp-for="PlayerPos" class="form-control"></textarea>
+                <span asp-validation-for="PlayerPos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" id="submitPlayerPositionCreate" class="btn btn-outline-secondary" />
+            </div>
+        </div>
+    </div>
+</form>
