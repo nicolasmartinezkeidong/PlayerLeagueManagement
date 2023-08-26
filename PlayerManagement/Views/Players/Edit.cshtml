@@ -20,6 +20,7 @@
     }
 <hr />
 <partial name="_addPlayerPositionModal" />
+<partial name="_addPositionModal" />
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="row">
@@ -99,13 +100,21 @@
                     </button>
                     @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
                 </div>
-
+           
                 <div class="form-group col-md-6">
-                    <label class="control-label"> Choose Secondary Player Position(s):</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
+                    <label class="control-label"> Choose Secondary Player Position(s)</label>
+                    <button type="button" id="btnLeft" class="btn btn-success btn-sm">
                         <strong>+</strong>
-                    </button>
+                    </button>&nbsp;&nbsp;
                     @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
                 </div>
+            </div>
+            <div class="form-group" col-md-12>
+                 <button class="btn btn-outline-secondary btn-sm" id="nowAddPosition"
+                            data-bs-toggle="modal" data-bs-target="#addPositionModal"
+                            type="button">
+                        <strong>Add Player Position</strong>
+                    </button>
             </div>
             <div class="form-group">
                 <label class="control-label"> Current Documents:</label>
@@ -184,6 +193,41 @@
             $('#createPlayerPositionForm').find("input[type=text], textarea, select").val("");//to clear the data in the popup
             var selectedOption = $('#PlayerPositionId').val();//Return to the current selected value
             refreshDDL('PlayerPositionId', '/Players/GetPlayerPositions/' + selectedOption, false, null, true, 'None', true);
+        });
+    </script>
+
+    @*//Secondary player position list*@
+    <script type="text/javascript">
+        $('#submitPositionCreate').click(function (event) {
+            event.preventDefault();
+            var form = $('#createPositionForm');
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function () {
+                        $('#addPositionModal').modal('hide');
+                    },
+                    error: function () {
+                        alert("Create Failed.  There was a problem adding the record.");
+                    }
+                });
+            }
+            return false;
+        });
+        $('#addPositionModal').on('hide.bs.modal', function () {
+            $('#createPositionForm').find("input[type=text], textarea, select").val("");//to clear the data in the popup
+            //comma separated list of the keys of the selected options and
+            //we will pass it as a QueryString parameter when we get the new data
+            var qstring = "";
+            //Get the collection of currently selected options
+            var skipData = $("#selectedOptions option");
+            $.each(skipData, function () {
+                qstring += $(this).val() + ",";
+            });
+            var URI = "/Players/GetPositions?skip=" + qstring.substring(0, qstring.length - 1);
+            refreshDDL("availOptions", URI, true, "No Data Available", false, null, false);
         });
     </script>
 }

@@ -640,6 +640,30 @@ namespace PlayerManagement.Controllers
             return NotFound("No data.");
         }
 
+        //For Adding Position and have it in a list
+        private SelectList PositionSelectList(string skip)
+        {
+            //default query if no values to avoid
+            var PositionQuery = _context.PlayerPositions
+                .OrderBy(p => p.PlayerPos);
+            if (!String.IsNullOrEmpty(skip))
+            {
+                //Convert the string to an array of integers
+                //so we can make sure we leave them out of the data we download
+                string[] avoidStrings = skip.Split(',');
+                int[] skipKeys = Array.ConvertAll(avoidStrings, s => int.Parse(s));
+                PositionQuery = _context.PlayerPositions
+                    .Where(s => !skipKeys.Contains(s.Id))
+                .OrderBy(p => p.PlayerPos);
+            }
+            return new SelectList(PositionQuery, "Id", "PlayerPos");
+        }
+        [HttpGet]
+        public JsonResult GetPositions(string skip)
+        {
+            return Json(PositionSelectList(skip));
+        }
+
         //Not needed since we are in a CognizantController
         //private string ControllerName()
         //{
