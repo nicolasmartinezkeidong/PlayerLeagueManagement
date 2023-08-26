@@ -1,0 +1,17 @@
+﻿<!-- Modal-->
+<div class="modal fade" id="addPositionModal" tabindex="-1" role="dialog" aria-labelledby="PositionModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="PositionmyModalLabel">Add New Player Position</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                @{
+                    var s = new PlayerManagement.Models.PlayerPosition();
+                    <partial name="_PositionCreate" model="s" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
