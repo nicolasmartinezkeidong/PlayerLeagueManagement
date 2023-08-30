@@ -680,7 +680,11 @@ namespace PlayerManagement.Controllers
                          orderby t.Name
                          select t;
             ViewData["TeamId"] = new SelectList(tQuery, "Id", "Name", player?.TeamId);
-            ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", player?.PlayerPositionId);
+
+            var pQuery = from p in _context.PlayerPositions
+                         orderby p.PlayerPos
+                         select p;
+            ViewData["PlayerPositionId"] = new SelectList(pQuery, "Id", "PlayerPos", player?.PlayerPositionId);
         }
 
         private void PopulateAssignedPlayerPositions(Player player)
