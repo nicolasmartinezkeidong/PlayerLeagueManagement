@@ -212,12 +212,26 @@ namespace PlayerManagement.Controllers
                     }
                     else
                     {
+                        // Check if any selected players are already associated with a team
+                        var playersWithTeam = await _context.Players
+                            .Where(p => selectedOptions.Contains(p.Id.ToString()) && p.TeamId != 0)
+                            .ToListAsync();
+
+                        if (playersWithTeam.Any())
+                        {
+                            // Filter out players with existing teams from the team's Players collection
+                            team.Players = team.Players.Where(p => !playersWithTeam.Any(pt => pt.Id == p.Id)).ToList();
+
+                            // Display a message about the players not assigned to the team
+                            ViewData["PlayerNotAssignedMessage"] = "Note: Some players were not assigned to the team as they are already part of other teams.";
+                        }
                         await AddDocumentsAsync(team, theFiles);
                         _context.Add(team);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
                     }
-                    
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+
                 }
 
             }
