@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -157,7 +158,7 @@ namespace PlayerManagement.Controllers
 
             PopulateAssignedPlayerData(team);
             return View(team);
-        }
+        } 
 
         public PartialViewResult ListOfPlayersDetails(int id)
         {
@@ -205,11 +206,20 @@ namespace PlayerManagement.Controllers
                 UpdateTeamPlayers(selectedOptions, team);
                 if (ModelState.IsValid)
                 {
-                    await AddDocumentsAsync(team, theFiles);
-                    _context.Add(team);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    if (_context.Teams.Any(p => p.Name.ToLower() == team.Name.ToLower()))
+                    {
+                        ModelState.AddModelError("", team.Name + " was not created because is a duplicate value");
+                    }
+                    else
+                    {
+                        await AddDocumentsAsync(team, theFiles);
+                        _context.Add(team);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    
                 }
+
             }
             catch (RetryLimitExceededException /* dex */)
             {
