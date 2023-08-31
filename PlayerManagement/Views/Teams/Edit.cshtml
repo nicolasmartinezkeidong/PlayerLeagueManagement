@@ -58,6 +58,10 @@
                                 <a asp-action="Download" asp-route-id="@firstFile.Id">@firstFile.FileName</a>
                             }
                         }
+                        else
+                        {
+                            <p>No documents yet.</p>
+                        }
                     }
                 </div>
             </div>
