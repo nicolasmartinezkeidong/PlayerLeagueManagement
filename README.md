@@ -30,7 +30,7 @@ At the moment, there are no additional steps other than running the application 
 - [x] Report creation(Excel files)
 - [x] Identity & roles
 - [x] Convert to a Progressive Web App (PWA)
-- [ ] Add send email option
+- [x] Add send email option
 - [ ] \(Optional) Push notifications
 - [ ] UI implementation
 
