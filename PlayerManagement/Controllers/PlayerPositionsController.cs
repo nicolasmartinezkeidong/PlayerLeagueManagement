@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using PlayerManagement.Models;
 
 namespace PlayerManagement.Controllers
 {
+    [Authorize(Roles = "Admin, Captain")]
     public class PlayerPositionsController : CognizantController
     {
         private readonly PlayerManagementContext _context;

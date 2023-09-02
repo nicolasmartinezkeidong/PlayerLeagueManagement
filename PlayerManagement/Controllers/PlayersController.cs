@@ -15,9 +15,11 @@ using PlayerManagement.Data;
 using PlayerManagement.Models;
 using PlayerManagement.Utilities;
 using PlayerManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PlayerManagement.Controllers
 {
+    [Authorize(Roles = "Admin, Captain")]
     public class PlayersController : CognizantController
     {
         private readonly PlayerManagementContext _context;

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PlayerManagement.Data;
 
 namespace PlayerManagement.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class LookupsController : Controller
     {
         private readonly PlayerManagementContext _context;
