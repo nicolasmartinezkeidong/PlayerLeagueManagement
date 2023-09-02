@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,6 +19,7 @@ using Team = PlayerManagement.Models.Team;
 
 namespace PlayerManagement.Controllers
 {
+    [Authorize(Roles = "Admin, Captain")]
     public class TeamsController : CognizantController
     {
         private readonly PlayerManagementContext _context;

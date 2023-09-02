@@ -48,7 +48,7 @@ namespace PlayerManagement.Data
                         userManager.AddToRoleAsync(user, "Admin").Wait();
                     }
                 }
-                if (userManager.FindByEmailAsync("super1@outlook.com").Result == null)
+                if (userManager.FindByEmailAsync("captain1@outlook.com").Result == null)
                 {
                     IdentityUser user = new IdentityUser
                     {
