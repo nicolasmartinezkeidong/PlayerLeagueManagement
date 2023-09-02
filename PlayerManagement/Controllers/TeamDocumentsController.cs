@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using PlayerManagement.Utilities;
 
 namespace PlayerManagement.Controllers
 {
+    [Authorize(Roles = "Admin, Captain")]
     public class TeamDocumentsController : CustomControllers.ElephantController
     {
         private readonly PlayerManagementContext _context;

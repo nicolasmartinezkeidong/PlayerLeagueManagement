@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -146,7 +147,8 @@ namespace PlayerManagement.Controllers
             var pagedData = await PaginatedList<MatchSchedule>.CreateAsync(matchSchedules.AsNoTracking(), page ?? 1, pageSize);
             return View(pagedData);
         }
-
+        
+        [Authorize(Roles = "Admin")]
         // GET: MatchSchedules/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -168,7 +170,8 @@ namespace PlayerManagement.Controllers
 
             return View(matchSchedule);
         }
-
+        
+        [Authorize(Roles = "Admin")]
         // GET: MatchSchedules/Create
         public IActionResult Create()
         {
@@ -176,6 +179,7 @@ namespace PlayerManagement.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: MatchSchedules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -201,6 +205,7 @@ namespace PlayerManagement.Controllers
             return View(matchSchedule);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: MatchSchedules/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -219,6 +224,7 @@ namespace PlayerManagement.Controllers
             return View(matchSchedule);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: MatchSchedules/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -255,6 +261,7 @@ namespace PlayerManagement.Controllers
             return View(matchSchedule);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: MatchSchedules/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -277,6 +284,7 @@ namespace PlayerManagement.Controllers
             return View(matchSchedule);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: MatchSchedules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
