@@ -14,7 +14,24 @@ namespace PlayerManagement.Models
                 return $"{Date} {Time} {Field}";
             }
         }
+        //Get 3 first letter of team's name
+        public string HomeTeamAbbreviation
+        {
+            get
+            {
+                return $"{HomeTeam.Name.ToUpper().Substring(0, 3)}";
+            }
+        }
 
+
+        //Get 3 first letter of team's name
+        public string AwayTeamAbbreviation
+        {
+            get
+            {
+                return $"{AwayTeam.Name.ToUpper().Substring(0, 3)}";
+            }
+        }
         public int MatchDay { get; set; }//Track Match Day #
 
         [DataType(DataType.Date)]

@@ -1,59 +1,46 @@
-﻿@model IEnumerable<PlayerManagement.Models.MatchSchedule>
+﻿@model dynamic
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
+@{
+    //List for Matches
+    List<MatchSchedule> matchSchedules = ViewBag.MatchSchedules;
+    bool hasMatches = matchSchedules.Any();
+}
+
 <div class="container">
   <div class="row">
-        <div class="col-sm-2">
-      
+        <div class="col-sm-3">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>
-                            <input type="submit" name="actionButton" value="Date" class="btn btn-link" />
-                        </th>
-                        <th>
-                            <input type="submit" name="actionButton" value="Time" class="btn btn-link" />
-                        </th>
-                        <th>
-                            <input type="submit" name="actionButton" value="Field" class="btn btn-link" />
-                        </th>
-                        <th>
-                            <input type="submit" name="actionButton" value="HomeTeam" class="btn btn-link" />
-                        </th>
-                        <th>
-                            <input type="submit" name="actionButton" value="AwayTeam" class="btn btn-link" />
-                        </th>
+                        <th colspan="2">Matchweek </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @if(hasMatches)
+                    {
+                        @foreach (MatchSchedule match in ViewBag.MatchSchedules)
+                        {
+                            <tr>
+                                <td>@match.HomeTeamAbbreviation </td>
+                                <td>@match.AwayTeamAbbreviation </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Date)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Time)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Field.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HomeTeam.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AwayTeam.Name)
-                            </td>
+                            <td colspan="2">No matches scheduled this week</td>
                         </tr>
                     }
                 </tbody>
             </table>
 
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-7">
             <h1>Welcome</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
             <hr>
