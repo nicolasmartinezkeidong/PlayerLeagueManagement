@@ -15,12 +15,15 @@
         <div class="col-sm-3">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th colspan="2">Matchweek </th>
-                    </tr>
+                    @if (hasMatches)
+                    {
+                        <tr>
+                            <th colspan="2">Matchweek @ViewBag.MatchweekNumber</th>
+                        </tr>
+                    }
                 </thead>
                 <tbody>
-                    @if(hasMatches)
+                    @if (hasMatches)
                     {
                         @foreach (MatchSchedule match in ViewBag.MatchSchedules)
                         {
@@ -33,11 +36,15 @@
                     else
                     {
                         <tr>
+                            <th colspan="2">Matchweek</th>
+                        </tr>
+                        <tr>
                             <td colspan="2">No matches scheduled this week</td>
                         </tr>
                     }
                 </tbody>
             </table>
+
 
     </div>
     <div class="col-sm-7">

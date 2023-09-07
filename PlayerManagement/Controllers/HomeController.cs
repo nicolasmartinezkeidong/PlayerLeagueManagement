@@ -40,6 +40,11 @@ namespace PlayerManagement.Controllers
             int total = matchSchedules.Count();
             ViewBag.MatchSchedules = matchSchedules.ToList();
             ViewBag.TotalMatchSchedules = total;
+
+            // Calculate the matchweek number based on the MatchDay first match
+            int matchweekNumber = matchSchedules.FirstOrDefault()?.MatchDay ?? 0;
+            ViewBag.MatchweekNumber = matchweekNumber;
+
             #endregion
 
             return View();
