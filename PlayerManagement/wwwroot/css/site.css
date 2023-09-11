@@ -46,21 +46,27 @@ body {
 
     /*Sponsors slider*/
 
-.horizontal-slider {
-    display: flex;
-    flex-direction: row; /* Arrange slides  */
-    overflow-x: scroll; /*  horizontal scroll */
-    width: 100%; /*  full page width */
-    padding: 20px 0; /* Add spacing */
+.sponsor-list {
+    text-align: center;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
 }
 
-.swiper-slide {
-    flex: 0 0 auto; /* Prevent shrinking */
-    margin-right: 20px; /* spacing between slides */
-}
+    .sponsor-list h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 
-/* Adjust the height of the slider */
-.swiper-container {
-    height: 100px; /* Set height */
-    overflow: hidden; /* Hide vertical scrollbar */
-}
+    .sponsor-list ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sponsor-list li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .sponsor-list img {
+        max-width: 150px; /* Adjust the maximum width */
+    }
