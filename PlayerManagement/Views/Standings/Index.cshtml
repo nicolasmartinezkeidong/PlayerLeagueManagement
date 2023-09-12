@@ -1,0 +1,37 @@
+﻿@model List<StandingsVM>
+
+<table>
+    <thead>
+        <tr>
+            <th>Position</th>
+            <th>Team Name</th>
+            <th>Played</th>
+            <th>Won</th>
+            <th>Drawn</th>
+            <th>Lost</th>
+            <th>Goals Favor</th>
+            <th>Goals Against</th>
+            <th>Goals Difference</th>
+            <th>Points</th>
+            <th>Form</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Position</td>
+                <td>@item.TeamName</td>
+                <td>@item.Played</td>
+                <td>@item.Won</td>
+                <td>@item.Drawn</td>
+                <td>@item.Lost</td>
+                <td>@item.GoalsFavor</td>
+                <td>@item.GoalsAgainst</td>
+                <td>@item.GoalsDifference</td>
+                <td>@item.Points</td>
+                <td>@item.Form</td>
+            </tr>
+        }
+    </tbody>
+</table>
