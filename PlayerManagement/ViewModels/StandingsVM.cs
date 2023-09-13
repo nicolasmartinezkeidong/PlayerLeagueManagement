@@ -1,7 +1,10 @@
-﻿namespace PlayerManagement.ViewModels
+﻿using PlayerManagement.Models;
+
+namespace PlayerManagement.ViewModels
 {
     public class StandingsVM
     {
+        public int Id { get; set; }
         public int Position { get; set; }
         public string TeamName { get; set; }
         public int Played { get; set; }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using PlayerManagement.Data;
 using PlayerManagement.Models;
 using PlayerManagement.ViewModels;
 
@@ -6,94 +8,78 @@ namespace PlayerManagement.Controllers
 {
     public class StandingsController : Controller
     {
-        public IActionResult Standings()
+        private readonly PlayerManagementContext _context;
+
+        public StandingsController(PlayerManagementContext context)
         {
-            // Assuming you have a list of MatchSchedule and Team objects
-            List<MatchSchedule> matches = GetMatchSchedules(); // Implement this method to get the matches.
-            List<Team> teams = GetTeams(); // Implement this method to get the teams.
+            _context = context;
+        }
 
-            // Create a dictionary to store team statistics
-            Dictionary<Team, StandingsVM> teamStats = new Dictionary<Team, StandingsVM>();
-
-            // Initialize team statistics
-            foreach (var team in teams)
+        // GET: Standing
+        public async Task<IActionResult> Index()
+        {
+            var standings = await (from u in _context.Stan
+                               .OrderBy(u => u.UserName)
+                               select new UserVM
+                               {
+                                   Id = u.Id,
+                                   UserName = u.UserName
+                               }).ToListAsync();
+            foreach (var u in users)
             {
-                teamStats[team] = new StandingsVM
-                {
-                    TeamName = team.Name,
-                    Played = 0,
-                    Won = 0,
-                    Drawn = 0,
-                    Lost = 0,
-                    GoalsFavor = 0,
-                    GoalsAgainst = 0,
-                    GoalsDifference = 0,
-                    Points = 0,
-                    Form = string.Empty
-                };
-            }
+                var user = await _userManager.FindByIdAsync(u.Id);
+                u.UserRoles = (List<string>)await _userManager.GetRolesAsync(user);
+                //Note: we needed the explicit cast above because GetRolesAsync() returns an IList<string>
+            };
+            return View(users);
+        }
 
-            // Calculate team statistics based on match results
-            foreach (var match in matches)
+        // GET: Users/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
             {
-                if (match.HomeTeamScore.HasValue && match.AwayTeamScore.HasValue)
-                {
-                    // Update team statistics
-                    var homeTeamStat = teamStats[match.HomeTeam];
-                    var awayTeamStat = teamStats[match.AwayTeam];
-
-                    homeTeamStat.Played++;
-                    awayTeamStat.Played++;
-
-                    homeTeamStat.GoalsFavor += match.HomeTeamScore.Value;
-                    homeTeamStat.GoalsAgainst += match.AwayTeamScore.Value;
-
-                    awayTeamStat.GoalsFavor += match.AwayTeamScore.Value;
-                    awayTeamStat.GoalsAgainst += match.HomeTeamScore.Value;
-
-                    if (match.HomeTeamScore > match.AwayTeamScore)
-                    {
-                        homeTeamStat.Won++;
-                        awayTeamStat.Lost++;
-                        homeTeamStat.Points += 3;
-                        homeTeamStat.Form += "W";
-                        awayTeamStat.Form += "L";
-                    }
-                    else if (match.HomeTeamScore < match.AwayTeamScore)
-                    {
-                        homeTeamStat.Lost++;
-                        awayTeamStat.Won++;
-                        awayTeamStat.Points += 3;
-                        homeTeamStat.Form += "L";
-                        awayTeamStat.Form += "W";
-                    }
-                    else
-                    {
-                        homeTeamStat.Drawn++;
-                        awayTeamStat.Drawn++;
-                        homeTeamStat.Points++;
-                        awayTeamStat.Points++;
-                        homeTeamStat.Form += "D";
-                        awayTeamStat.Form += "D";
-                    }
-
-                    homeTeamStat.GoalsDifference = homeTeamStat.GoalsFavor - homeTeamStat.GoalsAgainst;
-                    awayTeamStat.GoalsDifference = awayTeamStat.GoalsFavor - awayTeamStat.GoalsAgainst;
-                }
+                return new BadRequestResult();
             }
-
-            // Order the standings by points (and then by goal difference if points are the same)
-            var orderedStandings = teamStats.Values.OrderByDescending(x => x.Points)
-                                                  .ThenByDescending(x => x.GoalsDifference)
-                                                  .ToList();
-
-            // Assign positions
-            for (int i = 0; i < orderedStandings.Count; i++)
+            var _user = await _userManager.FindByIdAsync(id);//IdentityRole
+            if (_user == null)
             {
-                orderedStandings[i].Position = i + 1;
+                return NotFound();
             }
+            UserVM user = new UserVM
+            {
+                Id = _user.Id,
+                UserName = _user.UserName,
+                UserRoles = (List<string>)await _userManager.GetRolesAsync(_user)
+            };
+            PopulateAssignedRoleData(user);
+            return View(user);
+        }
 
-            return View(orderedStandings);
+        // POST: Users/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string Id, string[] selectedRoles)
+        {
+            var _user = await _userManager.FindByIdAsync(Id);//IdentityRole
+            UserVM user = new UserVM
+            {
+                Id = _user.Id,
+                UserName = _user.UserName,
+                UserRoles = (List<string>)await _userManager.GetRolesAsync(_user)
+            };
+            try
+            {
+                await UpdateUserRoles(selectedRoles, user);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty,
+                                "Unable to save changes.");
+            }
+            PopulateAssignedRoleData(user);
+            return View(user);
         }
     }
 }
