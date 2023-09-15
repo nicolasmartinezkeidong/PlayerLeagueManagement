@@ -133,5 +133,6 @@ namespace PlayerManagement.Data
         }
 
         public DbSet<PlayerManagement.ViewModels.TeamStatsVM> TeamStatsVM { get; set; }
+        public DbSet<PlayerManagement.ViewModels.StandingsVM> StandingsVM { get; set; }
     }
 }

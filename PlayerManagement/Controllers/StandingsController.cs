@@ -9,51 +9,43 @@ namespace PlayerManagement.Controllers
     public class StandingsController : Controller
     {
         private readonly PlayerManagementContext _context;
+        private readonly StandingsVM _standingsVM;
 
-        public StandingsController(PlayerManagementContext context)
+        public StandingsController(PlayerManagementContext context, StandingsVM standingsVM)
         {
             _context = context;
+           _standingsVM = standingsVM;
         }
 
-        // GET: Standing
+        // GET: Standings
         public async Task<IActionResult> Index()
         {
-            var standings = await (from u in _context.Stan
-                               .OrderBy(u => u.UserName)
-                               select new UserVM
-                               {
-                                   Id = u.Id,
-                                   UserName = u.UserName
-                               }).ToListAsync();
-            foreach (var u in users)
-            {
-                var user = await _userManager.FindByIdAsync(u.Id);
-                u.UserRoles = (List<string>)await _userManager.GetRolesAsync(user);
-                //Note: we needed the explicit cast above because GetRolesAsync() returns an IList<string>
-            };
-            return View(users);
+            return null;
+            //var standings = await (from s in _context.Standings
+            //                   .OrderBy(s => s.Position)
+            //                       select new StandingsVM
+            //                       {
+            //                           Id = s.Id,
+            //                           Position = s.Position,
+            //                           TeamName = s.TeamName,
+            //                           Played = s.Played,
+            //                           Won = s.Won,
+            //                           Drawn = s.Drawn,
+            //                           Lost = s.Lost,
+            //                           GoalsFavor = s.GoalsFavor,
+            //                           GoalsAgainst = s.GoalsAgainst,
+            //                           GoalsDifference = s.GoalsDifference,
+            //                           Points = s.Points,
+            //                           Form = s.Form
+            //                       }).ToListAsync();
+
+            //return View(standings);
         }
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
-            {
-                return new BadRequestResult();
-            }
-            var _user = await _userManager.FindByIdAsync(id);//IdentityRole
-            if (_user == null)
-            {
-                return NotFound();
-            }
-            UserVM user = new UserVM
-            {
-                Id = _user.Id,
-                UserName = _user.UserName,
-                UserRoles = (List<string>)await _userManager.GetRolesAsync(_user)
-            };
-            PopulateAssignedRoleData(user);
-            return View(user);
+            return null;
         }
 
         // POST: Users/Edit/5
@@ -61,25 +53,9 @@ namespace PlayerManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string Id, string[] selectedRoles)
         {
-            var _user = await _userManager.FindByIdAsync(Id);//IdentityRole
-            UserVM user = new UserVM
-            {
-                Id = _user.Id,
-                UserName = _user.UserName,
-                UserRoles = (List<string>)await _userManager.GetRolesAsync(_user)
-            };
-            try
-            {
-                await UpdateUserRoles(selectedRoles, user);
-                return RedirectToAction("Index");
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(string.Empty,
-                                "Unable to save changes.");
-            }
-            PopulateAssignedRoleData(user);
-            return View(user);
+            return null;
         }
+
+
     }
 }
