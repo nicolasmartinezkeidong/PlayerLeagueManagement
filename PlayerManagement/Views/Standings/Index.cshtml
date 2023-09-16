@@ -1,5 +1,5 @@
 ﻿@using PlayerManagement.ViewModels;
-@model List<StandingsVM>
+@model List<StandingsVM>  
 
 <table>
     <thead>
@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model)  // Iterate over the standings data
         {
             <tr>
                 <td>@item.Position</td>
