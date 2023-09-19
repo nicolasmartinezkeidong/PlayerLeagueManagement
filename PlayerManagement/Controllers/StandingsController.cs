@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
 using PlayerManagement.ViewModels;
+using System.Text;
 
 namespace PlayerManagement.Controllers
 {
@@ -19,9 +20,14 @@ namespace PlayerManagement.Controllers
         // GET: Standings
         public async Task<IActionResult> Index()
         {
-            var standings = await _context.StandingsVM
-                .OrderBy(s => s.Position)
+            var teams = await _context.Teams
+                .OrderBy(t => t.Name)
                 .ToListAsync();
+
+            var standings = teams.Select(s => new StandingsVM
+            {
+                TeamName = s.Name
+            }).ToList();
 
             // matches results
             var matches = await _context.MatchSchedules.ToListAsync();
@@ -60,8 +66,86 @@ namespace PlayerManagement.Controllers
 
         private string CalculateForm(string teamName, List<MatchSchedule> matches)
         {
-           
-            return "WDL"; 
+
+            // Filter matches for the given team
+            var teamMatches = matches
+                .Where(match => match.HomeTeam.Name == teamName || match.AwayTeam.Name == teamName)
+                .OrderByDescending(match => match.Date) // Order by date to get the most recent matches first
+                .Take(3) // Take the last 3 matches
+                .ToList();
+
+            // Initialize an empty string to store the form
+            var form = new StringBuilder();
+
+            foreach (var match in teamMatches)
+            {
+                if (match.HomeTeam.Name == teamName)
+                {
+                    if (match.HomeTeamScore > match.AwayTeamScore)
+                    {
+                        form.Append("W"); // Team won
+                    }
+                    else if (match.HomeTeamScore < match.AwayTeamScore)
+                    {
+                        form.Append("L"); // Team lost
+                    }
+                    else
+                    {
+                        form.Append("D"); // Match was drawn
+                    }
+                }
+                else if (match.AwayTeam.Name == teamName)
+                {
+                    if (match.AwayTeamScore > match.HomeTeamScore)
+                    {
+                        form.Append("W"); // Team won
+                    }
+                    else if (match.AwayTeamScore < match.HomeTeamScore)
+                    {
+                        form.Append("L"); // Team lost
+                    }
+                    else
+                    {
+                        form.Append("D"); // Match was drawn
+                    }
+                }
+            }
+
+            return form.ToString();
+        }
+
+        private List<StandingsVM> CalculateStandings(List<MatchSchedule> matches)
+        {
+            var standings = new List<StandingsVM>();
+
+            // Retrieve a list of unique team names from the matches
+            var teamNames = matches.SelectMany(match => new[] { match.HomeTeam.Name, match.AwayTeam.Name }).Distinct();
+
+            // Calculate team statistics for each team
+            foreach (var teamName in teamNames)
+            {
+                var teamMatches = matches.Where(match =>
+                    match.HomeTeam.Name == teamName || match.AwayTeam.Name == teamName);
+
+                var standing = new StandingsVM
+                {
+                    TeamName = teamName,
+                    Played = teamMatches.Count(),
+                    // Add other statistics calculation logic here
+                };
+
+                // Add the standing to the list
+                standings.Add(standing);
+            }
+
+            // Sort and assign positions
+            standings = standings.OrderByDescending(s => s.Points).ThenByDescending(s => s.GoalsDifference).ToList();
+            for (var i = 0; i < standings.Count; i++)
+            {
+                standings[i].Position = i + 1;
+            }
+
+            return standings;
         }
 
 
