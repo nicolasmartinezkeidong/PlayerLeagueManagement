@@ -6,9 +6,10 @@ namespace PlayerManagement.ViewModels
     public class StandingsVM
     {
         public int Id { get; set; }
+        [Display(Name = "Pos")]
         public int Position { get; set; }
 
-        [Display(Name ="Team")]
+        [Display(Name ="Club")]
         public string TeamName { get; set; }
         
         public int Played { get; set; }
@@ -24,6 +25,8 @@ namespace PlayerManagement.ViewModels
 
         [Display(Name = "GD")]
         public int GoalsDifference { get; set; }
+
+        [Display(Name = "Pts")]
         public int Points { get; set; }
         public string Form { get; set; }
     }
