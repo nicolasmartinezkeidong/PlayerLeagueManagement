@@ -1,4 +1,5 @@
-﻿@model dynamic
+﻿@using PlayerManagement.ViewModels;
+@model dynamic
 
 @{
     ViewData["Title"] = "Home Page";
@@ -123,12 +124,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (MatchSchedule match in ViewBag.MatchSchedules)
+                    @foreach (StandingsVM standings in ViewBag.Standings)
                     {
                         <tr>
-                            <td>@match.HomeTeamAbbreviation </td>
-                            <td>VS</td>
-                            <td>@match.AwayTeamAbbreviation </td>
+                            <td>@standings.TeamName</td>
                         </tr>
                     }
                 </tbody>

@@ -47,6 +47,14 @@ namespace PlayerManagement.Controllers
 
             #endregion
 
+            #region Standings
+            var standingData = from s in _context.StandingsVM
+                               .AsNoTracking()
+                               select s;
+
+            ViewBag.Standings = standingData.ToList();
+            #endregion
+
             return View();
         }
 
