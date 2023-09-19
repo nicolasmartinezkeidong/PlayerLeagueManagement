@@ -70,3 +70,10 @@ body {
     .sponsor-list img {
         max-width: 150px; /* Adjust the maximum width */
     }
+
+    /*League Photos*/
+    #leaguePhotos .carousel-inner img {
+    width: 640px;
+    height: 340px;
+    object-fit: cover; /* ensures the image fills the entire container */
+}
