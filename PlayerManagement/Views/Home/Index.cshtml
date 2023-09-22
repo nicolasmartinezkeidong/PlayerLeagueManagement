@@ -120,14 +120,24 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th colspan="2">Table</th>
+                        <th colspan="5">Table</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <th>Pos</th>
+                        <th>Team</th>
+                        <th>Pl</th>
+                        <th>GD</th>
+                        <th>Pts</th>
+                    </tr>
                     @foreach (var standing in ViewBag.Standings)
                     {
                         <tr>
+                            <td>@standing.Position</td>
                             <td>@standing.TeamName</td>
+                            <td>@standing.Played</td>
+                            <td>@standing.GoalsDifference</td>
                             <td>@standing.Points</td>
                         </tr>
                     }

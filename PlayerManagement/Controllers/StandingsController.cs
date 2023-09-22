@@ -53,7 +53,10 @@ namespace PlayerManagement.Controllers
             }
 
             // Sort by points and goal difference
-            standings = standings.OrderByDescending(s => s.Points).ThenByDescending(s => s.GoalsDifference).ToList();
+            standings = standings
+                .OrderByDescending(s => s.Points)
+                .ThenByDescending(s => s.GoalsDifference)
+                .ToList();
 
             // Assign positions
             for (var i = 0; i < standings.Count; i++)

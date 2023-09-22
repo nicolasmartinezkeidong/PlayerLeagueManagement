@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using Microsoft.AspNetCore.Identity;
 using PlayerManagement.ViewModels;
+using PlayerManagement.Utilities;
 
 namespace PlayerManagement.Controllers
 {
@@ -49,24 +50,11 @@ namespace PlayerManagement.Controllers
             #endregion
 
             #region Standings
-            var teams = await _context.Teams
-                .OrderBy(t => t.Name)
-                .ToListAsync();
+            var standings = await StandingsCalculator.CalculateStandingsAsync(_context);
 
-            var standings = teams.Select(s => new StandingsVM
-                {
-                    TeamName = s.Name
-                }).ToList();
-
-            // Order the standings by Position, Points, or any other criteria as needed
-            //standings = (List<StandingsVM>)standings
-            //    .OrderBy(s => s.Position)
-            //    .ThenByDescending(s => s.GoalsDifference);
-
-            // limit the number of teams displayed if needed
-            // standings = standings.Take(10);
-
-            ViewBag.Standings = standings.ToList();
+            // Take 10 only
+            standings = standings.Take(10).ToList();
+            ViewBag.Standings = standings;
             #endregion
 
             return View();
