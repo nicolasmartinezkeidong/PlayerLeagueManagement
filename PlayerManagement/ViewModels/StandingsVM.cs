@@ -29,5 +29,7 @@ namespace PlayerManagement.ViewModels
         [Display(Name = "Pts")]
         public int Points { get; set; }
         public string Form { get; set; }
+
+        public ICollection<Team> Teams { get; set; } = new HashSet<Team>();
     }
 }

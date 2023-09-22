@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using Microsoft.AspNetCore.Identity;
+using PlayerManagement.ViewModels;
 
 namespace PlayerManagement.Controllers
 {
@@ -20,10 +21,10 @@ namespace PlayerManagement.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             //MatchSchedules Items query
-            #region
+            #region MatchSchedules
             var currentDate = DateTime.Now;
             var startOfWeek = currentDate.Date.AddDays(DayOfWeek.Sunday - currentDate.DayOfWeek);
             var endOfWeek = startOfWeek.AddDays(7);
@@ -48,11 +49,24 @@ namespace PlayerManagement.Controllers
             #endregion
 
             #region Standings
-            var standingData = from s in _context.StandingsVM
-                               .AsNoTracking()
-                               select s;
+            var teams = await _context.Teams
+                .OrderBy(t => t.Name)
+                .ToListAsync();
 
-            ViewBag.Standings = standingData.ToList();
+            var standings = teams.Select(s => new StandingsVM
+                {
+                    TeamName = s.Name
+                }).ToList();
+
+            // Order the standings by Position, Points, or any other criteria as needed
+            //standings = (List<StandingsVM>)standings
+            //    .OrderBy(s => s.Position)
+            //    .ThenByDescending(s => s.GoalsDifference);
+
+            // limit the number of teams displayed if needed
+            // standings = standings.Take(10);
+
+            ViewBag.Standings = standings.ToList();
             #endregion
 
             return View();

@@ -124,15 +124,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (StandingsVM standings in ViewBag.Standings)
+                    @foreach (var standing in ViewBag.Standings)
                     {
                         <tr>
-                            <td>@standings.TeamName</td>
+                            <td>@standing.TeamName</td>
+                            <td>@standing.Points</td>
                         </tr>
                     }
                 </tbody>
             </table>
-
+            <a asp-area="" asp-controller="Standings" asp-action="Index">View More...</a>
         </div>
         <div class="col-sm-7">
 
@@ -163,14 +164,9 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non ultrices ipsum, non molestie ex. Vivamus fermentum pretium sapien a ullamcorper. Vivamus id purus quam. Cras a urna erat.</p>
             <p>
                 <ul>
-                    <li>9 vs 9 Coed Adult (including the goalie)</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                    <li><span style="color: #ff0000;"><strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</strong></span></li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                    <li>Team of the week</li>
                 </ul>
             </p>
-            <p>Register <a href="#">here</a></p>
         </div>
         <div class="col-sm-2">
             news
