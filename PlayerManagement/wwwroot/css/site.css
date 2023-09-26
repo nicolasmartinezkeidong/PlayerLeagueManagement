@@ -59,20 +59,28 @@ body {
     .sponsor-list ul {
         list-style: none;
         padding: 0;
+        padding-bottom: 15px;
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow: hidden;
     }
 
     .sponsor-list li {
-        display: inline-block;
+        flex: 0 0 calc(20% - 20px); /* Display 5 elements */
         margin-right: 20px;
     }
 
     .sponsor-list img {
-        max-width: 150px; /* Adjust the maximum width */
+        max-width: 100%; /* maximum width */
     }
+
+
 
     /*League Photos*/
     #leaguePhotos .carousel-inner img {
-    width: 640px;
-    height: 340px;
-    object-fit: cover; /* ensures the image fills the entire container */
-}
+        width: 640px;
+        height: 340px;
+        object-fit: cover; /* ensures the image fills the entire container */
+    }
