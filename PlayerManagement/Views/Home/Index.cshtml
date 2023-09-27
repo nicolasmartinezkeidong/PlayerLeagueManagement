@@ -161,7 +161,7 @@
             </table>
             <a asp-area="" asp-controller="Standings" asp-action="Index">View More...</a>
         </div>
-        <div class="col-sm-7">
+        <div class="col-sm-5">
 
             <div id="teamOfTheWeekPhotos" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -194,8 +194,53 @@
                 </ul>
             </p>
         </div>
-        <div class="col-sm-2">
-            news
+        <div class="col-sm-4">
+
+            <div class="card">
+                <div class="row no-gutters">
+                    <!-- Player Stats -->
+                    <div class="col-md-4">
+                        <ul class="list-group list-group-flush">
+                            <!-- Appearances -->
+                            <li class="list-group-item">
+                                Appearances:
+                                <span class="value">141</span>
+                            </li>
+                            <!-- Goals -->
+                            <li class="list-group-item">
+                                Goals: 34
+                            </li>
+                            <!-- Assists -->
+                            <li class="list-group-item">
+                                Assists: 28
+                            </li>
+                            <!-- Shots -->
+                            <li class="list-group-item">
+                                Shots: 275
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Player Photo and Details -->
+                    <div class="col-md-8">
+                        <img src="/images/blankProfile.jpg" class="card-img-top" alt="Player Photo">
+                        <div class="card-body">
+                            <!-- Icon and Player Name Container -->
+                            <div class="icon-and-name">
+                                <!-- Country Icon -->
+                                <p class="card-text">
+                                    <img src="/images/chile.png" alt="Country Icon" width="24" height="24">
+                                </p>
+                                <!-- Player Name -->
+                                <h5 class="card-title" style="position: absolute; bottom: 0; left: 0;">Player Name</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
         </div>
 
     </div>

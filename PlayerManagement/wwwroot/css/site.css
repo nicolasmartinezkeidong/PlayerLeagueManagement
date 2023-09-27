@@ -84,3 +84,14 @@ body {
         height: 340px;
         object-fit: cover; /* ensures the image fills the entire container */
     }
+
+/*player stats*/
+.list-group-item {
+    font-size:small;
+}
+
+.list-group-item .value {
+    display: block;
+    font-weight: bold;
+    margin-top: 5px; /* Add space above the number */
+}
