@@ -93,5 +93,5 @@ body {
 .list-group-item .value {
     display: block;
     font-weight: bold;
-    margin-top: 5px; /* Add space above the number */
+    margin-top: 3px; /* Add space above the number */
 }
