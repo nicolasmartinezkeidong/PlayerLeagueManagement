@@ -441,8 +441,26 @@ namespace PlayerManagement.Data
                     context.SaveChanges();
                 }
                 #endregion
-            }
 
+                #region News
+                if(!context.News.Any())
+                {
+                    DateTime newsDate = DateTime.Today;// 
+
+                    News news = new News
+                    {
+                        Title = "lorem ipsum",
+                        AuthorFirstName = "Marcelo",
+                        AuthorLastName = "Salas",
+                        Date = newsDate.AddDays(-random.Next(0, 731)),
+                        Content = baconNotes[random.Next(0, baconNotes.Length)]
+                    };
+                    context.News.Add(news);
+                }
+                context.SaveChanges();
+                #endregion
+            }
+ 
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.GetBaseException().Message);

@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                @Html.DisplayNameFor(model => model.NewsPhoto)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Content)
@@ -48,9 +48,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
+                <td>
+                    @{
+                        if (item.NewsPhoto?.Content != null)
+                        {
+                            string imageBase64 = Convert.ToBase64String(item.NewsPhoto.Content);
+                            string imageSrc = string.Format("data:" + item.NewsPhoto.MimeType + ";base64,{0}", imageBase64);
+                            <img src="@imageSrc" alt="Picture of @item.Title news" title="Picture of @item.Title news" class="img-fluid rounded" />
+                        }
+                    }
+                </td>
+            @* <td style="max-height: 80px; max-width: 96px" class="img-fluid rounded">
+                @Html.DisplayFor(modelItem => item.NewsPhoto)
+            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.Content)
             </td>

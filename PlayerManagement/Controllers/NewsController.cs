@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Data;
 using PlayerManagement.Models;
+using PlayerManagement.Utilities;
 
 namespace PlayerManagement.Controllers
 {
@@ -22,7 +23,11 @@ namespace PlayerManagement.Controllers
         // GET: News
         public async Task<IActionResult> Index()
         {
-              return View(await _context.News.ToListAsync());
+            var news = await _context.News
+                .Include(n => n.NewsPhoto)
+                .ToListAsync();
+
+            return View(news);
         }
 
         // GET: News/Details/5
@@ -54,10 +59,11 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,AuthorFirstName,AuthorLastName,Date,ImageUrl,Content")] News news)
+        public async Task<IActionResult> Create([Bind("Id,Title,AuthorFirstName,AuthorLastName,Date,ImageUrl,Content")] News news, IFormFile thePicture)
         {
             if (ModelState.IsValid)
             {
+                await AddPicture(news, thePicture);
                 _context.Add(news);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,9 +92,15 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,AuthorFirstName,AuthorLastName,Date,ImageUrl,Content")] News news)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,AuthorFirstName,AuthorLastName,Date,ImageUrl,Content")] 
+        News news, string chkRemoveImage, IFormFile thePicture)
         {
-            if (id != news.Id)
+            //Go get the News to update
+            var newsToUpdate = await _context.News
+                .Include(p => p.NewsPhoto)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (newsToUpdate == null)
             {
                 return NotFound();
             }
@@ -97,12 +109,22 @@ namespace PlayerManagement.Controllers
             {
                 try
                 {
-                    _context.Update(news);
+
+                    if (chkRemoveImage != null)
+                    {
+                        newsToUpdate.NewsPhoto = null;
+                    }
+                    else
+                    {
+                        await AddPicture(newsToUpdate, thePicture);
+                    }
+
+                    _context.Update(newsToUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NewsExists(news.Id))
+                    if (!NewsExists(newsToUpdate.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +135,7 @@ namespace PlayerManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(news);
+            return View(newsToUpdate);
         }
 
         // GET: News/Delete/5
@@ -151,6 +173,40 @@ namespace PlayerManagement.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task AddPicture(News news, IFormFile thePicture)
+        {
+            //Get the picture and save it with the News (2 sizes)
+            if (thePicture != null)
+            {
+                string mimeType = thePicture.ContentType;
+                long fileLength = thePicture.Length;
+                if (!(mimeType == "" || fileLength == 0))//we have a file
+                {
+                    if (mimeType.Contains("image"))
+                    {
+                        using var memoryStream = new MemoryStream();
+                        await thePicture.CopyToAsync(memoryStream);
+                        var pictureArray = memoryStream.ToArray();//Gives us the Byte[]
+
+                        //Check if we are replacing or creating new
+                        if (news.NewsPhoto != null)
+                        {
+                            //We already have pictures so just replace the Byte[]
+                            news.NewsPhoto.Content = ResizeImage.shrinkImageWebp(pictureArray, 500, 600);
+                        }
+                        else //No pictures saved so start new
+                        {
+                            news.NewsPhoto = new NewsPhoto
+                            {
+                                Content = ResizeImage.shrinkImageWebp(pictureArray, 500, 600),
+                                MimeType = "image/webp"
+                            };
+                        }
+                    }
+                }
+            }
         }
 
         private bool NewsExists(int id)

@@ -35,8 +35,7 @@ namespace PlayerManagement.Models
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; }
+        public NewsPhoto NewsPhoto { get; set; }
 
         [Display(Name = "Content")]
         [Required(ErrorMessage = "You cannot leave the content blank.")]
