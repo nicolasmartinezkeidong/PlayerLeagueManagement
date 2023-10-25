@@ -59,7 +59,7 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,AuthorFirstName,AuthorLastName,Date,ImageUrl,Content")] News news, IFormFile thePicture)
+        public async Task<IActionResult> Create([Bind("Id,Title,AuthorFirstName,AuthorLastName,Date,Content")] News news, IFormFile thePicture)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,11 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
-            var news = await _context.News.FindAsync(id);
+            //Go get the News
+            var news = await _context.News
+                .Include(p => p.NewsPhoto)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (news == null)
             {
                 return NotFound();

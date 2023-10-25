@@ -33,8 +33,10 @@ namespace PlayerManagement.Models
         [Required]
         [Display(Name = "Publication Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
+        [Display(Name = "News Image")]
         public NewsPhoto NewsPhoto { get; set; }
 
         [Display(Name = "Content")]
