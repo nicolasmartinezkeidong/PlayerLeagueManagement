@@ -52,8 +52,8 @@ namespace PlayerManagement.Controllers
             #region Standings
             var standings = await StandingsCalculator.CalculateStandingsAsync(_context);
 
-            // Take 10 only
-            standings = standings.Take(10).ToList();
+            // Take only 'x' amount of teams
+            standings = standings.Take(15).ToList();
             ViewBag.Standings = standings;
             #endregion
 
