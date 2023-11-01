@@ -95,3 +95,21 @@ body {
     font-weight: bold;
     margin-top: 3px; /* Add space above the number */
 }
+
+/*Team Stats*/
+#team-stats .row {
+    padding-bottom: 20px;
+}
+
+#team-stats .row span {
+        font-size: 20px;
+}
+
+.stats-title{
+    font-size:25px;
+}
+
+#team-stats .row img {
+    width: 40px;
+    height: 50px;
+}
