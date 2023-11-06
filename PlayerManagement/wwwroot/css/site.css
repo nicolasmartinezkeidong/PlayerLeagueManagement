@@ -150,3 +150,22 @@ body {
         font-size: 24px;
         color: white;
     }
+
+
+/* custom class to the "Player Stats 2" card */
+.player-stats-2-card {
+    position: relative;
+    top: 55px;
+}
+
+/* Custom class for Player Stats 2 */
+.player-stats-2-card {
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    /* Adjust for smaller screens */
+    .player-stats-2-card {
+        top: 0; /* Reset the positioning for smaller screens */
+    }
+}
