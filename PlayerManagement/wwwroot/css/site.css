@@ -113,3 +113,40 @@ body {
     width: 40px;
     height: 50px;
 }
+
+/* Footer styling */
+.home-footer {
+    background-color: #45526e;
+    color: white;
+    padding: 2rem 0;
+}
+
+    /* Grid column styling */
+    .home-footer .col-md-3,
+    .home-footer .col-md-2,
+    .home-footer .col-md-4 {
+        margin-top: 3rem;
+    }
+
+    /* Section headings */
+    .home-footer .section-title {
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    /* Links styling */
+    .home-footer .footer-link {
+        color: white;
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    /* Icon buttons styling */
+    .home-footer .icon-button {
+        margin: 0.25rem;
+        text-decoration: none;
+        font-size: 24px;
+        color: white;
+    }
