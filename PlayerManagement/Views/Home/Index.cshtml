@@ -144,6 +144,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
+            <h4>Standings</h4>
             <table class="table">
                 <thead>
                     <tr>
@@ -170,11 +171,13 @@
                     }
                 </tbody>
             </table>
-            <a asp-area="" asp-controller="Standings" asp-action="Index">View More...</a>
+            <div class="link-standings">
+                <a asp-area="" asp-controller="Standings" asp-action="Index">View More...</a>
+            </div>
         </div>
 
         <div class="col-sm-9">
-            <h2>Stats</h2>
+            <h4>Stats</h4>
 
             <!-- Teams stats -->
             <div class="container" id="team-stats">
@@ -293,15 +296,15 @@
 
         @* Player to watch *@
         <div class="col-sm-3">
-
+            <h4 class="player-to-watch">Player to Watch</h4>
             <div class="card">
                 <div class="row no-gutters">
                     <!-- Player Stats -->
                     <div class="col-md-4 sol-sm-12">
                         <ul class="list-group list-group-flush">
-                            <!-- Appearances -->
+                            <!-- Matches -->
                             <li class="list-group-item">
-                                Appearances:
+                                Matches:
                                 <span class="value">141</span>
                             </li>
                             <!-- Goals -->
@@ -330,18 +333,14 @@
                 <div class="row">
                     <!-- Player Name -->
                     <div class="col-md-4 col-sm-12">
-                        <div class="row">
-                            <div class="col">
-                                <p>Player Name</p>
-                            </div>
+                        <div style="font-size:16px">
+                            <p>Player</p>
                         </div>
-                        <div class="row">
-                            <div class="col align-self-center">
-                                <img src="/images/chile.png" alt="Country Icon" width="20" height="20">
-                            </div>
+                        <div style="font-size:30px">
+                            <p>Name</p>
                         </div>
+                        <img src="/images/chile.png" alt="Country Icon" width="20" height="20">
                     </div>
-
 
                     <!-- Blank space -->
                     <div class="col-md-4 col-sm-0">
@@ -357,14 +356,15 @@
                 </div>
             </div>
 
-            <div class="card player-stats-2-card">
+            <h4 class="player-to-watch">Player to Watch</h4>
+            <div class="card">
                 <div class="row no-gutters">
                     <!-- Player Stats 2 -->
                     <div class="col-md-4 sol-sm-12">
                         <ul class="list-group list-group-flush">
-                            <!-- Appearances -->
+                            <!-- Matches -->
                             <li class="list-group-item">
-                                Appearances:
+                                Matches:
                                 <span class="value">141</span>
                             </li>
                             <!-- Goals -->
@@ -393,18 +393,9 @@
                 <div class="row">
                     <!-- Player Name -->
                     <div class="col-md-4 col-sm-12">
-                        <div class="row">
-                            <div class="col">
-                                <p>Player Name</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col align-self-center">
-                                <img src="/images/chile.png" alt="Country Icon" width="20" height="20">
-                            </div>
-                        </div>
+                        <p style="white-space: nowrap; font-size:">Player Name</p>
+                        <img src="/images/chile.png" alt="Country Icon" width="20" height="20">
                     </div>
-
 
                     <!-- Blank space -->
                     <div class="col-md-4 col-sm-0">
