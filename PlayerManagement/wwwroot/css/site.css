@@ -87,7 +87,7 @@ body {
 
 /*Player to watch*/
 .list-group-item {
-    font-size:small;
+    font-size: small;
 }
 
 .list-group-item .value {
@@ -101,10 +101,50 @@ body {
     border: 1px solid gold;
 }
 
+.card-players p{
+    border-radius: 15px;
+    border: 1px solid red;
+}
+
+    .card-players ul {
+        border-radius: 15px;
+        border: 1px solid blue;
+    }
+
+    .card-players .col-md-4 {
+        position: relative;
+    }
+
+        .card-players .col-md-4 div {
+            margin-left: 10px; /* Move text 'Player' and 'Name' 10px to the right */
+        }
+
+        .card-players .fi-cl {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Custom styles for Social Media */
+    .card-players .col-md-4.align-self-center {
+        margin-right: 10px; /* Move Social Media icons 10px from the right border */
+    }
+
     .card-players .col-md-8 img {
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
-        margin: 5px 0 0 -5px; /* 10px from top and right, adjust as needed */
+        margin: 5px 0 0 -5px;
+    }
+
+    .card-players .fi.fi-cl {
+        display: block;
+        text-align: center; 
+        margin-top: 10px; 
+    }
+
+    .card-players .row.d-flex.align-items-center {
+        justify-content: space-between; 
     }
 
 
