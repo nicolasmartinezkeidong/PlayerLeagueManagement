@@ -85,7 +85,7 @@ body {
         object-fit: cover; /* ensures the image fills the entire container */
     }
 
-/*player stats*/
+/*Player to watch*/
 .list-group-item {
     font-size:small;
 }
@@ -95,6 +95,18 @@ body {
     font-weight: bold;
     margin-top: 3px; /* Add space above the number */
 }
+
+.card-players {
+    border-radius: 15px;
+    border: 1px solid gold;
+}
+
+    .card-players .col-md-8 img {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        margin: 5px 0 0 -5px; /* 10px from top and right, adjust as needed */
+    }
+
 
 /*Team Stats*/
 #team-stats .row {
@@ -170,7 +182,7 @@ body {
     /*}
 }*/
 
-/*A element Standings table*/
+/*<a> element Standings table*/
 .link-standings {
     text-align: center; 
     margin-top: -10px; 
