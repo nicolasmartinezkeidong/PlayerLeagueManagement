@@ -113,11 +113,13 @@ body {
     }
     .card-players .player-firstname {
         font-size: 16px;
+        margin-top:5px;
         
     }
 
     .card-players .player-lastname {
         font-size: 25px;
+        margin-top: -10px;
     }
 
 .card-players .col-md-4 {
@@ -125,20 +127,23 @@ body {
     }
 
 .card-players .col-md-4 div {
-            margin-left: 10px;
+            margin-left: 5px;
         }
 
     .card-players .fi-cl {
-        position: absolute;
-        bottom: 0;
+        bottom: 10px;
         left: 50%;
         transform: translateX(-50%);
         font-size: 20px;
     }
 
-    .card-players .player-lastname-container {
-        border-radius: 15px;
+    .card-players .player-name-container {
+        border-radius: 5px;
         border: 1px solid blue;
+        margin: -15px 0 10px 0;
+        display: block;
+        margin-top: 1px;
+        width: min-content;
     }
 
 
@@ -147,11 +152,15 @@ body {
         margin-right: 10px;
     }
 
-    .card-players .col-md-8 img {
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        margin: 5px 0 0 -5px;
-    }
+.player-social-media a i{
+    font-size:20px;
+}
+
+.card-players .col-md-8 img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: 5px 0 0 -5px;
+}
 
     .card-players .fi.fi-cl {
         display: block;
