@@ -106,29 +106,45 @@ body {
     border: 1px solid red;
 }
 
-    .card-players ul {
+.card-players ul {
         border-radius: 15px;
         border: 1px solid blue;
+        margin:1px 0 0 2px;
+    }
+    .card-players .player-firstname {
+        font-size: 16px;
+        
     }
 
-    .card-players .col-md-4 {
+    .card-players .player-lastname {
+        font-size: 25px;
+    }
+
+.card-players .col-md-4 {
         position: relative;
     }
 
-        .card-players .col-md-4 div {
-            margin-left: 10px; /* Move text 'Player' and 'Name' 10px to the right */
+.card-players .col-md-4 div {
+            margin-left: 10px;
         }
 
-        .card-players .fi-cl {
+    .card-players .fi-cl {
         position: absolute;
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
+        font-size: 20px;
     }
+
+    .card-players .player-lastname-container {
+        border-radius: 15px;
+        border: 1px solid blue;
+    }
+
 
     /* Custom styles for Social Media */
     .card-players .col-md-4.align-self-center {
-        margin-right: 10px; /* Move Social Media icons 10px from the right border */
+        margin-right: 10px;
     }
 
     .card-players .col-md-8 img {
@@ -139,12 +155,12 @@ body {
 
     .card-players .fi.fi-cl {
         display: block;
-        text-align: center; 
-        margin-top: 10px; 
+        text-align: center;
+        margin-top: 10px;
     }
 
     .card-players .row.d-flex.align-items-center {
-        justify-content: space-between; 
+        justify-content: space-between;
     }
 
 
