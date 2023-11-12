@@ -85,95 +85,91 @@ body {
         object-fit: cover; /* ensures the image fills the entire container */
     }
 
-/*Player to watch*/
-.list-group-item {
-    font-size: small;
-}
 
-.list-group-item .value {
-    display: block;
-    font-weight: bold;
-    margin-top: 3px; /* Add space above the number */
-}
+/* -------------------------------------------------- Player to Watch cards -------------------------------------------------- */
 
+/*Card player to watch*/
 .card-players {
     border-radius: 15px;
     border: 1px solid gold;
 }
 
-.card-players p{
-    border-radius: 15px;
-    border: 1px solid red;
+/*Player stats*/
+.list-group-item {
+    font-size: small;
 }
-
 .card-players ul {
-        border-radius: 15px;
-        border: 1px solid blue;
-        margin:1px 0 0 2px;
-    }
-    .card-players .player-firstname {
-        font-size: 16px;
-        margin-top:5px;
-        
-    }
-
-    .card-players .player-lastname {
-        font-size: 25px;
-        margin-top: -10px;
-    }
-
-.card-players .col-md-4 {
-        position: relative;
-    }
-
-.card-players .col-md-4 div {
-            margin-left: 5px;
-        }
-
-    .card-players .fi-cl {
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 20px;
-    }
-
-    .card-players .player-name-container {
-        border-radius: 5px;
-        border: 1px solid blue;
-        margin: -15px 0 10px 0;
-        display: block;
-        margin-top: 1px;
-        width: min-content;
-    }
-
-
-    /* Custom styles for Social Media */
-    .card-players .col-md-4.align-self-center {
-        margin-right: 10px;
-    }
-
-.player-social-media a i{
-    font-size:20px;
+    margin: 1px 0 0 2px;
+}
+.list-group-item .value {
+    display: block;
+    font-weight: bold;
+    margin-top: 3px; /* Add space above the number */
+}
+.card-players .row.d-flex.align-items-center {
+    justify-content: space-between;
 }
 
+/*Player Names*/
+.card-players .player-name-container {
+    margin: -15px 0px 10px 0;
+    display: block;
+    margin-top: 1px;
+    width: min-content;
+}
+.card-players .player-firstname {
+    font-size: 16px;
+    margin-top: 10px;
+    padding-top: 3px;
+}
+.card-players .player-lastname {
+     font-size: 25px;
+     margin-top: -25px;
+    }
+.card-players .col-md-4 {
+     position: relative;
+    }
+.card-players .col-md-4 div {
+     margin-left: 8px; /*Move the .player-name-container to the right*/
+    }
+
+/*Player national flag*/
+.card-players .fi-cl {
+     bottom: 10px;
+     left: 50%;
+     transform: translateX(-50%);
+     font-size: 20px;
+    }
+.card-players .fi.fi-cl {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Social Media icons */
+.card-players .col-md-4.align-self-center {
+     margin-right: 20px;
+    }
+.player-social-media {
+    display: inline-flex;
+    align-items: center;
+}
+.player-social-media a {
+    margin-right: 5px; /* Adjust the value to control the separation */
+}
+.player-social-media a i {
+    font-size: 20px;
+    }
+
+/*Player profile img*/ 
 .card-players .col-md-8 img {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin: 5px 0 0 -5px;
+    height:100%;
 }
 
-    .card-players .fi.fi-cl {
-        display: block;
-        text-align: center;
-        margin-top: 10px;
-    }
-
-    .card-players .row.d-flex.align-items-center {
-        justify-content: space-between;
-    }
-
-
-/*Team Stats*/
+/* -------------------------------------------------- Teams stats -------------------------------------------------- */
 #team-stats .row {
     padding-bottom: 20px;
 }
