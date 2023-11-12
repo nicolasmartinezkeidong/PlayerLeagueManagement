@@ -92,22 +92,29 @@ body {
 .card-players {
     border-radius: 15px;
     border: 1px solid gold;
+    background-color: #f8f9fa;
 }
 
 /*Player stats*/
 .list-group-item {
     font-size: small;
+    background-color: #f8f9fa;
 }
 .card-players ul {
     margin: 1px 0 0 2px;
+    border-top-left-radius: 10px;
 }
 .list-group-item .value {
     display: block;
     font-weight: bold;
-    margin-top: 3px; /* Add space above the number */
+    margin-top: 2px; /* Add space above the number */
 }
+
+/*ADJUST*/
 .card-players .row.d-flex.align-items-center {
-    justify-content: space-between;
+    background-color: #fff; /* White background color for the lower div */
+    padding: 15px; /* Adjust the padding to match the .card-players padding */
+    margin-bottom: -15px; /* Adjusted margin-bottom to remove the negative space */
 }
 
 /*Player Names*/
@@ -166,7 +173,6 @@ body {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin: 5px 0 0 -5px;
-    height:100%;
 }
 
 /* -------------------------------------------------- Teams stats -------------------------------------------------- */
