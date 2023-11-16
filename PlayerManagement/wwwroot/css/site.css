@@ -29,65 +29,64 @@ body {
     width: 100%;
 }
 
-/*Closing alerts input lookup tablle*/
+/* League Photos 
+-------------------------------------------------- */
+#leaguePhotos .carousel-inner img {
+    width: 640px;
+    height: 340px;
+    object-fit: cover; /* ensures the image fills the entire container */
+}
+
+/* Closing alerts input Lookup Tables 
+-------------------------------------------------- */
 .alert {
     position: relative;
     padding-right: 3rem;
 }
 
-    .alert .alert-close {
-        position: absolute;
-        top: -0.2rem; 
-        right: 0.5rem;
-        color: inherit;
-        text-decoration: none;
-        font-size: 1.5rem;
-    }
+.alert .alert-close {
+    position: absolute;
+    top: -0.2rem; 
+    right: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
 
-    /*Sponsors slider*/
+/* Sponsors slider 
+-------------------------------------------------- */
 .sponsor-list {
     text-align: center;
     margin: 20px 0;
     box-shadow: 0 4px 12px rgba(0,0,0,.12);
 }
 
-    .sponsor-list h3 {
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
+.sponsor-list h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
 
-    .sponsor-list ul {
-        list-style: none;
-        padding: 0;
-        padding-bottom: 15px;
+.sponsor-list ul {
+    list-style: none;
+    padding: 0;
+    padding-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: hidden;
+}
 
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        overflow: hidden;
-    }
+.sponsor-list li {
+    flex: 0 0 calc(20% - 20px); /* Display 5 elements */
+    margin-right: 20px;
+}
 
-    .sponsor-list li {
-        flex: 0 0 calc(20% - 20px); /* Display 5 elements */
-        margin-right: 20px;
-    }
+.sponsor-list img {
+    max-width: 100%; /* maximum width */
+}
 
-    .sponsor-list img {
-        max-width: 100%; /* maximum width */
-    }
-
-
-
-    /*League Photos*/
-    #leaguePhotos .carousel-inner img {
-        width: 640px;
-        height: 340px;
-        object-fit: cover; /* ensures the image fills the entire container */
-    }
-
-
-/* -------------------------------------------------- Player to Watch cards -------------------------------------------------- */
-
+/* Player to Watch cards 
+-------------------------------------------------- */
 /*Card player to watch*/
 .card-players {
     border-radius: 15px;
@@ -110,7 +109,7 @@ body {
     margin-top: 2px; /* Add space above the number */
 }
 
-/*ADJUST*/
+/* TODO: ADJUST*/
 .card-players .row.d-flex.align-items-center {
     background-color: #fff; /* White background color for the lower div */
     padding: 15px; /* Adjust the padding to match the .card-players padding */
@@ -175,7 +174,8 @@ body {
     margin: 5px 0 0 -5px;
 }
 
-/* -------------------------------------------------- Teams stats -------------------------------------------------- */
+/*Teams stats 
+-------------------------------------------------- */
 #team-stats .row {
     padding-bottom: 20px;
 }
@@ -193,42 +193,43 @@ body {
     height: 50px;
 }
 
-/* Footer styling */
+/* Footer styling 
+-------------------------------------------------- */
 .home-footer {
     background-color: #45526e;
     color: white;
     padding: 2rem 0;
 }
 
-    /* Grid column styling */
-    .home-footer .col-md-3,
-    .home-footer .col-md-2,
-    .home-footer .col-md-4 {
-        margin-top: 3rem;
-    }
+/* Grid column styling */
+.home-footer .col-md-3,
+.home-footer .col-md-2,
+.home-footer .col-md-4 {
+    margin-top: 3rem;
+}
 
-    /* Section headings */
-    .home-footer .section-title {
-        text-transform: uppercase;
-        font-weight: bold;
-        margin-bottom: 1rem;
-    }
+/* Section headings */
+.home-footer .section-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
 
-    /* Links styling */
-    .home-footer .footer-link {
-        color: white;
-        text-decoration: none;
-        margin-bottom: 0.5rem;
-        display: block;
-    }
+/* Links styling */
+.home-footer .footer-link {
+    color: white;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    display: block;
+}
 
-    /* Icon buttons styling */
-    .home-footer .icon-button {
-        margin: 0.25rem;
-        text-decoration: none;
-        font-size: 24px;
-        color: white;
-    }
+/* Icon buttons styling */
+.home-footer .icon-button {
+    margin: 0.25rem;
+    text-decoration: none;
+    font-size: 24px;
+    color: white;
+}
 
 
 /* custom class to the "Player Stats 2" card */
