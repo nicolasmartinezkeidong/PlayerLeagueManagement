@@ -109,29 +109,34 @@ body {
     margin-top: 2px; /* Add space above the number */
 }
 
-/* TODO: ADJUST*/
+/* bottom part of player stats*/
 .card-players .row.d-flex.align-items-center {
     background-color: #fff; /* White background color for the lower div */
-    padding: 15px; /* Adjust the padding to match the .card-players padding */
-    margin-bottom: -15px; /* Adjusted margin-bottom to remove the negative space */
+    margin-bottom: 0px; /* Adjusted margin-bottom to remove the negative space */
+    width: 100%;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    margin:0;
 }
 
-/*Player Names*/
-.card-players .player-name-container {
+/*Player Names (NM: Not needed for new design of the Player to Watch card, but it could be used in a future design of this card, that is why I keep it)*/
+/*.card-players .player-name-container {
     margin: -15px 0px 10px 0;
     display: block;
     margin-top: 1px;
     width: min-content;
-}
+}*/
 .card-players .player-firstname {
     font-size: 16px;
     margin-top: 10px;
     padding-top: 3px;
+    margin-left: -2px;
 }
 .card-players .player-lastname {
-     font-size: 25px;
-     margin-top: -25px;
-    }
+    font-size: 25px;
+    margin-top: -25px;
+    margin-left: -2px;
+}
 .card-players .col-md-4 {
      position: relative;
     }
@@ -159,21 +164,28 @@ body {
 .player-social-media {
     display: inline-flex;
     align-items: center;
+    margin-left: auto;
 }
 .player-social-media a {
-    margin-right: 5px; /* Adjust the value to control the separation */
+    margin-right: 5px; /* Adjust the separation */
 }
 .player-social-media a i {
     font-size: 20px;
     }
 
-/*Player profile img*/ 
+/*Player profile img*/
 .card-players .col-md-8 img {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    margin: 5px 0 0 -5px;
+    width: calc(100% + 10px); /* Adjust width to compensate for negative margin */
+    margin-left: -10px; /* Align with the card's border */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 110%;
 }
 
+.card-players .col-md-8 {
+    position: relative;
+    overflow: hidden;
+}
 /*Teams stats 
 -------------------------------------------------- */
 #team-stats .row {
