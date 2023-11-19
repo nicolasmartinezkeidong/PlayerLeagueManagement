@@ -205,6 +205,38 @@ body {
     height: 50px;
 }
 
+/*Card team stats*/
+.stats-card {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+}
+
+/* separator team stats */
+.line-behind {
+    border-top: 1px solid red;
+    margin-top: 5px;
+    width: 60%;
+    margin: 0 auto; /* Center the line */
+}
+
+/* team name */
+.team-name {
+    display: block;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #555;
+}
+
+.stats-card img {
+    margin-bottom: 10px;
+}
+
+.stats-card span:first-child {
+    margin-top: 10px;
+}
+
 /* Footer styling 
 -------------------------------------------------- */
 .home-footer {
