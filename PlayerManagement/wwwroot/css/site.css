@@ -188,16 +188,22 @@ body {
 }
 /*Teams stats 
 -------------------------------------------------- */
+/*rows space*/
 #team-stats .row {
-    padding-bottom: 20px;
+    padding-bottom: 10px; /* space between rows */
+    margin-bottom: -5px;
 }
 
+/*stats title*/
+.stats-title {
+    font-size: 18px;
+    padding: 2px 0 0 0;
+    margin-bottom: -10px;
+}
+
+/*text inside team stats*/
 #team-stats .row span {
         font-size: 20px;
-}
-
-.stats-title{
-    font-size:25px;
 }
 
 #team-stats .row img {
@@ -214,23 +220,29 @@ body {
 }
 
 /* separator team stats */
-.line-behind {
-    border-top: 1px solid red;
+.line-between {
+    border-top: 3px solid red;
     margin-top: 5px;
-    width: 60%;
-    margin: 0 auto; /* Center the line */
+    width: 80%;
+    margin: 10px auto 5px; /* Center the line */
 }
 
 /* team name */
 .team-name {
     display: block;
-    font-size: 14px;
+    font-size: 12px;
     margin-top: 5px;
     color: #555;
 }
 
+/*team logo*/
 .stats-card img {
-    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.stats-card .stat-value {
+    display: inline-block;
+    margin-left: 20px; /* Adjust the space between img and stat-value */
 }
 
 .stats-card span:first-child {
