@@ -188,15 +188,26 @@ body {
 }
 /*Teams stats 
 -------------------------------------------------- */
+/*stats title*/
+.stats-title-section {
+    background-color: rgba(50, 96, 147);
+    color: rgba(255, 255, 255);
+    text-align: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
 /*team stats container*/
 .team-stats {
-    background: #e2e8f0;
+    background-color: #e2e8f0;
+    border-radius: 8px;
 }
 
 /*rows space*/
 .team-stats .row {
     padding-bottom: 10px; /* space between rows */
     margin-bottom: -5px;
+    margin-left: -32px;
 }
 
 /*stats title*/
@@ -226,19 +237,19 @@ body {
     border-inline-end: 8px;
 }
 
-    .stats-card::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        width: 8px; /* Width of the gradient */
-        background: linear-gradient(to right, #fdfdfd, #f5f5f5, #fafafa);
-    }
+.stats-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 8px; /* Width of the gradient */
+    background: linear-gradient(to right, #fdfdfd, #f5f5f5, #fafafa);
+}
 
 /* separator team stats */
 .line-between {
-    border-top: 3px solid gold;
+    border-top: 3px solid #e2e8f0;
     margin-top: 5px;
     width: 80%;
     margin: 10px auto 5px; /* Center the line */
