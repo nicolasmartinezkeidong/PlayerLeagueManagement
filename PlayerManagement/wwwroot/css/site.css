@@ -203,7 +203,7 @@ body {
 
 /*text inside team stats*/
 #team-stats .row span {
-        font-size: 20px;
+    
 }
 
 #team-stats .row img {
@@ -217,6 +217,7 @@ body {
     border-radius: 8px;
     text-align: center;
     position: relative;
+    margin-right: -20px; /*Move the cards closer to each others (Horizontal)*/
 }
 
 /* separator team stats */
@@ -230,9 +231,14 @@ body {
 /* team name */
 .team-name {
     display: block;
-    font-size: 12px;
+    font-size: 16px;
     margin-top: 5px;
     color: #555;
+}
+
+/*Team stat value*/
+.stat-value {
+    font-size: 20px;
 }
 
 /*team logo*/
