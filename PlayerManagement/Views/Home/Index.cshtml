@@ -13,7 +13,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-3">
+        <div class="matchweek-schedule col-sm-3">
             <table class="table">
                 <thead>
                     @if (hasMatches)
@@ -180,9 +180,9 @@
                                     }
                                 }
                             </td>
-                            <td>@standing.Played</td>
-                            <td>@standing.GoalsDifference</td>
-                            <td>@standing.Points</td>
+                            <td class="table-values">@standing.Played</td>
+                            <td class="table-values">@standing.GoalsDifference</td>
+                            <td class="table-values-points">@standing.Points</td>
                         </tr>
                     }
                 </tbody>
