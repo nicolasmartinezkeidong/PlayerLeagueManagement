@@ -144,7 +144,9 @@
 <div class="container">
     <div class="row">
         <div class="table-standings col-sm-3">
-            <h4>Standings</h4>
+            <div class="standings-header">
+                <h4>Standings</h4>
+            </div>
             <table class="table">
                 <tbody>
                     <tr>
@@ -152,7 +154,7 @@
                         <th>Team</th>
                         <th>Pl</th>
                         <th>GD</th>
-                        <th>Pts</th>
+                        <th class="table-standings-points">Pts</th>
                     </tr>
                     @foreach (var standing in ViewBag.Standings)
                     {

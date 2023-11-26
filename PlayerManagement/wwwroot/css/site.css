@@ -96,12 +96,38 @@ body {
 .table-standings {
     border: 1px solid var(--cards-border);
     border-radius: 8px;
+    overflow: hidden; /*ensure child elements don't exceed borders*/
+    padding: 0;
 }
 
-.table-standings h4 {
-    text-align: center;
+/*Standings title*/
+.standings-header {
+    background-color: #326093;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
 }
-/*view more link*/
+
+/*title stilying*/
+.standings-header h4 {
+    margin: 0;
+    text-align: center;
+    color:white;
+}
+
+/*table-standings headers*/
+.table-standings th {
+    background-color: var(--mid-grey);
+    font-weight:normal;
+}
+
+/*points header*/
+th.table-standings-points {
+    font-weight: bold;
+}
+
+/*'view more' link*/
 .link-standings {
     border: 2px solid var(--cards-border);
     margin: 5px 12px 5px 12px;
@@ -109,18 +135,31 @@ body {
     text-align: center;
     margin-top: -10px;
     margin-bottom: 10px;
+    transition: color .3s ease-in-out, /* text color transition */
+    box-shadow .3s ease-in-out; /* shadow transition */
+}
+
+/*Hover efect form view more element*/
+.link-standings:hover {
+    box-shadow: inset 0 0 0 1000px #326093; /* Set a large box-shadow to cover the entire width of link-standings */
+    color: white;
+}
+
+.link-standings:hover a {
+    color: white;
 }
 
 /*view more link styling*/
-.link-standings a{
-    text-decoration:none;
+.link-standings a {
+    text-decoration: none;
+    color: inherit;
 }
 /*Teams stats 
 -------------------------------------------------- */
 /*stats title*/
 .stats-title-section {
-    background-color: rgba(50, 96, 147);
-    color: rgba(255, 255, 255);
+    background-color: #326093;
+    color: #ffffff;
     text-align: center;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
