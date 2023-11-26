@@ -158,7 +158,26 @@
                     {
                         <tr>
                             <td>@standing.Position</td>
-                            <td>@standing.TeamName</td>
+                            <td>
+                                @{/*NM: if statement to control the teamname lenght being displayed in table. Removed if in a future is included a short form of the name in the Model properties */ 
+                                    if (standing.TeamName.Length >= 17)
+                                    {
+                                        var teamName = standing.TeamName.Split(' ');
+                                        if (teamName.Length >= 2)
+                                        {
+                                            @teamName[0] @teamName[1]
+                                        }
+                                        else
+                                        {
+                                            @standing.TeamName.Substring(0, 17)
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @standing.TeamName
+                                    }
+                                }
+                            </td>
                             <td>@standing.Played</td>
                             <td>@standing.GoalsDifference</td>
                             <td>@standing.Points</td>

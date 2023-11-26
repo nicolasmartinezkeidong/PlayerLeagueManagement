@@ -1,5 +1,6 @@
 :root {
     --cards-border: #ebe5eb;
+    --mid-grey: #f8f9fa;
 }
 
 html {
@@ -91,11 +92,29 @@ body {
 
 /* Standings 
 -------------------------------------------------- */
-
+/*table borders*/
 .table-standings {
     border: 1px solid var(--cards-border);
+    border-radius: 8px;
 }
 
+.table-standings h4 {
+    text-align: center;
+}
+/*view more link*/
+.link-standings {
+    border: 2px solid var(--cards-border);
+    margin: 5px 12px 5px 12px;
+    padding: 1px 0 1px 0;
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/*view more link styling*/
+.link-standings a{
+    text-decoration:none;
+}
 /*Teams stats 
 -------------------------------------------------- */
 /*stats title*/
@@ -201,13 +220,13 @@ body {
 .card-players {
     border-radius: 15px;
     border: 1px solid var(--cards-border);
-    background-color: #f8f9fa;
+    background-color: var(--mid-grey);
 }
 
 /*Player stats*/
 .list-group-item {
     font-size: small;
-    background-color: #f8f9fa;
+    background-color: var(--mid-grey);
 }
 
 .card-players ul {
@@ -342,30 +361,4 @@ body {
     text-decoration: none;
     font-size: 24px;
     color: white;
-}
-
-
-/* custom class to the "Player Stats 2" card */
-/*.player-stats-2-card {
-    position: relative;
-    top: 55px;
-}*/
-
-/* Custom class for Player Stats 2 */
-/*.player-stats-2-card {
-    position: relative;
-}
-
-@media (max-width: 768px) {*/
-    /* Adjust for smaller screens */
-    /*.player-stats-2-card {
-        top: 0;*/ /* Reset the positioning for smaller screens */
-    /*}
-}*/
-
-/*<a> element Standings table*/
-.link-standings {
-    text-align: center; 
-    margin-top: -10px; 
-    margin-bottom: 50px;
 }
