@@ -405,3 +405,16 @@ td.table-values-points {
     font-size: 24px;
     color: white;
 }
+
+
+.bigger-block {
+    height: 400px;
+    width:60%;
+    
+}
+
+.smaller-block {
+    height: 130px;
+    margin-top: 10px;
+    border: 1px solid red;
+}
