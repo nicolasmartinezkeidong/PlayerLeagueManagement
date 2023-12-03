@@ -408,9 +408,11 @@ td.table-values-points {
 
 
 .bigger-block {
-    height: 400px;
-    width:60%;
-    
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Other styles as needed */
 }
 
 .smaller-block {
