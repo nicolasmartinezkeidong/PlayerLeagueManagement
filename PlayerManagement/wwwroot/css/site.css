@@ -403,9 +403,6 @@ td.table-values-points {
 .bigger-block {
     flex: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
 }
 
 .bigger-block img {
@@ -413,10 +410,43 @@ td.table-values-points {
     height: auto;
 }
 
-
 .smaller-block {
-    margin-top: 10px;
     border: 1px solid red;
+    margin: 7px 0 0 0;
+    padding: 10px;
+    max-width: 100%;
+}
+
+.smaller-block div {
+    border: 0.5px solid blue;
+    align-items:center;
+    
+}
+
+.smaller-block a, ul {
+    text-decoration: none;
+    list-style-type:none;
+}
+
+.img-wrapper {
+    width: 100%; /* NMK: modify if required*/
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    max-height:100%;
+    max-width:100%;
+}
+
+.img-wrapper img {
+    width: 136px;
+    height: 100%;
+    object-fit: cover;
+}
+
+.more-card-news {
+    text-decoration: none;
+    color: black;
 }
 
 
