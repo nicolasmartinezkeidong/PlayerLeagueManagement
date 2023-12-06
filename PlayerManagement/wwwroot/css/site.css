@@ -407,12 +407,42 @@ td.table-values-points {
 }
 
 
+.style-card-news {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.style-card-img-news {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.style-text-news {
+    background-color: blue;
+    opacity: 80%;
+    transition: opacity 0.3s ease; /* transition on hover */
+    width: 100%; 
+    position: absolute; 
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    color:white;
+}
+
+.style-text-news:hover {
+    background-color: grey;
+    opacity: 100%;
+}
+
 .bigger-block {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Other styles as needed */
+    position:relative;
 }
 
 .smaller-block {

@@ -1,7 +1,13 @@
 ﻿@using PlayerManagement.ViewModels;
-@model List<StandingsVM>  
+@model List<StandingsVM>
 
-<table>
+@{
+    ViewData["Title"] = "Standings";
+}
+
+<h1>Standings</h1>
+
+<table class="table">
     <thead>
         <tr>
             <th>Position</th>
