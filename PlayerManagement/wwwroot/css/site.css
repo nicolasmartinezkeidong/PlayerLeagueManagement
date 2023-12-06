@@ -411,21 +411,21 @@ td.table-values-points {
 }
 
 .smaller-block {
-    border: 1px solid red;
     margin: 7px 0 0 0;
     padding: 10px;
     max-width: 100%;
+    background-color:gray
 }
 
 .smaller-block div {
-    border: 0.5px solid blue;
     align-items:center;
-    
+
 }
 
 .smaller-block a, ul {
     text-decoration: none;
     list-style-type:none;
+    padding-left:0px;
 }
 
 .img-wrapper {
@@ -433,14 +433,12 @@ td.table-values-points {
     height: auto;
     overflow: hidden;
     display: flex;
-    align-items: center;
-    max-height:100%;
-    max-width:100%;
+    align-items: flex-end;
+    max-width: 100%;
 }
-
 .img-wrapper img {
-    width: 136px;
-    height: 100%;
+    width: auto; /* Adjust the width */
+    height: 100%; /* Fill the entire height of the container */
     object-fit: cover;
 }
 
@@ -448,7 +446,6 @@ td.table-values-points {
     text-decoration: none;
     color: black;
 }
-
 
 /* Footer styling 
 -------------------------------------------------- */
