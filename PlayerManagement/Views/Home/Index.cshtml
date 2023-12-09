@@ -13,6 +13,7 @@
 
 <div class="container">
     <div class="row">
+        @* Matchweek section *@
         <div class="matchweek-schedule col-sm-3">
             <table class="table">
                 <thead>
@@ -49,6 +50,9 @@
 
 
         </div>
+        @* Matchweek section ends *@
+
+        @* Carousel section *@
         <div class="col-sm-6">
             <h2>Soccer Club</h2>
             <div id="leaguePhotos" class="carousel slide" data-bs-ride="carousel">
@@ -72,8 +76,11 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
+            @* Carousel section ends *@
 
             <hr>
+
+            @* League rules section *@
             <h3>League Rules</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non ultrices ipsum, non molestie ex. Vivamus fermentum pretium sapien a ullamcorper. Vivamus id purus quam. Cras a urna erat.</p>
             <p>
@@ -87,6 +94,9 @@
             </p>
             <p>Register <a href="#">here</a></p>
         </div>
+        @* League rules section ends *@
+
+        @* Club information section *@
         <div class="col-sm-3">
             <h2>Club Information</h2>
             <p>
@@ -99,11 +109,12 @@
             <p><strong>Saturday <br></strong>9am-1pm</p>
             <p></p>
         </div>
-
+        @* Club information section ends *@
     </div>
 </div>
 
 
+@* First Sponsors section *@
 <div class="row justify-content-md-end">
     <div class="col-sm-9 col-sm-offset-4">
         <div class="sponsor-list">
@@ -138,11 +149,12 @@
         </div>
     </div>
 </div>
-
+@* First sponsors section ends *@
 
 
 <div class="container">
     <div class="row">
+        @* Table standings section *@
         <div class="table-standings col-sm-3">
             <div class="standings-header">
                 <h4>Standings</h4>
@@ -192,7 +204,9 @@
                 <a asp-area="" asp-controller="Standings" asp-action="Index">View More...</a>
             </div>
         </div>
+        @* Table standings section ends*@
 
+        @* Team stats section *@
         <div class="col-sm-9">
             <div class="stats-title-section">
                 <h4>Stats</h4>
@@ -375,16 +389,15 @@
                     </div>
                 </div>
             </div>
-            <!-- Teams stats ends-->
         </div>
+        @* Team stats section ends *@
     </div>
 </div>
 
 
 <div class="container">
     <div class="row">
-
-        @* Player to watch *@
+        @* Player to watch section*@
         <div class="col-sm-3">
             <h4 class="player-to-watch">Player to Watch</h4>
             <div class="card-players">
@@ -506,8 +519,9 @@
 
 
         </div>
+        @* Player to watch section ends*@
 
-        @* testing are for new section news *@
+        @* News section *@
         <div class="col-sm-9">
             <div class="row">
                 <h2>Latest News</h2>
@@ -645,12 +659,11 @@
                 </div>
             </div>
         </div>
-
-
+        @* News section ends*@
     </div>
 </div>
 
-
+@* Second Sponsors section *@
 <div class="row justify-content-md-end">
     <div class="col-sm-9 col-sm-offset-4">
         <div class="sponsor-list">
@@ -685,8 +698,9 @@
         </div>
     </div>
 </div>
+@* Second Sponsors section ends*@
 
-<!-- Footer -->
+@* Footer section *@
 <footer class="home-footer text-center text-lg-start text-white">
     <div class="container p-4 pb-0">
         <!-- Section: Links -->
@@ -780,7 +794,8 @@
         </section>
     </div>
 </footer>
-<!-- Footer -->
+@* Footer section ends*@
+
 @section Scripts {
     <script>
         //Register the service worker.

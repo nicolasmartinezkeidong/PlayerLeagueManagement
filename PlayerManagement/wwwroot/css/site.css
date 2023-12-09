@@ -40,7 +40,9 @@ body {
 #leaguePhotos .carousel-inner img {
     width: 640px;
     height: 340px;
-    object-fit: cover; /* ensures the image fills the entire container */
+    object-fit: cover;
+    border-top-left-radius:8px;
+    border-top-right-radius:8px;
 }
 
 /* Closing alerts input Lookup Tables 
@@ -159,6 +161,7 @@ td.table-values-points {
     text-decoration: none;
     color: inherit;
 }
+
 /*Teams stats 
 -------------------------------------------------- */
 /*stats title*/
