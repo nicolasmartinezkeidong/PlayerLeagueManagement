@@ -270,6 +270,12 @@ td.table-values-points {
     background-color: var(--mid-grey);
 }
 
+/*Player to watch title*/
+.player-to-watch {
+    padding-top: 20px;
+    font-size:large;
+}
+
 /*Player stats*/
 .list-group-item {
     font-size: small;
