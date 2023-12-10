@@ -78,11 +78,11 @@
             </div>
             @* Carousel section ends *@
 
-            <hr>
+            <hr class="hr-gradient">
 
             @* League rules section *@
             <h3>League Rules</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non ultrices ipsum, non molestie ex. Vivamus fermentum pretium sapien a ullamcorper. Vivamus id purus quam. Cras a urna erat.</p>
+            <p class="league-rules">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non ultrices ipsum, non molestie ex. Vivamus fermentum pretium sapien a ullamcorper. Vivamus id purus quam. Cras a urna erat.</p>
             <p>
                 <ul>
                     <li>9 vs 9 Coed Adult (including the goalie)</li>
@@ -92,22 +92,24 @@
                     <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
                 </ul>
             </p>
-            <p>Register <a href="#">here</a></p>
+            <p class="register-section"><button class="button-64" role="button"> <span class="text">Register here!</span> </button></p>
         </div>
         @* League rules section ends *@
 
         @* Club information section *@
         <div class="col-sm-3">
             <h2>Club Information</h2>
+            <div class="club-information">
             <p>
-                <strong><u>SOCCER CLUB</u><br></strong><strong>Park</strong><br>#1234 Park Road<br>St Catharines, ON<br>L0S 1E0<br><strong>Phone: </strong>1+ 000 000 0000<strong>
+                <strong>Location:</strong><br>#1234 Park Road<br>St Catharines, ON<br>L0S 1E0<br><strong>Phone: </strong>1+ 000 000 0000<strong>
                     <br>Email:
-                </strong> info@soccerclub.ca
+                </strong><a href="#">info@soccerclub.ca</a>
             </p>
-            <p><strong><u>Office Hours</u></strong><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+            <p><strong>Office Hours</strong><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
             <p><strong>Tuesday and Thursday<br></strong>4pm-8pm</p>
             <p><strong>Saturday <br></strong>9am-1pm</p>
             <p></p>
+            </div>
         </div>
         @* Club information section ends *@
     </div>
@@ -201,7 +203,7 @@
                 </tbody>
             </table>
             <div class="link-standings">
-                <a asp-area="" asp-controller="Standings" asp-action="Index">View More...</a>
+                <a asp-area="" asp-controller="Standings" asp-action="Index">View More</a><i class="bi bi-arrow-right"></i>
             </div>
         </div>
         @* Table standings section ends*@
@@ -210,6 +212,7 @@
         <div class="col-sm-9">
             <div class="stats-title-section">
                 <h4>Stats</h4>
+                <i class="bi bi-activity"></i>
             </div>
             <!-- Teams stats -->
             <div class="team-stats container">
@@ -614,7 +617,7 @@
                     </div>
                 </div>
                 <div>
-                    <hr />
+                    <hr class="hr-gradient" />
                 </div>
                 <div class="col-sm-9 col-md-4">
                     <!-- Second set of smaller blocks - card 1 -->
@@ -652,7 +655,7 @@
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit
                                 </p>
                                 <div class="more-card-news-background">
-                                    <p>More News</p>
+                                    <p>More News</p> <i class="bi bi-arrow-right"></i>
                                 </div>
                             </div>
                         </div>
@@ -764,7 +767,7 @@
             </div>
         </section>
         <!-- Section: Links -->
-        <hr class="my-3">
+        <hr class="my-3 hr-gradient">
         <section class="p-3 pt-0">
             <div class="row d-flex align-items-center">
                 <!-- Grid column -->

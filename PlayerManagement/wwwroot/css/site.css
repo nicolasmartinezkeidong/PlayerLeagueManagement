@@ -2,6 +2,8 @@
     --cards-border: #ebe5eb;
     --mid-grey: #f8f9fa;
     --headers-blue: #326093;
+    --buttons-blue: #101361;
+    --hr-stats: #e2e8f0
 }
 
 html {
@@ -35,43 +37,118 @@ body {
     width: 100%;
 }
 
-/* League Photos 
--------------------------------------------------- */
-#leaguePhotos .carousel-inner img {
-    width: 640px;
-    height: 340px;
-    object-fit: cover;
-    border-top-left-radius:8px;
-    border-top-right-radius:8px;
-}
-
 /* Closing alerts input Lookup Tables 
 -------------------------------------------------- */
 .alert {
     position: relative;
     padding-right: 3rem;
 }
-
 .alert .alert-close {
     position: absolute;
-    top: -0.2rem; 
+    top: -0.2rem;
     right: 0.5rem;
     color: inherit;
     text-decoration: none;
     font-size: 1.5rem;
 }
 
+/*gradient hr line*/
+hr.hr-gradient {
+    height: 3px;
+    border: none;
+    background-image: linear-gradient(144deg, #00FF00, #00FFFF 50%, #FF00FF);
+}
+
+/* Game schedules
+-------------------------------------------------- */
+matchweek-schedule {
+    border: 1px solid var(--cards-border);
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 15px 20px -20px;
+}
+
+/* League Photos
+-------------------------------------------------- */
+#leaguePhotos .carousel-inner img {
+    width: 640px;
+    height: 340px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* League Rules
+-------------------------------------------------- */
+/*league rules info*/
+.league-rules {
+    text-align: justify;
+}
+
+/*register section*/
+.register-section{
+    display:grid;
+}
+/*button-64(modified) -  original from https://getcssscan.com/css-buttons-examples */
+.button-64 {
+    align-items: center;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.button-64:active,
+.button-64:hover {
+    outline: 0;
+}
+.button-64 span {
+    background-color: var(--buttons-blue);
+    padding: 4px 0 4px 0;
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    transition: 300ms;
+}
+.button-64:hover span {
+    background: none;
+}
+
+/* Club's information 
+-------------------------------------------------- */
+.club-information {
+    border: 1px solid var(--cards-border);
+    border-radius: 8px;
+    height: fit-content;
+    padding: 5px 0 0 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 10px 0px;
+}
+
+
 /* Sponsors slider 
 -------------------------------------------------- */
 .sponsor-list {
     text-align: center;
     margin: 20px 0;
+    border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,.12);
 }
 
 .sponsor-list h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: large;
+    margin-bottom: 5px;
 }
 
 .sponsor-list ul {
@@ -101,6 +178,7 @@ body {
     border-radius: 8px;
     overflow: hidden; /*ensure child elements don't exceed borders*/
     padding: 0;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 15px 20px -20px;
 }
 
 /*Standings title*/
@@ -109,7 +187,7 @@ body {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     overflow: hidden;
-    margin-bottom: 10px;
+
 }
 
 /*title stilying*/
@@ -162,24 +240,38 @@ td.table-values-points {
     color: inherit;
 }
 
+.link-standings i{
+    padding-left: 5px;
+}
+
 /*Teams stats 
 -------------------------------------------------- */
 /*stats title*/
 .stats-title-section {
-    background-color: #326093;
-    color: #ffffff;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     margin-bottom: 0;
 }
+.stats-title-section i {
+    margin-left: 5px;
+    font-size: 24px;
+}
 
 /*team stats container*/
 .team-stats {
-    background-color: #e2e8f0;
+    
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     margin-top: -10px;
+}
+
+.team-stats hr {
+    background-color: var(--hr-stats);
+    height: 3px;
+    border: none;
 }
 
 /*rows space*/
@@ -193,7 +285,6 @@ td.table-values-points {
 .stats-title {
     font-size: 18px;
     padding: 2px 0 0 0;
-    margin-bottom: -10px;
 }
 
 /*text inside team stats*/
@@ -222,8 +313,8 @@ td.table-values-points {
     top: 0;
     bottom: 0;
     right: 0;
-    width: 8px; /* Width of the gradient */
-    background: linear-gradient(to right, #fdfdfd, #f5f5f5, #fafafa);
+    width: 10px; /* Width of the gradient */
+    background-image: linear-gradient(to right, #fdfdfd, #f5f5f5, #fafafa);
 }
 
 /* separator team stats */
@@ -268,6 +359,7 @@ td.table-values-points {
     border-radius: 15px;
     border: 1px solid var(--cards-border);
     background-color: var(--mid-grey);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 10px 0px;
 }
 
 /*Player to watch title*/
@@ -480,7 +572,9 @@ td.table-values-points {
     background-color: var(--headers-blue);
     opacity: 0.9;
 }
-
+.more-card-news-background i{
+    padding-left: 5px;
+}
 /* Footer styling 
 -------------------------------------------------- */
 .home-footer {
@@ -519,22 +613,28 @@ td.table-values-points {
     color: white;
 }
 
-/*Player to Watch Media*/
+
+/* Media 
+-------------------------------------------------- */
 @media (max-width: 768px) {
 
+    /*Player to Watch*/
     .player-name-container {
         text-align: center;
     }
-
     .player-social-media {
         justify-content: center;
         padding-bottom: 5px; /* separate from player names */
     }
-
-    img.player-photo {
+     img.player-photo {
         max-width: 100%;
         height: auto;
         max-height: 250px; /* force maximum height of player photo */
     }
-}
 
+    /*register button*/
+    .button-64 {
+        font-size: 24px;
+        min-width: 196px;
+    }
+}
