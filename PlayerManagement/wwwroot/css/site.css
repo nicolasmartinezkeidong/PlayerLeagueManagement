@@ -297,7 +297,7 @@ td.table-values-points {
     margin: 0;
 }
 
-/*Player Names (NM: Not needed for new design of the Player to Watch card, but it could be used in a future design of this card, that is why I keep it)*/
+/*Player Names (NM: Not needed for current design of the Player to Watch card, but it could be used in a future design of this card, that is why I keep it)*/
 /*.card-players .player-name-container {
     margin: -15px 0px 10px 0;
     display: block;
@@ -360,8 +360,6 @@ td.table-values-points {
 
 /*Player profile img*/
 .card-players .col-md-8 img {
-    width: calc(100% + 10px); /* Adjust width to compensate for negative margin */
-    margin-left: -10px; /* Align with the card's border */
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     height: 110%;
@@ -512,3 +510,23 @@ td.table-values-points {
     font-size: 24px;
     color: white;
 }
+
+/*Player to Watch Media*/
+@media (max-width: 768px) {
+
+    .player-name-container {
+        text-align: center;
+    }
+
+    .player-social-media {
+        justify-content: center;
+        padding-bottom: 5px; /* separate from player names */
+    }
+
+    img.player-photo {
+        max-width: 100%;
+        height: auto;
+        max-height: 250px; /* force maximum height of player photo */
+    }
+}
+
