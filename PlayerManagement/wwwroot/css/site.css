@@ -444,10 +444,12 @@ td.table-values-points {
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    color:black;
+    color: black;
+    position: relative;
 }
 .card {
     position: relative;
+    overflow: hidden;
 }
 .more-card-news-background {
     position: absolute;
@@ -463,7 +465,7 @@ td.table-values-points {
     color: white;
     transition: opacity 0.3s ease;
     font-weight: 500;
-    font-size: calc(1.275rem + .3vw);
+    font-size: calc(1.275rem + .3vw); /*font size based on rem and viewport width*/
 }
 .more-card-news-background p {
     margin: 0; /* Remove default margin */
