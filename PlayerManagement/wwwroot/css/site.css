@@ -60,9 +60,20 @@ hr.hr-gradient {
 }
 
 /*spacing sections*/
-.stats-title-section,
+.titles-section,
 .table-standings {
     margin-top: 25px;
+}
+
+/*Titles*/
+titles-section h2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+}
+titles-section i {
+    margin-left: 5px;
+    font-size: 24px;
 }
 
 /* Game schedules
@@ -145,37 +156,60 @@ matchweek-schedule {
 
 /* Sponsors slider 
 -------------------------------------------------- */
+/*sponsor list*/
 .sponsor-list {
-    text-align: center;
-    margin: 20px 0;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+text-align: center;
+margin-top: -15px;
 }
 
 .sponsor-list h3 {
-    font-size: large;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+}
+.sponsor-list hr {
+    border: none;
+    border-top: 1px solid #ccc;
 }
 
-.sponsor-list ul {
-    list-style: none;
-    padding: 0;
-    padding-bottom: 15px;
+.sponsor-slider {
+display: flex;
+justify-content: space-between;
+padding: 20px 0; /* spacing between icons */
+list-style: none;
+}
+.sponsor-slider li {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    overflow: hidden;
+}
+.sponsor-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+}
+.sponsor-item img {
+    width: 40px;
+    height: auto;
+    margin-bottom: 5px; /*space between icon and text */
 }
 
-.sponsor-list li {
-    flex: 0 0 calc(20% - 20px); /* Display 5 elements */
-    margin-right: 20px;
+/*remove links default behaviour*/
+.sponsor-slider a {
+    text-decoration: none;
+    color: black;
 }
 
-.sponsor-list img {
-    max-width: 100%; /* maximum width */
+/*bottom text*/
+.sponsors-text {
+text-align: center;
+font-size: large;
+margin-top: -20px;
 }
 
+hr.hr-gradient-sponsors {
+    margin-top:50px;
+    height: 3px;
+    border: none;
+    background-image: linear-gradient(144deg, #00FF00, #00FFFF 50%, #FF00FF);
+}
 /* Standings 
 -------------------------------------------------- */
 /*table borders*/
@@ -252,20 +286,6 @@ td.table-values-points {
 
 /*Teams stats 
 -------------------------------------------------- */
-/*stats title*/
-.stats-title-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    margin-bottom: 0;
-}
-.stats-title-section i {
-    margin-left: 5px;
-    font-size: 24px;
-}
-
 /*team stats container*/
 .team-stats {
     

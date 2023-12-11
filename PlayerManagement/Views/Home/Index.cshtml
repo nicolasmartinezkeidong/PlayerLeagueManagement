@@ -78,8 +78,6 @@
             </div>
             @* Carousel section ends *@
 
-            <hr class="hr-gradient">
-
             @* League rules section *@
             <h3>League Rules</h3>
             <p class="league-rules">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non ultrices ipsum, non molestie ex. Vivamus fermentum pretium sapien a ullamcorper. Vivamus id purus quam. Cras a urna erat.</p>
@@ -115,44 +113,14 @@
     </div>
 </div>
 
-
-@* First Sponsors section *@
-<div class="row justify-content-md-end">
-    <div class="col-sm-9 col-sm-offset-4">
-        <div class="sponsor-list">
-            <h3>Our Sponsors</h3>
-            <ul>
-                <li>
-                    <a href="https://icongr.am/devicon/csharp-original.svg?size=40&color=currentColor" target="_blank">
-                        <img src="https://icongr.am/devicon/csharp-original.svg?size=40&color=currentColor" alt="Sponsor 1" />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://icongr.am/devicon/bootstrap-plain.svg?size=40&color=563d7c" target="_blank">
-                        <img src="https://icongr.am/devicon/bootstrap-plain.svg?size=40&color=563d7c" alt="Sponsor 2" />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://icongr.am/devicon/dot-net-original-wordmark.svg?size=40&color=563d7c" target="_blank">
-                        <img src="https://icongr.am/devicon/dot-net-original-wordmark.svg?size=40&color=563d7c" alt="Sponsor 3" />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://icongr.am/devicon/javascript-original.svg?size=40&color=currentColor" target="_blank">
-                        <img src="https://icongr.am/devicon/javascript-original.svg?size=40&color=currentColor" alt="Sponsor 4" />
-                    </a>
-                </li>
-                <li>
-                    <a href="https://icongr.am/devicon/github-original-wordmark.svg?size=40&color=currentColor" target="_blank">
-                        <img src="https://icongr.am/devicon/github-original-wordmark.svg?size=40&color=currentColor" alt="Sponsor 5" />
-                    </a>
-                </li>
-            </ul>
-        </div>
+@* section separator *@
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-9">
+        <hr class="col-sm-12 hr-gradient" />
     </div>
 </div>
-@* First sponsors section ends *@
-
 
 <div class="container">
     <div class="row">
@@ -210,9 +178,8 @@
 
         @* Team stats section *@
         <div class="col-sm-9">
-            <div class="stats-title-section">
-                <h4>Stats</h4>
-                <i class="bi bi-activity"></i>
+            <div class="titles-section">
+                <h2>Stats <i class="bi bi-activity"></i></h2>
             </div>
             <!-- Teams stats -->
             <div class="team-stats container">
@@ -396,8 +363,14 @@
         @* Team stats section ends *@
     </div>
 </div>
-<div class="container">
-    <hr class="hr-gradient">
+
+@* section separator *@
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-9">
+        <hr class="col-sm-12 hr-gradient" />
+    </div>
 </div>
 
 
@@ -530,7 +503,9 @@
         @* News section *@
         <div class="col-sm-9">
             <div class="row">
-                <h2>Latest News</h2>
+                <div class="titles-section">
+                <h2>Latest News <i class="bi bi-newspaper"></i></h2>
+                </div>
                 <!-- Bigger block on the left -->
                 <div class="col-sm-8 bigger-block">
                     <div class="card style-card-news">
@@ -620,7 +595,7 @@
                     </div>
                 </div>
                 <div>
-                    <hr class="hr-gradient" />
+                    <hr />
                 </div>
                 <div class="col-sm-9 col-md-4">
                     <!-- Second set of smaller blocks - card 1 -->
@@ -671,38 +646,54 @@
 </div>
 
 @* Second Sponsors section *@
-<div class="row justify-content-md-end">
-    <div class="col-sm-9 col-sm-offset-4">
+<hr class="hr-gradient-sponsors" />
+<div class="row justify-content-md-center">
+    <div class="col-sm-9">
         <div class="sponsor-list">
-            <h3>Our Sponsors</h3>
-            <ul>
+            <ul class="sponsor-slider">
                 <li>
                     <a href="https://icongr.am/devicon/csharp-original.svg?size=40&color=currentColor" target="_blank">
+                        <div class="sponsor-item">
                         <img src="https://icongr.am/devicon/csharp-original.svg?size=40&color=currentColor" alt="Sponsor 1" />
+                        <span>Sponsor 1</span>
+                        </div>
                     </a>
                 </li>
                 <li>
                     <a href="https://icongr.am/devicon/bootstrap-plain.svg?size=40&color=563d7c" target="_blank">
+                        <div class="sponsor-item">
                         <img src="https://icongr.am/devicon/bootstrap-plain.svg?size=40&color=563d7c" alt="Sponsor 2" />
+                        <span>Sponsor 2</span>
+                        </div>
                     </a>
                 </li>
                 <li>
                     <a href="https://icongr.am/devicon/dot-net-original-wordmark.svg?size=40&color=563d7c" target="_blank">
+                        <div class="sponsor-item">
                         <img src="https://icongr.am/devicon/dot-net-original-wordmark.svg?size=40&color=563d7c" alt="Sponsor 3" />
+                        <span>Sponsor 3</span>
+                        </div>
                     </a>
                 </li>
                 <li>
                     <a href="https://icongr.am/devicon/javascript-original.svg?size=40&color=currentColor" target="_blank">
+                        <div class="sponsor-item">
                         <img src="https://icongr.am/devicon/javascript-original.svg?size=40&color=currentColor" alt="Sponsor 4" />
+                        <span>Sponsor 4</span>
+                        </div>
                     </a>
                 </li>
                 <li>
                     <a href="https://icongr.am/devicon/github-original-wordmark.svg?size=40&color=currentColor" target="_blank">
+                        <div class="sponsor-item">
                         <img src="https://icongr.am/devicon/github-original-wordmark.svg?size=40&color=currentColor" alt="Sponsor 5" />
+                        <span>Sponsor 5</span>
+                        </div>
                     </a>
                 </li>
             </ul>
         </div>
+        <h2 class="sponsors-text">Sponsors</h2>
     </div>
 </div>
 @* Second Sponsors section ends*@
