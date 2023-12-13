@@ -153,13 +153,16 @@ matchweek-schedule {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 10px 0px;
 }
 
-
+.club-information-title{
+    text-align:center;
+    font-size:x-large;
+}
 /* Sponsors slider 
 -------------------------------------------------- */
 /*sponsor list*/
 .sponsor-list {
-text-align: center;
-margin-top: -15px;
+    text-align: center;
+    margin-top: -15px;
 }
 
 .sponsor-list h3 {
@@ -210,6 +213,7 @@ hr.hr-gradient-sponsors {
     border: none;
     background-image: linear-gradient(144deg, #00FF00, #00FFFF 50%, #FF00FF);
 }
+
 /* Standings 
 -------------------------------------------------- */
 /*table borders*/
@@ -259,19 +263,24 @@ td.table-values-points {
 
 /*'view more' link*/
 .link-standings {
+   display:inherit;
     border: 2px solid var(--cards-border);
     margin: 5px 12px 5px 12px;
-    padding: 1px 0 1px 0;
+    padding: 5px 12px 5px 12px;
     text-align: center;
+    text-decoration: none;
+    color: inherit;
     margin-top: -10px;
     margin-bottom: 10px;
-    transition: color .3s ease-in-out, /* text color transition */
+    transition: color .3s ease-in-out, /* color transition */
     box-shadow .3s ease-in-out; /* shadow transition */
+    position: relative;
 }
 
 /*Hover efect form view more element*/
 .link-standings:hover {
     box-shadow: inset 0 0 0 1000px var(--mid-grey); /* Set a large box-shadow to cover the entire width of link-standings */
+    color: black;
 }
 
 /*view more link styling*/
@@ -279,19 +288,25 @@ td.table-values-points {
     text-decoration: none;
     color: inherit;
 }
-
 .link-standings i{
     padding-left: 5px;
 }
 
+/*NM: TODO, in future updates found a better approach to align table and team stats*/
+.standings-column{
+    margin: -20px 0 10px 0;
+}
 /*Teams stats 
 -------------------------------------------------- */
 /*team stats container*/
 .team-stats {
-    
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    margin-top: -10px;
+}
+
+/*team stats title*/
+.team-stats-title{
+    padding: 0 0 20px 0;
 }
 
 .team-stats hr {
@@ -303,7 +318,6 @@ td.table-values-points {
 /*rows space*/
 .team-stats .row {
     padding-bottom: 10px; /* space between rows */
-    margin-bottom: -5px;
     margin-left: -32px;
 }
 
@@ -494,6 +508,10 @@ td.table-values-points {
     overflow: hidden;
 }
 
+/*NM: TODO, in future updates found a better approach to align table and team stats*/
+.player-to-watch-column{
+    margin: 30px 0 0 0;
+}
 /* News Section
 -------------------------------------------------- */
 /*Styling for big block news section*/
@@ -518,10 +536,6 @@ td.table-values-points {
     padding: 10px;
     box-sizing: border-box;
     color: white;
-}
-.style-text-news:hover {
-    background-color: var(--headers-blue);
-    opacity: 0.9;
 }
 .bigger-block {
     flex: 1;
@@ -561,6 +575,33 @@ td.table-values-points {
     height: 100%; /* Fill the entire height of the container */
     object-fit: cover;
 }
+
+/*remove a element behaviours*/
+.card a {
+    text-decoration: none;
+    color: black;
+}
+
+/*on hover effects for a elements inside smaller block and card*/
+.card a:hover {
+    text-decoration: underline;
+}
+.smaller-block a:hover {
+    text-decoration: underline;
+}
+.smaller-block img,
+.card img {
+    transition: transform 0.3s ease; /*effect for smoothness */
+}
+.smaller-block:hover img,
+.card:hover img {
+    transform: scale(1.1); /*zoom effect */
+}
+.style-card-news:hover .style-text-news {
+    background-color: var(--headers-blue);
+    opacity: 0.9;
+}
+
 
 /* 'More news' block*/
 .more-card-news {

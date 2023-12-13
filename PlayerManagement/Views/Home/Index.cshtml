@@ -54,7 +54,7 @@
 
         @* Carousel section *@
         <div class="col-sm-6">
-            <h2>Soccer Club</h2>
+            <h2>Soccer Club <i class="fa-regular fa-futbol"></i></h2>
             <div id="leaguePhotos" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="10000">
@@ -96,7 +96,7 @@
 
         @* Club information section *@
         <div class="col-sm-3">
-            <h2>Club Information</h2>
+            <h2 class="club-information-title">Club Information</h2>
             <div class="club-information">
             <p>
                 <strong>Location:</strong><br>#1234 Park Road<br>St Catharines, ON<br>L0S 1E0<br><strong>Phone: </strong>1+ 000 000 0000<strong>
@@ -122,10 +122,19 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-9">
+        <h2 class="team-stats-title">Stats <i class="bi bi-activity"></i></h2>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
         @* Table standings section *@
-        <div class="table-standings col-sm-3">
+        <div class="col-sm-3 standings-column">
+            <div class="table-standings">
             <div class="standings-header">
                 <h4>Standings</h4>
             </div>
@@ -170,17 +179,17 @@
                     }
                 </tbody>
             </table>
-            <div class="link-standings">
-                <a asp-area="" asp-controller="Standings" asp-action="Index">View More</a><i class="bi bi-arrow-right"></i>
-            </div>
+                <a class="link-standings" asp-area="" asp-controller="Standings" asp-action="Index">
+                    View More
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+        </div>
         </div>
         @* Table standings section ends*@
 
         @* Team stats section *@
         <div class="col-sm-9">
-            <div class="titles-section">
-                <h2>Stats <i class="bi bi-activity"></i></h2>
-            </div>
             <!-- Teams stats -->
             <div class="team-stats container">
                 <span class="stats-title">Best Attack</span>
@@ -377,7 +386,7 @@
 <div class="container">
     <div class="row">
         @* Player to watch section*@
-        <div class="col-sm-3">
+        <div class="col-sm-3 player-to-watch-column">
             <h4 class="player-to-watch">Player to Watch</h4>
             <div class="card-players">
                 <div class="row no-gutters">
@@ -508,6 +517,7 @@
                 </div>
                 <!-- Bigger block on the left -->
                 <div class="col-sm-8 bigger-block">
+                    <a href="#">
                     <div class="card style-card-news">
                         <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
                         <div class="card-img-overlay style-card-img-news">
@@ -519,7 +529,9 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
+                
                 <div class="col-sm-9 col-md-5">
                     <!-- First set of smaller blocks -->
                     <div class="smaller-block">
@@ -599,8 +611,8 @@
                 </div>
                 <div class="col-sm-9 col-md-4">
                     <!-- Second set of smaller blocks - card 1 -->
-                    
                     <div class="card h-100">
+                        <a href="#">
                         <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
                         <div class="card-body">
                             <h5 class="card-title">Card title</h5>
@@ -608,11 +620,13 @@
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                             </p>
                         </div>
+                        </a>
                     </div>
                 </div>
                 <div class="col-sm-9 col-md-4">
                     <!-- Second set of smaller blocks - card 2 -->
                     <div class="card h-100">
+                        <a href="#">
                         <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
                         <div class="card-body">
                             <h5 class="card-title">Card title</h5>
@@ -620,6 +634,7 @@
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                             </p>
                         </div>
+                        </a>
                     </div>
                 </div>
                 <div class="col-sm-9 col-md-4">
