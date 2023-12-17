@@ -1,9 +1,16 @@
 :root {
     --cards-border: #ebe5eb;
+    --grey: #e1e1e1;
     --mid-grey: #f8f9fa;
+    --black: #010000;
     --headers-blue: #326093;
     --buttons-blue: #101361;
-    --hr-stats: #e2e8f0
+    --hr-stats: #e2e8f0;
+    --red-brown: #7b0101;
+    --mid-red: #b80102;
+    --vibrant-red: #da0106;
+    --vivid-yellow: #ffe600;
+    --tangerine: #ef9101;
 }
 
 html {
@@ -21,13 +28,12 @@ html {
   min-height: 100%;
 }
 
-
 header {  
 }
 
 /* Blue footer */
 .footer {
-    background-color: #326093; 
+    background-color: var(--vibrant-red); 
     color: white; 
     padding: 20px; 
 }
@@ -41,10 +47,25 @@ body {
     margin-bottom: 1rem;
 }
 
-.colored-background{
-    background-color:cornflowerblue;
+.background-color {
+    background-color: var(--headers-blue);
+    color:var(--grey);
 }
 
+.jumbotron {
+    background-image: url('../images/soccer-field.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 40vh;
+}
+
+.background-information{
+    border: 1px solid blue;
+}
+.my-content {
+    margin-bottom: 20px; /* Adjust this value to control the space between divs */
+}
 /* Scrollable Panel
 -------------------------------------------------- */
 .scrollable-panel {
@@ -94,10 +115,13 @@ titles-section i {
 
 /* Game schedules
 -------------------------------------------------- */
-matchweek-schedule {
+.matchweek-schedule {
     border: 1px solid var(--cards-border);
     box-shadow: rgba(0, 0, 0, 0.45) 0px 15px 20px -20px;
+    color:white;
 }
+
+
 
 /* League Photos
 -------------------------------------------------- */
@@ -123,7 +147,7 @@ matchweek-schedule {
 /*button-64(modified) -  original from https://getcssscan.com/css-buttons-examples */
 .button-64 {
     align-items: center;
-    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    background-image: linear-gradient(144deg, #FF00FF, #DA0106 50%, #00FFFF);
     border: 0;
     border-radius: 8px;
     box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
@@ -148,7 +172,7 @@ matchweek-schedule {
     outline: 0;
 }
 .button-64 span {
-    background-color: var(--buttons-blue);
+    background-color: var(--vibrant-red);
     padding: 4px 0 4px 0;
     border-radius: 6px;
     width: 100%;
@@ -661,7 +685,7 @@ td.table-values-points {
 /* Footer styling 
 -------------------------------------------------- */
 .home-footer {
-    background-color: #45526e;
+    background-color: var(--headers-blue);
     color: white;
     padding: 2rem 0;
 }

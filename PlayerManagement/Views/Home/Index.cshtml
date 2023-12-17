@@ -11,707 +11,729 @@
     bool hasMatches = matchSchedules.Any();
 }
 
-
-<div class="container-fluid ">
+<div class="jumbotron jumbotron-fluid">
     <div class="container">
-    <div class="row">
-        @* Matchweek section *@
-        <div class="matchweek-schedule col-sm-3">
-            <table class="table">
-                <thead>
-                    @if (hasMatches)
-                    {
-                        <tr>
-                            <th colspan="2">Matchweek @ViewBag.MatchweekNumber</th>
-                        </tr>
-                    }
-                </thead>
-                <tbody>
-                    @if (hasMatches)
-                    {
-                        @foreach (MatchSchedule match in ViewBag.MatchSchedules)
-                        {
-                            <tr>
-                                <td>@match.HomeTeamAbbreviation </td>
-                                <td>VS</td>
-                                <td>@match.AwayTeamAbbreviation </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <th colspan="2">Matchweek</th>
-                        </tr>
-                        <tr>
-                            <td colspan="2">No matches scheduled this week</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-
-        </div>
-        @* Matchweek section ends *@
-
-        @* Carousel section *@
-        <div class="col-sm-6">
-            <h2>Soccer Club <i class="fa-regular fa-futbol"></i></h2>
-            <div id="leaguePhotos" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="10000">
-                        <img src="/images/soccer1_640.jpg" class="d-block w-100" alt="soccer players playing">
-                    </div>
-                    <div class="carousel-item" data-bs-interval="2000">
-                        <img src="/images/soccer2_640.jpg" class="d-block w-100" alt="soccer players playing">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="/images/soccer3_640.jpg" class="d-block w-100" alt="soccer players playing">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#leaguePhotos" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#leaguePhotos" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-            @* Carousel section ends *@
-
-            @* League rules section *@
-            <h3>League Rules</h3>
-            <p class="league-rules">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non ultrices ipsum, non molestie ex. Vivamus fermentum pretium sapien a ullamcorper. Vivamus id purus quam. Cras a urna erat.</p>
-            <p>
-                <ul>
-                    <li>9 vs 9 Coed Adult (including the goalie)</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                    <li><span style="color: #ff0000;"><strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</strong></span></li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                </ul>
-            </p>
-            <p class="register-section"><button class="button-64" role="button"> <span class="text">Register here!</span> </button></p>
-        </div>
-        @* League rules section ends *@
-
-        @* Club information section *@
-        <div class="col-sm-3">
-            <h2 class="club-information-title">Club Information</h2>
-            <div class="club-information">
-            <p>
-                <strong>Location:</strong><br>#1234 Park Road<br>St Catharines, ON<br>L0S 1E0<br><strong>Phone: </strong>1+ 000 000 0000<strong>
-                    <br>Email:
-                </strong><a href="#">info@soccerclub.ca</a>
-            </p>
-            <p><strong>Office Hours</strong><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-            <p><strong>Tuesday and Thursday<br></strong>4pm-8pm</p>
-            <p><strong>Saturday <br></strong>9am-1pm</p>
-            <p></p>
-            </div>
-        </div>
-        @* Club information section ends *@
-    </div>
+        <h1 class="display-4">Fluid jumbotron</h1>
+        <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
     </div>
 </div>
 
-<main role="main" class="pb-3">
-
-@* Title Stats *@
-<div class="container">
 <div class="row">
-    <div class="col-sm-3">
-    </div>
-    <div class="col-sm-9">
-        <h2 class="team-stats-title">Stats <i class="bi bi-activity"></i></h2>
-    </div>
-</div>
-</div>
-
-<div class="container">
-    <div class="row">
-        @* Table standings section *@
-        <div class="col-sm-3 standings-column">
-            <div class="table-standings">
-            <div class="standings-header">
-                <h4>Standings</h4>
-            </div>
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th>Pos</th>
-                        <th>Team</th>
-                        <th>Pl</th>
-                        <th>GD</th>
-                        <th class="table-standings-points">Pts</th>
-                    </tr>
-                    @foreach (var standing in ViewBag.Standings)
-                    {
-                        <tr>
-                            <td>@standing.Position</td>
-                            <td>
-                                @{
-                                    /*NM: if statement to control the teamname lenght being displayed in table. Removed if in a future is included a short form of the name in the Model properties */
-                                    if (standing.TeamName.Length >= 17)
+    <div class="col">
+        <div class="my-content">
+            <div class="container-fluid background-color">
+                <div class="container">
+                    <div class="row">
+                        @* Matchweek section *@
+                        <div class="matchweek-schedule col-sm-3">
+                            <table class="table">
+                                <thead>
+                                    @if (hasMatches)
                                     {
-                                        var teamName = standing.TeamName.Split(' ');
-                                        if (teamName.Length >= 2)
+                                        <tr>
+                                            <th colspan="2">Matchweek @ViewBag.MatchweekNumber</th>
+                                        </tr>
+                                    }
+                                </thead>
+                                <tbody>
+                                    @if (hasMatches)
+                                    {
+                                        @foreach (MatchSchedule match in ViewBag.MatchSchedules)
                                         {
-                                            @teamName[0] @teamName[1]
-                                        }
-                                        else
-                                        {
-                                            @standing.TeamName.Substring(0, 17)
+                                            <tr>
+                                                <td>@match.HomeTeamAbbreviation </td>
+                                                <td>VS</td>
+                                                <td>@match.AwayTeamAbbreviation </td>
+                                            </tr>
                                         }
                                     }
                                     else
                                     {
-                                        @standing.TeamName
+                                        <tr>
+                                            <th colspan="2">Matchweek</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">No matches scheduled this week</td>
+                                        </tr>
                                     }
-                                }
-                            </td>
-                            <td class="table-values">@standing.Played</td>
-                            <td class="table-values">@standing.GoalsDifference</td>
-                            <td class="table-values-points">@standing.Points</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-                <a class="link-standings" asp-area="" asp-controller="Standings" asp-action="Index">
-                    View More
-                    <i class="bi bi-arrow-right"></i>
-                </a>
-
-        </div>
-        </div>
-        @* Table standings section ends*@
-
-        @* Team stats section *@
-        <div class="col-sm-9">
-            <!-- Teams stats -->
-            <div class="team-stats container">
-                <span class="stats-title">Best Attack</span>
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 1</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 2</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 3</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 4</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 5</span>
-                        </div>
-                    </div>
-                </div>
-
-                <span class="stats-title">Best Defense</span>
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 1</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 2</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 3</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 4</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 5</span>
-                        </div>
-                    </div>
-                </div>
-
-                <span class="stats-title">Most Matches Won</span>
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 1</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 2</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 3</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 4</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 5</span>
-                        </div>
-                    </div>
-                </div>
-
-                <span class="stats-title">Best Goalscorers</span>
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 1</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 2</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 3</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 4</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="stats-card">
-                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                            <span class="stat-value">47</span>
-                            <hr class="line-between">
-                            <span class="team-name">Team 5</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @* Team stats section ends *@
-    </div>
-</div>
-
-@* section separator *@
-<div class="container">
-    <div class="row">
-
-        <hr class="col-sm-12 hr-gradient" />
-    </div>
-</div>
+                                </tbody>
+                            </table>
 
 
-<div class="container">
-    <div class="row">
-        @* Player to watch section*@
-        <div class="col-sm-3 player-to-watch-column">
-            <h4 class="player-to-watch">Player to Watch</h4>
-            <div class="card-players">
-                <div class="row no-gutters">
-                    <!-- Player Stats -->
-                    <div class="col-md-4 sol-sm-12">
-                        <ul class="list-group list-group-flush">
-                            <!-- Matches -->
-                            <li class="list-group-item">
-                                Matches:
-                                <span class="value">141</span>
-                            </li>
-                            <!-- Goals -->
-                            <li class="list-group-item">
-                                Goals:
-                                <span class="value">34</span>
-                            </li>
-                            <!-- Assists -->
-                            <li class="list-group-item">
-                                Assists:
-                                <span class="value">28</span>
-                            </li>
-                            <!-- Shots -->
-                            <li class="list-group-item">
-                                Shots:
-                                <span class="value">275</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- Player Photo -->
-                    <div class="col-md-8 col-sm-8">
-                        <img src="/images/blankProfile.jpg" class="card-img-top player-photo" alt="Player Photo">
-                    </div>
-                </div>
-                <!-- Lower Div -->
-                <div class="row d-flex align-items-center">
-                    <!-- Player Name -->
-                    <div class="col-md-4 col-sm-12">
-                        <div class="player-name-container">
-                            <div class="player-firstname">
-                                <p>Player</p>
-                            </div>
-                            <div class="player-lastname">
-                                <p>Name</p>
-                            </div>
-                            <span class="fi fi-cl"></span>
                         </div>
-                    </div>
+                        @* Matchweek section ends *@
 
-
-                    <!-- Social Media -->
-                    <div class="player-social-media col-md-4 col-sm-12 align-self-center">
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                        <a href="#"><i class="bi bi-snapchat"></i></a>
-                        <a href="#"><i class="bi bi-threads-fill"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <h4 class="player-to-watch">Player to Watch</h4>
-            <div class="card-players">
-                <div class="row no-gutters">
-                    <!-- Player Stats 2 -->
-                    <div class="col-md-4 sol-sm-12">
-                        <ul class="list-group list-group-flush">
-                            <!-- Matches -->
-                            <li class="list-group-item">
-                                Matches:
-                                <span class="value">141</span>
-                            </li>
-                            <!-- Goals -->
-                            <li class="list-group-item">
-                                Goals:
-                                <span class="value">34</span>
-                            </li>
-                            <!-- Assists -->
-                            <li class="list-group-item">
-                                Assists:
-                                <span class="value">28</span>
-                            </li>
-                            <!-- Shots -->
-                            <li class="list-group-item">
-                                Shots:
-                                <span class="value">275</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- Player Photo -->
-                    <div class="col-md-8 col-sm-8">
-                        <img src="/images/blankProfile.jpg" class="card-img-top player-photo" alt="Player Photo">
-                    </div>
-                </div>
-                <!-- Lower Div -->
-                <div class="row d-flex align-items-center">
-                    <!-- Player Name -->
-                    <div class="col-md-4 col-sm-12">
-                        <div class="player-name-container">
-                            <div class="player-firstname">
-                                <p>Player</p>
-                            </div>
-                            <div class="player-lastname">
-                                <p>Name</p>
-                            </div>
-                            <span class="fi fi-cl"></span>
-                        </div>
-                    </div>
-
-
-                    <!-- Social Media -->
-                    <div class="player-social-media col-md-4 col-sm-12 align-self-center">
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                        <a href="#"><i class="bi bi-snapchat"></i></a>
-                        <a href="#"><i class="bi bi-threads-fill"></i></a>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-        @* Player to watch section ends*@
-
-        @* News section *@
-        <div class="col-sm-9">
-            <div class="row">
-                <div class="titles-section">
-                <h2>Latest News <i class="bi bi-newspaper"></i></h2>
-                </div>
-                <!-- Bigger block on the left -->
-                <div class="col-sm-8 bigger-block">
-                    <a href="#">
-                    <div class="card style-card-news">
-                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
-                        <div class="card-img-overlay style-card-img-news">
-                            <div class="style-text-news">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </p>
-                            </div>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                
-                <div class="col-sm-9 col-md-5">
-                    <!-- First set of smaller blocks -->
-                    <div class="smaller-block">
-
-                        <a href="" class="text-dark">
-                            <div class="row">
-                                <div class="col-5">
-                                    <div class="img-wrapper">
-                                        <img src="https://campeonatochileno.cl/uploads/noticias/thumb/1701560243643_DWS_2023_8.JPG"
-                                             class="img-fluid shadow-1-strong rounded" alt="Hollywood Sign on The Hill" />
+                        @* Carousel section *@
+                        <div class="col-sm-6">
+                            <h2>Soccer Club <i class="fa-regular fa-futbol"></i></h2>
+                            <div id="leaguePhotos" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active" data-bs-interval="10000">
+                                        <img src="/images/soccer1_640.jpg" class="d-block w-100" alt="soccer players playing">
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="2000">
+                                        <img src="/images/soccer2_640.jpg" class="d-block w-100" alt="soccer players playing">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="/images/soccer3_640.jpg" class="d-block w-100" alt="soccer players playing">
                                     </div>
                                 </div>
-
-                                <div class="col-7">
-                                    <ul>
-                                        <li>
-                                            2023/12/06
-                                        </li>
-                                        <li>
-                                            Lorem ipsum dolor sit amet
-                                        </li>
-                                    </ul>
-                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#leaguePhotos" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#leaguePhotos" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                        </a>
+                            @* Carousel section ends *@
 
-                    </div>
-                    <div class="smaller-block">
-                        <a href="" class="text-dark">
-                            <div class="row">
-                                <div class="col-5">
-                                    <div class="img-wrapper">
-                                        <img src="https://campeonatochileno.cl/uploads/noticias/thumb/1701560243643_DWS_2023_8.JPG"
-                                             class="img-fluid shadow-1-strong rounded" alt="Hollywood Sign on The Hill" />
-                                    </div>
-                                </div>
-
-                                <div class="col-7">
-                                    <ul>
-                                        <li>
-                                            2023/12/06
-                                        </li>
-                                        <li>
-                                            Lorem ipsum dolor sit amet
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="smaller-block">
-                        <a href="" class="text-dark">
-                            <div class="row">
-                                <div class="col-5">
-                                    <div class="img-wrapper">
-                                        <img src="https://campeonatochileno.cl/uploads/noticias/thumb/1701560243643_DWS_2023_8.JPG"
-                                             class="img-fluid shadow-1-strong rounded" alt="Hollywood Sign on The Hill" />
-                                    </div>
-                                </div>
-
-                                <div class="col-7">
-                                    <ul>
-                                        <li>
-                                            2023/12/06
-                                        </li>
-                                        <li>
-                                            Lorem ipsum dolor sit amet
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div>
-                    <hr />
-                </div>
-                <div class="col-sm-9 col-md-4">
-                    <!-- Second set of smaller blocks - card 1 -->
-                    <div class="card h-100">
-                        <a href="#">
-                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                            @* League rules section *@
+                            <h3>League Rules</h3>
+                            <p class="league-rules">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non ultrices ipsum, non molestie ex. Vivamus fermentum pretium sapien a ullamcorper. Vivamus id purus quam. Cras a urna erat.</p>
+                            <p>
+                                <ul>
+                                    <li>9 vs 9 Coed Adult (including the goalie)</li>
+                                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                                </ul>
                             </p>
+                            <p class="register-section"><button class="button-64" role="button"> <span class="text">Register here!</span> </button></p>
                         </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-sm-9 col-md-4">
-                    <!-- Second set of smaller blocks - card 2 -->
-                    <div class="card h-100">
-                        <a href="#">
-                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </p>
-                        </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-sm-9 col-md-4">
-                    <!-- Second set of smaller blocks - card 3 -->
-                    <a class="more-card-news" asp-area="" asp-controller="News" asp-action="Index">
-                        <div class="card h-100">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                        @* League rules section ends *@
+
+                        @* Club information section *@
+                        <div class="col-sm-3">
+                            <h2 class="club-information-title">Club Information</h2>
+                            <div class="club-information">
+                                <p>
+                                    <strong>Location:</strong><br>#1234 Park Road<br>St Catharines, ON<br>L0S 1E0<br><strong>Phone: </strong>1+ 000 000 0000<strong>
+                                        <br>Email:
+                                    </strong><a href="#">info@soccerclub.ca</a>
                                 </p>
-                                <div class="more-card-news-background">
-                                    <p>More News</p> <i class="bi bi-arrow-right"></i>
-                                </div>
+                                <p><strong>Office Hours</strong><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                                <p><strong>Tuesday and Thursday<br></strong>4pm-8pm</p>
+                                <p><strong>Saturday <br></strong>9am-1pm</p>
+                                <p></p>
                             </div>
                         </div>
-                    </a>
+                        @* Club information section ends *@ 
+                    </div>
                 </div>
             </div>
         </div>
-        @* News section ends*@
     </div>
 </div>
 
-@* Second Sponsors section *@
-<hr class="hr-gradient-sponsors" />
-<div class="row justify-content-md-center">
-    <div class="col-sm-9">
-        <div class="sponsor-list">
-            <ul class="sponsor-slider">
-                <li>
-                    <a href="https://icongr.am/devicon/csharp-original.svg?size=40&color=currentColor" target="_blank">
-                        <div class="sponsor-item">
-                        <img src="https://icongr.am/devicon/csharp-original.svg?size=40&color=currentColor" alt="Sponsor 1" />
-                        <span>Sponsor 1</span>
+<div class="row">
+    <div class="col">
+        <div class="my-content">
+            @* Title Stats *@
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-9">
+                        <h2 class="team-stats-title">Stats <i class="bi bi-activity"></i></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    @* Table standings section *@
+                    <div class="col-sm-3 standings-column">
+                        <div class="table-standings">
+                            <div class="standings-header">
+                                <h4>Standings</h4>
+                            </div>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th>Pos</th>
+                                        <th>Team</th>
+                                        <th>Pl</th>
+                                        <th>GD</th>
+                                        <th class="table-standings-points">Pts</th>
+                                    </tr>
+                                    @foreach (var standing in ViewBag.Standings)
+                                    {
+                                        <tr>
+                                            <td>@standing.Position</td>
+                                            <td>
+                                                @{
+                                                    /*NM: if statement to control the teamname lenght being displayed in table. Removed if in a future is included a short form of the name in the Model properties */
+                                                    if (standing.TeamName.Length >= 17)
+                                                    {
+                                                        var teamName = standing.TeamName.Split(' ');
+                                                        if (teamName.Length >= 2)
+                                                        {
+                                                            @teamName[0] @teamName[1]
+                                                        }
+                                                        else
+                                                        {
+                                                            @standing.TeamName.Substring(0, 17)
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @standing.TeamName
+                                                    }
+                                                }
+                                            </td>
+                                            <td class="table-values">@standing.Played</td>
+                                            <td class="table-values">@standing.GoalsDifference</td>
+                                            <td class="table-values-points">@standing.Points</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <a class="link-standings" asp-area="" asp-controller="Standings" asp-action="Index">
+                                View More
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+
                         </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://icongr.am/devicon/bootstrap-plain.svg?size=40&color=563d7c" target="_blank">
-                        <div class="sponsor-item">
-                        <img src="https://icongr.am/devicon/bootstrap-plain.svg?size=40&color=563d7c" alt="Sponsor 2" />
-                        <span>Sponsor 2</span>
+                    </div>
+                    @* Table standings section ends*@
+
+                    @* Team stats section *@
+                    <div class="col-sm-9">
+                        <!-- Teams stats -->
+                        <div class="team-stats container">
+                            <span class="stats-title">Best Attack</span>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 1</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 2</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 3</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 4</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 5</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="stats-title">Best Defense</span>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 1</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 2</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 3</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 4</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 5</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="stats-title">Most Matches Won</span>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 1</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 2</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 3</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 4</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 5</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="stats-title">Best Goalscorers</span>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 1</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 2</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 3</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 4</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="stats-card">
+                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                        <span class="stat-value">47</span>
+                                        <hr class="line-between">
+                                        <span class="team-name">Team 5</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://icongr.am/devicon/dot-net-original-wordmark.svg?size=40&color=563d7c" target="_blank">
-                        <div class="sponsor-item">
-                        <img src="https://icongr.am/devicon/dot-net-original-wordmark.svg?size=40&color=563d7c" alt="Sponsor 3" />
-                        <span>Sponsor 3</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://icongr.am/devicon/javascript-original.svg?size=40&color=currentColor" target="_blank">
-                        <div class="sponsor-item">
-                        <img src="https://icongr.am/devicon/javascript-original.svg?size=40&color=currentColor" alt="Sponsor 4" />
-                        <span>Sponsor 4</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://icongr.am/devicon/github-original-wordmark.svg?size=40&color=currentColor" target="_blank">
-                        <div class="sponsor-item">
-                        <img src="https://icongr.am/devicon/github-original-wordmark.svg?size=40&color=currentColor" alt="Sponsor 5" />
-                        <span>Sponsor 5</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+                    </div>
+                    @* Team stats section ends *@
+                </div>
+            </div>
+            @* section separator *@
+            <div class="container">
+                <div class="row">
+                    <hr class="col-sm-12 hr-gradient" />
+                </div>
+            </div>
         </div>
-        <h2 class="sponsors-text">Sponsors</h2>
     </div>
 </div>
-@* Second Sponsors section ends*@
 
-</main>
+<div class="row">
+    <div class="col">
+        <div class="my-content">
+            <div class="container">
+                <div class="row">
+                    @* Player to watch section*@
+                    <div class="col-sm-3 player-to-watch-column">
+                        <h4 class="player-to-watch">Player to Watch</h4>
+                        <div class="card-players">
+                            <div class="row no-gutters">
+                                <!-- Player Stats -->
+                                <div class="col-md-4 sol-sm-12">
+                                    <ul class="list-group list-group-flush">
+                                        <!-- Matches -->
+                                        <li class="list-group-item">
+                                            Matches:
+                                            <span class="value">141</span>
+                                        </li>
+                                        <!-- Goals -->
+                                        <li class="list-group-item">
+                                            Goals:
+                                            <span class="value">34</span>
+                                        </li>
+                                        <!-- Assists -->
+                                        <li class="list-group-item">
+                                            Assists:
+                                            <span class="value">28</span>
+                                        </li>
+                                        <!-- Shots -->
+                                        <li class="list-group-item">
+                                            Shots:
+                                            <span class="value">275</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Player Photo -->
+                                <div class="col-md-8 col-sm-8">
+                                    <img src="/images/blankProfile.jpg" class="card-img-top player-photo" alt="Player Photo">
+                                </div>
+                            </div>
+                            <!-- Lower Div -->
+                            <div class="row d-flex align-items-center">
+                                <!-- Player Name -->
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="player-name-container">
+                                        <div class="player-firstname">
+                                            <p>Player</p>
+                                        </div>
+                                        <div class="player-lastname">
+                                            <p>Name</p>
+                                        </div>
+                                        <span class="fi fi-cl"></span>
+                                    </div>
+                                </div>
+
+
+                                <!-- Social Media -->
+                                <div class="player-social-media col-md-4 col-sm-12 align-self-center">
+                                    <a href="#"><i class="bi bi-facebook"></i></a>
+                                    <a href="#"><i class="bi bi-instagram"></i></a>
+                                    <a href="#"><i class="bi bi-snapchat"></i></a>
+                                    <a href="#"><i class="bi bi-threads-fill"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="player-to-watch">Player to Watch</h4>
+                        <div class="card-players">
+                            <div class="row no-gutters">
+                                <!-- Player Stats 2 -->
+                                <div class="col-md-4 sol-sm-12">
+                                    <ul class="list-group list-group-flush">
+                                        <!-- Matches -->
+                                        <li class="list-group-item">
+                                            Matches:
+                                            <span class="value">141</span>
+                                        </li>
+                                        <!-- Goals -->
+                                        <li class="list-group-item">
+                                            Goals:
+                                            <span class="value">34</span>
+                                        </li>
+                                        <!-- Assists -->
+                                        <li class="list-group-item">
+                                            Assists:
+                                            <span class="value">28</span>
+                                        </li>
+                                        <!-- Shots -->
+                                        <li class="list-group-item">
+                                            Shots:
+                                            <span class="value">275</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Player Photo -->
+                                <div class="col-md-8 col-sm-8">
+                                    <img src="/images/blankProfile.jpg" class="card-img-top player-photo" alt="Player Photo">
+                                </div>
+                            </div>
+                            <!-- Lower Div -->
+                            <div class="row d-flex align-items-center">
+                                <!-- Player Name -->
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="player-name-container">
+                                        <div class="player-firstname">
+                                            <p>Player</p>
+                                        </div>
+                                        <div class="player-lastname">
+                                            <p>Name</p>
+                                        </div>
+                                        <span class="fi fi-cl"></span>
+                                    </div>
+                                </div>
+
+
+                                <!-- Social Media -->
+                                <div class="player-social-media col-md-4 col-sm-12 align-self-center">
+                                    <a href="#"><i class="bi bi-facebook"></i></a>
+                                    <a href="#"><i class="bi bi-instagram"></i></a>
+                                    <a href="#"><i class="bi bi-snapchat"></i></a>
+                                    <a href="#"><i class="bi bi-threads-fill"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    @* Player to watch section ends*@
+
+                    @* News section *@
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="titles-section">
+                                <h2>Latest News <i class="bi bi-newspaper"></i></h2>
+                            </div>
+                            <!-- Bigger block on the left -->
+                            <div class="col-sm-8 bigger-block">
+                                <a href="#">
+                                    <div class="card style-card-news">
+                                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
+                                        <div class="card-img-overlay style-card-img-news">
+                                            <div class="style-text-news">
+                                                <h5 class="card-title">Card title</h5>
+                                                <p class="card-text">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-sm-9 col-md-5">
+                                <!-- First set of smaller blocks -->
+                                <div class="smaller-block">
+
+                                    <a href="" class="text-dark">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <div class="img-wrapper">
+                                                    <img src="https://campeonatochileno.cl/uploads/noticias/thumb/1701560243643_DWS_2023_8.JPG"
+                                                         class="img-fluid shadow-1-strong rounded" alt="Hollywood Sign on The Hill" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-7">
+                                                <ul>
+                                                    <li>
+                                                        2023/12/06
+                                                    </li>
+                                                    <li>
+                                                        Lorem ipsum dolor sit amet
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="smaller-block">
+                                    <a href="" class="text-dark">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <div class="img-wrapper">
+                                                    <img src="https://campeonatochileno.cl/uploads/noticias/thumb/1701560243643_DWS_2023_8.JPG"
+                                                         class="img-fluid shadow-1-strong rounded" alt="Hollywood Sign on The Hill" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-7">
+                                                <ul>
+                                                    <li>
+                                                        2023/12/06
+                                                    </li>
+                                                    <li>
+                                                        Lorem ipsum dolor sit amet
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="smaller-block">
+                                    <a href="" class="text-dark">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <div class="img-wrapper">
+                                                    <img src="https://campeonatochileno.cl/uploads/noticias/thumb/1701560243643_DWS_2023_8.JPG"
+                                                         class="img-fluid shadow-1-strong rounded" alt="Hollywood Sign on The Hill" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-7">
+                                                <ul>
+                                                    <li>
+                                                        2023/12/06
+                                                    </li>
+                                                    <li>
+                                                        Lorem ipsum dolor sit amet
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <hr />
+                            </div>
+                            <div class="col-sm-9 col-md-4">
+                                <!-- Second set of smaller blocks - card 1 -->
+                                <div class="card h-100">
+                                    <a href="#">
+                                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-sm-9 col-md-4">
+                                <!-- Second set of smaller blocks - card 2 -->
+                                <div class="card h-100">
+                                    <a href="#">
+                                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-sm-9 col-md-4">
+                                <!-- Second set of smaller blocks - card 3 -->
+                                <a class="more-card-news" asp-area="" asp-controller="News" asp-action="Index">
+                                    <div class="card h-100">
+                                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                            </p>
+                                            <div class="more-card-news-background">
+                                                <p>More News</p> <i class="bi bi-arrow-right"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    @* News section ends*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="my-content">
+            @* Second Sponsors section *@
+            <hr class="hr-gradient-sponsors" />
+            <div class="row justify-content-md-center">
+                <div class="col-sm-9">
+                    <div class="sponsor-list">
+                        <ul class="sponsor-slider">
+                            <li>
+                                <a href="https://icongr.am/devicon/csharp-original.svg?size=40&color=currentColor" target="_blank">
+                                    <div class="sponsor-item">
+                                        <img src="https://icongr.am/devicon/csharp-original.svg?size=40&color=currentColor" alt="Sponsor 1" />
+                                        <span>Sponsor 1</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://icongr.am/devicon/bootstrap-plain.svg?size=40&color=563d7c" target="_blank">
+                                    <div class="sponsor-item">
+                                        <img src="https://icongr.am/devicon/bootstrap-plain.svg?size=40&color=563d7c" alt="Sponsor 2" />
+                                        <span>Sponsor 2</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://icongr.am/devicon/dot-net-original-wordmark.svg?size=40&color=563d7c" target="_blank">
+                                    <div class="sponsor-item">
+                                        <img src="https://icongr.am/devicon/dot-net-original-wordmark.svg?size=40&color=563d7c" alt="Sponsor 3" />
+                                        <span>Sponsor 3</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://icongr.am/devicon/javascript-original.svg?size=40&color=currentColor" target="_blank">
+                                    <div class="sponsor-item">
+                                        <img src="https://icongr.am/devicon/javascript-original.svg?size=40&color=currentColor" alt="Sponsor 4" />
+                                        <span>Sponsor 4</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://icongr.am/devicon/github-original-wordmark.svg?size=40&color=currentColor" target="_blank">
+                                    <div class="sponsor-item">
+                                        <img src="https://icongr.am/devicon/github-original-wordmark.svg?size=40&color=currentColor" alt="Sponsor 5" />
+                                        <span>Sponsor 5</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h2 class="sponsors-text">Sponsors</h2>
+                </div>
+            </div>
+            @* Second Sponsors section ends*@
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         //Register the service worker.
