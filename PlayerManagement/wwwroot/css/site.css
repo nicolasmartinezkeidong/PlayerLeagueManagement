@@ -41,6 +41,9 @@ body {
     margin-bottom: 1rem;
 }
 
+.colored-background{
+    background-color:cornflowerblue;
+}
 
 /* Scrollable Panel
 -------------------------------------------------- */

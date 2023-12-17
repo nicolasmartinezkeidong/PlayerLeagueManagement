@@ -12,8 +12,8 @@
 }
 
 
-
-<div class="container-fluid colored-background">
+<div class="container-fluid ">
+    <div class="container">
     <div class="row">
         @* Matchweek section *@
         <div class="matchweek-schedule col-sm-3">
@@ -113,23 +113,20 @@
         </div>
         @* Club information section ends *@
     </div>
-</div>
-
-@* section separator *@
-<div class="row">
-    <div class="col-sm-3">
-    </div>
-    <div class="col-sm-9">
-        <hr class="col-sm-12 hr-gradient" />
     </div>
 </div>
 
+<main role="main" class="pb-3">
+
+@* Title Stats *@
+<div class="container">
 <div class="row">
     <div class="col-sm-3">
     </div>
     <div class="col-sm-9">
         <h2 class="team-stats-title">Stats <i class="bi bi-activity"></i></h2>
     </div>
+</div>
 </div>
 
 <div class="container">
@@ -376,10 +373,9 @@
 </div>
 
 @* section separator *@
-<div class="row">
-    <div class="col-sm-3">
-    </div>
-    <div class="col-sm-9">
+<div class="container">
+    <div class="row">
+
         <hr class="col-sm-12 hr-gradient" />
     </div>
 </div>
@@ -715,6 +711,7 @@
 </div>
 @* Second Sponsors section ends*@
 
+</main>
 @section Scripts {
     <script>
         //Register the service worker.
