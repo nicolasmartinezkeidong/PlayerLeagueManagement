@@ -48,24 +48,39 @@ body {
 }
 
 .background-color {
-    background-color: var(--headers-blue);
-    color:var(--grey);
+    background-color: var(--grey);
+
 }
 
+/*Jumbotron home section*/
 .jumbotron {
+    position: relative;
     background-image: url('../images/soccer-field.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    height: 40vh;
+    height: 30vh;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(50, 96, 147, 0.5);
+    );
+}
+.jumbotron-text {
+    position: relative;
+    z-index: 1;
+    color: white;
 }
 
-.background-information{
-    border: 1px solid blue;
-}
+/*div for spacing sections home page*/
 .my-content {
-    margin-bottom: 20px; /* Adjust this value to control the space between divs */
+    margin-bottom: 20px;
 }
+
 /* Scrollable Panel
 -------------------------------------------------- */
 .scrollable-panel {
@@ -116,12 +131,8 @@ titles-section i {
 /* Game schedules
 -------------------------------------------------- */
 .matchweek-schedule {
-    border: 1px solid var(--cards-border);
-    box-shadow: rgba(0, 0, 0, 0.45) 0px 15px 20px -20px;
-    color:white;
+    
 }
-
-
 
 /* League Photos
 -------------------------------------------------- */
@@ -202,12 +213,9 @@ titles-section i {
 /*sponsor list*/
 .sponsor-list {
     text-align: center;
-    margin-top: -15px;
+    margin: 0 0 -40px 0;
 }
 
-.sponsor-list h3 {
-    margin-bottom: 10px;
-}
 .sponsor-list hr {
     border: none;
     border-top: 1px solid #ccc;
@@ -244,7 +252,6 @@ text-align: center;
 .sponsors-text {
 text-align: center;
 font-size: large;
-margin-top: -20px;
 }
 
 hr.hr-gradient-sponsors {
