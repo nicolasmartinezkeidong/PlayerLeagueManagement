@@ -14,7 +14,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar bg-transparent navbar-expand-sm navbar-toggleable-sm bg-white border-bottom mb-3">
+        <nav class="navbar bg-transparent navbar-expand-sm navbar-toggleable-sm bg-white mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PlayerManagement</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -24,39 +24,39 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Players" asp-action="Index">Players</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Players" asp-action="Index">Players</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Teams" asp-action="Index">Teams</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Teams" asp-action="Index">Teams</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Fields" asp-action="Index">Fields</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Fields" asp-action="Index">Fields</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Lookups" asp-action="Index">Maintain Lookup Values</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Lookups" asp-action="Index">Maintain Lookup Values</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Teams" asp-action="TeamStats">Team Stats</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Teams" asp-action="TeamStats">Team Stats</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="UserRoles" asp-action="Index">User Roles</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="UserRoles" asp-action="Index">User Roles</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">News</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="News" asp-action="Index">News</a>
                             </li>
                         }
                         
