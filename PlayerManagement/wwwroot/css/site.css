@@ -33,9 +33,6 @@ header {
 
 /* Blue footer */
 .footer {
-    background-color: var(--vibrant-red); 
-    color: white; 
-    padding: 20px; 
 }
 
 body {
@@ -53,12 +50,6 @@ body {
     width: 100%;
     z-index: 1000;
     backdrop-filter: blur(10px) brightness(75%) saturate(70%);
-}
-
-
-.background-color {
-    background-color: var(--grey);
-
 }
 
 /*Jumbotron home section*/
@@ -85,11 +76,27 @@ body {
     color: white;
 }
 
-/*div for spacing sections home page*/
-.my-content {
-    margin-bottom: 20px;
+.jumbotron-below-footer {
+    position: relative;
+    background-image: url('../images/soccer-field.jpg');
+    background-size: cover;
+    background-position: center bottom; 
+
+    height: 7vh;
+    margin-top: -20px;
 }
 
+
+/*div for spacing sections home page*/
+.my-content,
+.my-content-colored {
+    /*100 px top and bottom*/
+    padding: 70px 0 70px 0;
+}
+
+.my-content-colored {
+    background-color: var(--grey);
+}
 /* Scrollable Panel
 -------------------------------------------------- */
 .scrollable-panel {
@@ -222,7 +229,7 @@ titles-section i {
 /*sponsor list*/
 .sponsor-list {
     text-align: center;
-    margin: 0 0 -40px 0;
+    margin: 0 0 -70px 0;
 }
 
 .sponsor-list hr {
@@ -231,10 +238,10 @@ titles-section i {
 }
 
 .sponsor-slider {
-display: flex;
-justify-content: space-between;
-padding: 20px 0; /* spacing between icons */
-list-style: none;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
 }
 .sponsor-slider li {
     display: flex;
@@ -264,7 +271,6 @@ font-size: large;
 }
 
 hr.hr-gradient-sponsors {
-    margin-top:50px;
     height: 3px;
     border: none;
     background-image: linear-gradient(144deg, #00FF00, #00FFFF 50%, #FF00FF);
@@ -362,7 +368,6 @@ td.table-values-points {
 
 /*team stats title*/
 .team-stats-title{
-    padding: 0 0 15px 0;
 }
 
 .team-stats hr {
