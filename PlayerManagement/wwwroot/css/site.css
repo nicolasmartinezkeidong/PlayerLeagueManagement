@@ -14,8 +14,9 @@
 }
 
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 
 @media (min-width: 768px) {
   html {
@@ -23,21 +24,11 @@ html {
   }
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-header {  
-}
-
 /* Blue footer */
 .footer {
 }
 
 body {
-  margin-bottom: 60px;
-
 }
 
 .form-group {
@@ -45,7 +36,7 @@ body {
 }
 
 .navbar {
-    position: fixed;
+    position: absolute;
     top: 0;
     width: 100%;
     z-index: 1000;
@@ -81,9 +72,7 @@ body {
     background-image: url('../images/soccer-field.jpg');
     background-size: cover;
     background-position: center bottom; 
-
-    height: 7vh;
-    margin-top: -20px;
+    height: 6vh;
 }
 
 
@@ -97,6 +86,7 @@ body {
 .my-content-colored {
     background-color: var(--grey);
 }
+
 /* Scrollable Panel
 -------------------------------------------------- */
 .scrollable-panel {
@@ -282,7 +272,6 @@ hr.hr-gradient-sponsors {
 .table-standings {
     border: 1px solid var(--cards-border);
     border-radius: 8px;
-    overflow: hidden; /*ensure child elements don't exceed borders*/
     padding: 0;
     box-shadow: rgba(0, 0, 0, 0.45) 0px 15px 20px -20px;
 }
@@ -292,8 +281,6 @@ hr.hr-gradient-sponsors {
     background-color: var(--buttons-blue);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    overflow: hidden;
-
 }
 
 /*title stilying*/
@@ -379,18 +366,12 @@ td.table-values-points {
 /*rows space*/
 .team-stats .row {
     padding-bottom: 10px; /* space between rows */
-    margin-left: -32px;
 }
 
 /*stats title*/
 .stats-title {
     font-size: 18px;
     padding: 2px 0 0 0;
-}
-
-/*text inside team stats*/
-.team-stats .row span {
-    
 }
 
 .team-stats .row img {
@@ -709,6 +690,7 @@ td.table-values-points {
     background-color: var(--headers-blue);
     color: white;
     padding: 2rem 0;
+    padding-bottom: 0px;
 }
 
 /* Grid column styling */
