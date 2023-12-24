@@ -14,9 +14,11 @@
 </head>
 <body>
     <header>
-        <nav class="navbar bg-transparent navbar-expand-sm navbar-toggleable-sm bg-white mb-3">
+        <nav id="mainNavbar" class="navbar bg-transparent navbar-expand-sm navbar-toggleable-sm bg-white mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PlayerManagement</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fa-regular fa-futbol"></i>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -175,9 +177,10 @@
             Icons: <a class="link-info" href="https://icongr.am/">Icongr</a>, <a class="link-info" href="https://fontawesome.com/icons">FontAwesome</a>, and <a class="link-info" href="https://github.com/lipis/flag-icons">Flag Icons</a>
                 </div>
             </div>
-  
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/navbar-scroll-effect.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
