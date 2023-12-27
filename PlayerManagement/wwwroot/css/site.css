@@ -36,6 +36,17 @@ body {
     margin-bottom: 1rem;
 }
 
+/*page headers beyond the container*/
+.full-bg {
+    box-shadow: 0 0 0 100vmax var(--headers-blue);
+    clip-path: inset(0 -100vmax);
+}
+.page-headers {
+    --bg-color: hsl(100 50% 20%);
+    background-color: var(--headers-blue);
+    padding: 70px 0 10px 0;
+}
+
 /* Navbar
 -------------------------------------------------- */
 /*navbar principal*/
@@ -134,7 +145,7 @@ padding-top: 60px;
 
 /*div for spacing sections home page*/
 .my-content,
-.my-content-colored {
+.my-content-colored{
     /*100 px top and bottom*/
     padding: 70px 0 70px 0;
 }

@@ -68,9 +68,12 @@
             </div>
         </nav>
     </header>
-    
+   
     <div class="container">
         <main role="main" class="pb-3">
+            <section class="page-headers full-bg text-white">
+                @* insertFirstH1 method will be added*@
+            </section>
             @RenderBody()
         </main>
     </div>
@@ -181,8 +184,10 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/navbar-scroll-effect.js" asp-append-version="true"></script>
+    <script src="~/js/navbar-scroll-effect.js" asp-append-version="true"></script> @* Navbar darker bg effect *@
+    <script src="~/js/insertFirstH1.js" asp-append-version="true"></script> @* Take first H1 and insert it into .page-headers *@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
