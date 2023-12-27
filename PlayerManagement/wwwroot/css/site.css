@@ -2,6 +2,7 @@
     --cards-border: #ebe5eb;
     --grey: #e1e1e1;
     --mid-grey: #f8f9fa;
+    --strong-grey: #999999;
     --black: #010000;
     --headers-blue: #326093;
     --buttons-blue: #101361;
@@ -35,7 +36,9 @@ body {
     margin-bottom: 1rem;
 }
 
-/*navbar*/
+/* Navbar
+-------------------------------------------------- */
+/*navbar principal*/
 .navbar {
     position: fixed;
     top: 0;
@@ -44,7 +47,7 @@ body {
     backdrop-filter: blur(10px) brightness(75%) saturate(70%);
     transition: background-color 0.3s ease;
 }
-#mainNavbar.scrolled {
+#mainNavbar.scrolled, navbar-toggler {
     backdrop-filter: blur(10px) brightness(45%) saturate(70%); /* Adjust brightness and saturate for darker effect */
     transition: background-color 200ms linear;
 }
@@ -60,16 +63,51 @@ body {
     transition: transform 0.3s ease;
 }
 
+/*navbar tabs*/
+.nav-link {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: var(--strong-grey);
+    transition: color 0.3s ease, filter 0.3s ease;
+}
+.nav-link:hover {
+        color: var(--mid-grey);
+        filter: brightness(120%);
+    }
+.nav-link:after {
+    display: block;
+    content: '';
+    border-bottom: solid 3px var(--mid-grey);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+    transform-origin: 100% 50%
+}
+.nav-link:hover:after {
+    transform: scaleX(1);
+    transform-origin: 0 50%;
+}
+
+/*hamburguer menu*/
+.custom-toggler.navbar-toggler {
+    border-color: var(--mid-grey);
+}
+.custom-toggler.navbar-toggler-icon {
+    background-image: url( "data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+.custom-toggler.navbar-toggler:focus {
+    box-shadow: 0 0 5px var(--vivid-yellow) !important;
+}
 
 /*Jumbotron home section*/
 .jumbotron {
-    position: relative;
-    background-image: url('../images/soccer-field.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    height: 30vh;
-    padding-top: 60px;
+position: relative;
+background-image: url('../images/soccer-field.jpg');
+background-size: cover;
+background-position: center center;
+background-repeat: no-repeat;
+height: 30vh;
+padding-top: 60px;
 }
 .overlay {
     position: absolute;
