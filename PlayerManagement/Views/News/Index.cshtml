@@ -1,0 +1,95 @@
+﻿@model IEnumerable<PlayerManagement.Models.News>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsPhoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @{
+                        if (item.NewsPhoto?.Content != null)
+                        {
+                            string imageBase64 = Convert.ToBase64String(item.NewsPhoto.Content);
+                            string imageSrc = string.Format("data:" + item.NewsPhoto.MimeType + ";base64,{0}", imageBase64);
+                            <img src="@imageSrc" alt="Picture of @item.Title news" title="Picture of @item.Title news" class="img-fluid rounded" />
+                        }
+                        else
+                        {
+                            <img src="~/images/soccerBall.jpg" style="max-height: 80px; max-width: 96px" class="img-fluid rounded" />
+                        }
+                    }
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                    @{
+                        // Split the 'Content' string into an array of words
+                        string[] noteWords = item.Content.Split(' ');
+
+                        // more than 5 words?
+                        if (noteWords.Count() > 5)
+                        {
+                        // Create a link that toggles the collapse/expand functionality
+                            <a class="" role="button" data-bs-toggle="collapse" href="#collapseSum@(item.Id)" aria-expanded="false" aria-controls="collapseSum@(item.Id)">
+                                @(string.Join(" ", noteWords.Take(5)) + "...")
+                            </a>
+
+                            // Create a collapsible content div for the remaining words
+                            <div class="collapse" id="collapseSum@(item.Id)">
+                                <div class="well">
+                                    @(string.Join(" ", noteWords.Skip(5)))
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            // If there are 5 or fewer words, display the 'Content' directly
+                            @item.Content
+                        }
+                    }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

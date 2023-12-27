@@ -4,11 +4,11 @@
     ViewData["Title"] = " Player Details";
 }
 
-<h2>Player: @Model.FullName</h2>
+<h1>Details</h1>
 
+<h2>Player: @Model.FullName</h2>
+<hr />
 <div>
-    <hr />
-    <hr />
     @{
         if (Model.PlayerPhoto?.Content != null)
         {

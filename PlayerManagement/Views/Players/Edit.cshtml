@@ -4,9 +4,10 @@
     ViewData["Title"] = "Player Edit";
 }
 
+<h1>Edit</h1>
+
 <h2>Player: @Model.FullName</h2>
 
-<hr />
 @{
     var hasPicture = (Model.PlayerPhoto?.Content != null);
     if (hasPicture)
