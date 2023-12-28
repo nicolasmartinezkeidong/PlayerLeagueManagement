@@ -28,32 +28,24 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Captain") != true
+                        && User.IsInRole("Admin") != true)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Teams" asp-action="Index">Team</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    League Menu
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="Index">Fields</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">News</a>
-                                    </li>
-
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="Index">Fields</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">News</a>
                             </li>
                         }
                         else if (User.IsInRole("Captain"))
@@ -64,35 +56,26 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Teams" asp-action="Index">Team</a>
                             </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    League Menu
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="Index">Fields</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Teams" asp-action="TeamStats">Team Stats</a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">News</a>
-                                    </li>
-
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="Index">Fields</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Teams" asp-action="TeamStats">Team Stats</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">News</a>
+                            </li>
+
+                            
                         }
                         else if (User.IsInRole("Admin"))
                         {
@@ -102,52 +85,30 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Teams" asp-action="Index">Team</a>
                             </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    League Menu
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="Index">Fields</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Teams" asp-action="TeamStats">Team Stats</a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">News</a>
-                                    </li>
-
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
                             </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSite" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Site Menu
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownSite">
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="UserRoles" asp-action="Index">Users</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Lookups" asp-action="Index">Lookups Tables</a>
-                                    </li>
-
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="Index">Fields</a>
                             </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Teams" asp-action="TeamStats">Team Stats</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="UserRoles" asp-action="Index">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Lookups" asp-action="Index">Lookups Tables</a>
+                            </li>
                         }
 
                     </ul>
