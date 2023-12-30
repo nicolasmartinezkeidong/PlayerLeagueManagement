@@ -14,6 +14,7 @@
     --tangerine: #ef9101;
 }
 
+
 html {
     font-size: 14px;
 }
@@ -103,8 +104,8 @@ body {
 .custom-toggler.navbar-toggler {
     border-color: var(--mid-grey);
 }
-.custom-toggler.navbar-toggler-icon {
-    background-image: url( "data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+.custom-toggler span {
+    background-image: url( "data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(250, 250, 250, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }
 .custom-toggler.navbar-toggler:focus {
     box-shadow: 0 0 5px var(--vivid-yellow) !important;
@@ -135,13 +136,21 @@ padding-top: 60px;
 }
 
 .jumbotron-below-footer {
-    position: relative;
     background-image: url('../images/soccer-field.jpg');
     background-size: cover;
     background-position: center bottom; 
-    height: 6vh;
 }
 
+.flex-wrapper {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.footer {
+    margin-top: auto;
+}
 
 /*div for spacing sections home page*/
 .my-content,
@@ -715,6 +724,7 @@ td.table-values-points {
 .style-card-news:hover .style-text-news {
     background-color: var(--headers-blue);
     opacity: 0.9;
+    text-decoration: underline;
 }
 
 
