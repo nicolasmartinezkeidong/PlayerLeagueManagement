@@ -6,6 +6,7 @@ namespace PlayerManagement.Models
     {
         public int Id { get; set; }
 
+        //Full Name
         [Display(Name = "Author")]
         public string FullName
         {
