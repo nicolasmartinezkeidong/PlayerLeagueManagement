@@ -17,6 +17,7 @@
 
 html {
     font-size: 14px;
+    min-height: 100%;
 }
 
 
@@ -28,9 +29,11 @@ html {
 
 /* Blue footer */
 .footer {
+    
 }
 
 body {
+    
 }
 
 .form-group {
@@ -135,12 +138,6 @@ padding-top: 60px;
     color: white;
 }
 
-.jumbotron-below-footer {
-    background-image: url('../images/soccer-field.jpg');
-    background-size: cover;
-    background-position: center bottom; 
-}
-
 .flex-wrapper {
     display: flex;
     min-height: 100vh;
@@ -149,7 +146,6 @@ padding-top: 60px;
 }
 
 .footer {
-    margin-top: auto;
 }
 
 /*div for spacing sections home page*/
@@ -804,6 +800,12 @@ td.table-values-points {
     text-decoration: none;
     font-size: 24px;
     color: white;
+}
+
+.jumbotron-below-footer {
+    background-image: url('../images/soccer-field.jpg');
+    background-size: cover;
+    background-position: center bottom;
 }
 
 
