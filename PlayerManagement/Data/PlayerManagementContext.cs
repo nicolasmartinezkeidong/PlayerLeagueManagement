@@ -47,6 +47,8 @@ namespace PlayerManagement.Data
         public DbSet<PlayerPhoto> PlayerPhotos { get; set; }
         public DbSet<PlayerThumbnail> PlayerThumbnails { get; set; }
         public DbSet<PlayerMatch> PlayerMatchs { get; set; }
+        public DbSet<News> News { get; set; }
+        public DbSet<NewsPhoto> NewsPhotos { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
