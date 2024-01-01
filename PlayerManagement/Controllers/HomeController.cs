@@ -57,6 +57,17 @@ namespace PlayerManagement.Controllers
             ViewBag.Standings = standings;
             #endregion
 
+
+            #region Team Stats
+            var topTeamsByGoalsFavor = standings.OrderByDescending(s => s.GoalsFavor).Take(5).ToList();
+            var topTeamsByGoalsAgainst = standings.OrderBy(s => s.GoalsAgainst).Take(5).ToList();
+            var topTeamsByWins = standings.OrderByDescending(s => s.Won).Take(5).ToList();
+
+            ViewBag.TopTeamsByGoalsFavor = topTeamsByGoalsFavor;
+            ViewBag.TopTeamsByGoalsAgainst = topTeamsByGoalsAgainst;
+            ViewBag.TopTeamsByWins = topTeamsByWins;
+            #endregion
+
             return View();
         }
 
