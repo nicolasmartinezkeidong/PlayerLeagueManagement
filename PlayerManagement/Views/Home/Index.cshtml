@@ -205,136 +205,52 @@
                         <div class="team-stats container">
                             @* Title Stats *@
                             <h2 class="team-stats-title">Stats <i class="bi bi-activity"></i></h2>
+                            <!-- Best Attack -->
                             <span class="stats-title">Best Attack</span>
                             <div class="row">
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 1</span>
+                                @foreach (var team in ViewBag.TopTeamsByGoalsFavor)
+                                {
+                                    <div class="col-sm">
+                                        <div class="stats-card">
+                                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                            <span class="stat-value">@team.GoalsFavor</span>
+                                            <hr class="line-between">
+                                            <span class="team-name">@team.TeamName</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 2</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 3</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 4</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 5</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
 
+                            <!-- Best Defense -->
                             <span class="stats-title">Best Defense</span>
                             <div class="row">
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 1</span>
+                                @foreach (var team in ViewBag.topTeamsByGoalsAgainst)
+                                {
+                                    <div class="col-sm">
+                                        <div class="stats-card">
+                                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                            <span class="stat-value">@team.GoalsAgainst</span>
+                                            <hr class="line-between">
+                                            <span class="team-name">@team.TeamName</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 2</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 3</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 4</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 5</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
 
+                            <!-- Most Matches Won -->
                             <span class="stats-title">Most Matches Won</span>
                             <div class="row">
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 1</span>
+                                @foreach (var team in ViewBag.TopTeamsByWins)
+                                {
+                                    <div class="col-sm">
+                                        <div class="stats-card">
+                                            <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
+                                            <span class="stat-value">@team.Won</span>
+                                            <hr class="line-between">
+                                            <span class="team-name">@team.TeamName</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 2</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 3</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 4</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="stats-card">
-                                        <img src="https://anfpfotos.cl/clubes/logos/831340ccfeb595f722e7ae6009c5f7d7.svg" class="team-logo">
-                                        <span class="stat-value">47</span>
-                                        <hr class="line-between">
-                                        <span class="team-name">Team 5</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
 
                             <span class="stats-title">Best Goalscorers</span>

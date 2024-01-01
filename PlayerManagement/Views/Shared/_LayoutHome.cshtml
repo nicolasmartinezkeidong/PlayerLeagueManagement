@@ -28,6 +28,9 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="PlayerStats" asp-action="Index">Player Stats</a>
+                        </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Captain") != true
                         && User.IsInRole("Admin") != true)
                         {
