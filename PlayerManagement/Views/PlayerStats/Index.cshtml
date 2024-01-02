@@ -38,8 +38,9 @@
                     <col span="1" />
                     <col span="1" />
                     <col span="1" />
-                    <col span="1" width="400" />
                     <col span="1" />
+                    <col span="1" />
+                    <col span="1" width="400"/>
                 </colgroup>
                 <tr>
                     <th>
@@ -65,6 +66,9 @@
                         @{
                             int? redCards = 0;
                         }
+                    </th>
+                    <th>
+                        <input type="submit" disabled="disabled" value="Team" class="btn btn-link" />
                     </th>
                     <th>
                         <input type="submit" disabled="disabled" value="Notes" class="btn btn-link" />
@@ -103,6 +107,9 @@
                             @{
                                 redCards += item.RedCards;
                             }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Player.Team.Name)
                         </td>
                         <td>
                             @{
