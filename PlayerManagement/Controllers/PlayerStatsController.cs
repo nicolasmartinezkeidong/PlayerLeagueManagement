@@ -41,8 +41,8 @@ namespace PlayerManagement.Controllers
 
             var stats = from s in _context.PlayerMatchs
                 .Include(p => p.Match)
-                .Include(p => p.Player)
-                select s;
+                .Include(p => p.Player).ThenInclude(p => p.Team)
+                 select s;
             
             if (MatchId.HasValue)
             {
