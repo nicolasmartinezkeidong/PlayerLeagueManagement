@@ -164,7 +164,8 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
-            var playerMatch = await _context.PlayerMatchs.FindAsync(id);
+            var playerMatch = await _context.PlayerMatchs
+                .FindAsync(id);
             if (playerMatch == null)
             {
                 return NotFound();

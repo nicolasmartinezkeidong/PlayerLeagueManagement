@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Player Stats";
 }
+
+<h1>Index</h1>
+
 <form asp-action="Index" method="get">
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
@@ -67,7 +70,7 @@
                         <input type="submit" disabled="disabled" value="Notes" class="btn btn-link" />
                     </th>
                     <th>
-                        <a asp-controller="PlayerStats" asp-action="Add" >
+                        <a asp-controller="PlayerStats" asp-action="Create" >
                             <span class="btn btn-success" data-bs-toggle="tooltip"
                                   title="Add Appointment"><strong>&#x271A; Add</strong></span>
                         </a>
@@ -122,11 +125,11 @@
                             }
                         </td>
                         <td>
-                            <a asp-controller="PlayerStats" asp-action="Update" asp-route-id="@item.Id">
-                                <span class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Edit Appointment">&#x270D;</span>
+                            <a asp-controller="PlayerStats" asp-action="Edit" asp-route-id="@item.Id">
+                                <span class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Edit Stats">&#x270D;</span>
                             </a>
-                            <a asp-controller="PlayerStats" asp-action="Remove" asp-route-id="@item.Id">
-                                <span class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete Appointment">&#x274C;</span>
+                            <a asp-controller="PlayerStats" asp-action="Delete" asp-route-id="@item.Id">
+                                <span class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete Stats">&#x274C;</span>
                             </a>
                         </td>
                     </tr>
@@ -134,7 +137,7 @@
              @*   <tr>
                     <td></td>
                     <td align="right">
-                        Total Fees:
+                        Total Goals:
                     </td>
                     <td>
                         <strong>@goals.ToString()</strong>

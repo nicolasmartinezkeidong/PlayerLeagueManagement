@@ -40,7 +40,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="MatchSchedules" asp-action="Index">Match Schedules</a>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
                             </li>
@@ -72,10 +71,13 @@
                                 <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="PlayerStats" asp-action="Index">Player Stats</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">News</a>
                             </li>
 
-                            
+
                         }
                         else if (User.IsInRole("Admin"))
                         {
@@ -99,6 +101,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Standings" asp-action="Index">Standings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="PlayerStats" asp-action="Index">Player Stats</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">News</a>
