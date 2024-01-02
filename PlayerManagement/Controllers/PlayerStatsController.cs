@@ -165,7 +165,11 @@ namespace PlayerManagement.Controllers
             }
 
             var playerMatch = await _context.PlayerMatchs
-                .FindAsync(id);
+                .Include(p => p.Player)
+                .Include(m => m.Match)
+                .Include(f => f.Match.Field) /*Field information*/
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (playerMatch == null)
             {
                 return NotFound();

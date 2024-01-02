@@ -11,9 +11,10 @@ namespace PlayerManagement.Models
         {
             get
             {
-                return $"{Date} {Time} {Field}";
+                return $"{Field.Name} {Time} - {Date.ToString("MMM dd, yyyy")}";
             }
         }
+        
         //Get 3 first letter of team's name
         public string HomeTeamAbbreviation
         {

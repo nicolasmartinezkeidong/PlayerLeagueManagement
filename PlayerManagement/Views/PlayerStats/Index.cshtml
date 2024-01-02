@@ -17,7 +17,7 @@
             <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 5px;" id="collapseFilter">
                 <div class="row">
                     <div class="form-group col-md-4 ml-md-3">
-                        <label class="control-label">Reason:</label>
+                        <label class="control-label">#Matches Played:</label>
                         @Html.DropDownList("MatchId", null, "All Games", htmlAttributes: new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-4">
@@ -46,7 +46,7 @@
                         <input type="submit" name="actionButton" value="Player" class="btn btn-link" />
                     </th>
                     <th>
-                        <input type="submit" name="actionButton" value="Match" class="btn btn-link" />
+                        <input type="submit" name="actionButton" value="Matches Played" class="btn btn-link" />
                     </th>
                     <th>
                         <input type="submit" disabled="disabled" value="Goals" class="btn btn-link" />
@@ -55,13 +55,13 @@
                         }
                     </th>
                     <th>
-                        <input type="submit" disabled="disabled" value="YellowCards" class="btn btn-link" />
+                        <input type="submit" disabled="disabled" value="Yellow Cards" class="btn btn-link" />
                         @{
                             int? yellowCards = 0;
                         }
                     </th>
                     <th>
-                        <input type="submit" disabled="disabled" value="RedCards" class="btn btn-link" />
+                        <input type="submit" disabled="disabled" value="Red Cards" class="btn btn-link" />
                         @{
                             int? redCards = 0;
                         }
