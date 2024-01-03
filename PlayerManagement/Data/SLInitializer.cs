@@ -275,7 +275,7 @@ namespace PlayerManagement.Data
                     // Get the list of field IDs
                     List<int> fieldIds = context.Fields.Select(f => f.Id).ToList();
 
-                    // Set the start and end dates for the match schedule
+                    // Set the start and end dates for the match schedule (13 Sundays bewteen both dates)
                     DateTime startDate = new DateTime(2023, 5, 28);
                     DateTime endDate = new DateTime(2023, 8, 27);
 
@@ -299,16 +299,11 @@ namespace PlayerManagement.Data
                                 Date = date,
                                 Time = matchTime[i / 2 % matchTime.Length],
                                 FieldId = fieldIds[i / 2 % fieldIds.Count],
-                                HomeTeamScore = 0, // Initialize with 0 because as the games are played we will know the score
-                                AwayTeamScore = 0, // Initialize with 0 because as the games are played we will know the score
+                                HomeTeamScore = random.Next(6), 
+                                AwayTeamScore = random.Next(6),
                                 MatchDay = matchDay
                             };
 
-                            if (matchDay <= 1) // Populate random scores for 3 first dates 
-                            {
-                                match.HomeTeamScore = random.Next(6);
-                                match.AwayTeamScore = random.Next(6);
-                            }
 
                             context.MatchSchedules.Add(match);
                         }
@@ -338,6 +333,21 @@ namespace PlayerManagement.Data
                 }
 
                 #endregion
+
+                // Generate random games played for players
+                var playedGames = context.MatchSchedules.Where(m => m.Date <= DateTime.Now).ToList();
+
+                foreach (var player in context.Players)
+                {
+                    // Ensure the number of games played doesn't exceed total played games
+                    int maxGamesPlayed = playedGames.Count;
+                    int gamesPlayed = random.Next(0, maxGamesPlayed + 1); // Random games played (up to maxGamesPlayed inclusive)
+
+                    player.GamesPlayed = gamesPlayed;
+                    context.Entry(player).State = EntityState.Modified;
+                }
+
+                context.SaveChanges();
 
                 #region PlayerStats Seed Data for PlayerStats
                 // Create 5 notes from Bacon ipsum
