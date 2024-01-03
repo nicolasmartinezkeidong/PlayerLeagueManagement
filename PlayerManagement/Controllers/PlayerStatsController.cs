@@ -147,10 +147,37 @@ namespace PlayerManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(playerMatch);
-                await _context.SaveChangesAsync();
+                // Retrieve the match associated with the PlayerMatch
+                var match = await _context.MatchSchedules.FindAsync(playerMatch.MatchId);
+
+                // Ensure the match has occurred before updating GamesPlayed
+                if (match.Date <= DateTime.Now)
+                {
+                    _context.Add(playerMatch);
+                    await _context.SaveChangesAsync();
+
+                    // Retrieve the player associated with the PlayerMatch
+                    var player = await _context.Players.FindAsync(playerMatch.PlayerId);
+
+                    // Increment the GamesPlayed property for the specific player
+                    player.GamesPlayed++;
+
+                    // Update the modified player entity
+                    _context.Players.Update(player);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    // Handle when the match hasn't occurred yet
+                    ModelState.AddModelError(string.Empty, "Cannot update GamesPlayed for future matches.");
+                    ViewData["MatchId"] = new SelectList(_context.MatchSchedules, "Id", "Time", playerMatch.MatchId);
+                    ViewData["PlayerId"] = new SelectList(_context.Players, "Id", "Email", playerMatch.PlayerId);
+                    return View(playerMatch);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["MatchId"] = new SelectList(_context.MatchSchedules, "Id", "Time", playerMatch.MatchId);
             ViewData["PlayerId"] = new SelectList(_context.Players, "Id", "Email", playerMatch.PlayerId);
             return View(playerMatch);
@@ -257,9 +284,10 @@ namespace PlayerManagement.Controllers
 
         private SelectList MatchSchedulesSelectList(int? id)
         {
-            var dQuery = from d in _context.MatchSchedules
-                         orderby d.Id
-                         select d;
+            var dQuery = _context.MatchSchedules
+                .OrderBy(d => d.Id)
+                .GroupBy(d => d.MatchDay)
+                .Select(g => g.First());
             return new SelectList(dQuery, "Id", "MatchDay", id);
         }
         private void PopulateDropDownLists(PlayerMatch playerMatch = null)

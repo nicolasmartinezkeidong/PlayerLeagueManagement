@@ -63,7 +63,10 @@ namespace PlayerManagement.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DOB { get; set; }
-        
+
+        [Display(Name = "Games Played")]
+        [Range(0, int.MaxValue, ErrorMessage = "Games Played must be a positive number.")]
+        public int GamesPlayed { get; set; } = 0;
 
         [Display(Name = "Team")]
         [Required(ErrorMessage = "You must select a Team.")]
