@@ -256,7 +256,7 @@
                             <!-- Best Goalscorers -->
                             <span class="stats-title">Best Goalscorers</span>
                             <div class="row">
-                                @foreach (var player in ViewBag.TopGoalscorers)
+                                @foreach (var player in ViewBag.PlayerStats)
                                 {
                                     <div class="col-sm">
                                         <div class="stats-card">
@@ -286,61 +286,61 @@
                     <div class="col-sm-3 player-to-watch-column">
                         <h4 class="player-to-watch">Player to Watch</h4>
                         <div class="card-players">
-                            <div class="row no-gutters">
-                                <!-- Player Stats -->
-                                <div class="col-md-4 sol-sm-12">
-                                    <ul class="list-group list-group-flush">
-                                        <!-- Matches -->
-                                        <li class="list-group-item">
-                                            Matches:
-                                            <span class="value">141</span>
-                                        </li>
-                                        <!-- Goals -->
-                                        <li class="list-group-item">
-                                            Goals:
-                                            <span class="value">34</span>
-                                        </li>
-                                        <!-- Assists -->
-                                        <li class="list-group-item">
-                                            Assists:
-                                            <span class="value">28</span>
-                                        </li>
-                                        <!-- Shots -->
-                                        <li class="list-group-item">
-                                            Shots:
-                                            <span class="value">275</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- Player Photo -->
-                                <div class="col-md-8 col-sm-8">
-                                    <img src="/images/blankProfile.jpg" class="card-img-top player-photo" alt="Player Photo">
-                                </div>
-                            </div>
-                            <!-- Lower Div -->
-                            <div class="row d-flex align-items-center">
-                                <!-- Player Name -->
-                                <div class="col-md-4 col-sm-12">
-                                    <div class="player-name-container">
-                                        <div class="player-firstname">
-                                            <p>Player</p>
-                                        </div>
-                                        <div class="player-lastname">
-                                            <p>Name</p>
-                                        </div>
-                                        <span class="fi fi-cl"></span>
+                                <div class="row no-gutters">
+                                    <!-- Player Stats -->
+                                    <div class="col-md-4 sol-sm-12">
+                                        <ul class="list-group list-group-flush">
+                                            <!-- Matches -->
+                                            <li class="list-group-item">
+                                                Matches:
+                                                <span class="value"></span>
+                                            </li>
+                                            <!-- Goals -->
+                                            <li class="list-group-item">
+                                                Goals:
+                                                <span class="value"></span>
+                                            </li>
+                                            <!-- Assists -->
+                                            <li class="list-group-item">
+                                                Yellows:
+                                                <span class="value"></span>
+                                            </li>
+                                            <!-- Shots -->
+                                            <li class="list-group-item">
+                                                Reds:
+                                                <span class="value"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Player Photo -->
+                                    <div class="col-md-8 col-sm-8">
+                                        <img src="/images/blankProfile.jpg" class="card-img-top player-photo" alt="Player Photo">
                                     </div>
                                 </div>
+                                <!-- Lower Div -->
+                                <div class="row d-flex align-items-center">
+                                    <!-- Player Name -->
+                                    <div class="col-md-4 col-sm-12">
+                                        <div class="player-name-container">
+                                            <div class="player-firstname">
+                                                <p></p>
+                                            </div>
+                                            <div class="player-lastname">
+                                                <p></p>
+                                            </div>
+                                            <span class="fi fi-cl"></span>
+                                        </div>
+                                    </div>
 
 
-                                <!-- Social Media -->
-                                <div class="player-social-media col-md-4 col-sm-12 align-self-center">
-                                    <a href="#"><i class="bi bi-facebook"></i></a>
-                                    <a href="#"><i class="bi bi-instagram"></i></a>
-                                    <a href="#"><i class="bi bi-snapchat"></i></a>
-                                    <a href="#"><i class="bi bi-threads-fill"></i></a>
+                                    <!-- Social Media -->
+                                    <div class="player-social-media col-md-4 col-sm-12 align-self-center">
+                                        <a href="#"><i class="bi bi-facebook"></i></a>
+                                        <a href="#"><i class="bi bi-instagram"></i></a>
+                                        <a href="#"><i class="bi bi-snapchat"></i></a>
+                                        <a href="#"><i class="bi bi-threads-fill"></i></a>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
 
                         <h4 class="player-to-watch">Player to Watch</h4>
@@ -361,12 +361,12 @@
                                         </li>
                                         <!-- Assists -->
                                         <li class="list-group-item">
-                                            Assists:
+                                            Yellows:
                                             <span class="value">28</span>
                                         </li>
                                         <!-- Shots -->
                                         <li class="list-group-item">
-                                            Shots:
+                                            Reds:
                                             <span class="value">275</span>
                                         </li>
                                     </ul>

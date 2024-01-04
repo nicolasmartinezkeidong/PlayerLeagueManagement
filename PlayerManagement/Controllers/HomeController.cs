@@ -68,17 +68,23 @@ namespace PlayerManagement.Controllers
             ViewBag.TopTeamsByWins = topTeamsByWins;
             #endregion
 
-            #region Goal Scorers
-            var topGoalscorers = await _context.PlayerMatchs
+            #region Goal Scorers and Players to Watch
+            var playerStats = await _context.PlayerMatchs
                 .Include(p => p.Player)
                 .OrderByDescending(p => p.Goals)
                 .Take(5)
                 .ToListAsync();
 
             // Pass the top goalscorers data to the view
-            ViewBag.TopGoalscorers = topGoalscorers;
+            ViewBag.PlayerStats = playerStats;
+            #endregion
+
+            #region Player to Watch
+
 
             #endregion
+
+
 
             return View();
         }
