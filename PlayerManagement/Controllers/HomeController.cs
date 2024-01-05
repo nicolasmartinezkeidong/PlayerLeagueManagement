@@ -79,12 +79,25 @@ namespace PlayerManagement.Controllers
             ViewBag.PlayerStats = playerStats;
             #endregion
 
-            #region Player to Watch
+            #region Player to Watch 
+            //NM: Note, Player to Watch should select random players to update the cards in section, but for this example is not neccesary to include a random method because the
+            //DB get updated every time the app is run, what makes to display different players each time
 
+            var randomPlayerStats = _context.PlayerMatchs
+                .Include(p => p.Player)
+                .Include(m => m.Match)
+                .Take(2)
+                .AsNoTracking();
+
+            ViewBag.PlayerToWatch = randomPlayerStats.ToList();
+
+            var matchCountList = randomPlayerStats.ToList();
+            int matchCountP1 = _context.PlayerMatchs.Count(pm => pm.PlayerId == matchCountList[0].PlayerId);
+            int matchCountP2 = _context.PlayerMatchs.Count(pm => pm.PlayerId == matchCountList[1].PlayerId);
+            ViewBag.MatchCoutP1 = matchCountP1;
+            ViewBag.MatchCoutP2 = matchCountP2;
 
             #endregion
-
-
 
             return View();
         }
