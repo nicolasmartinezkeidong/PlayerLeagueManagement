@@ -284,6 +284,11 @@
                 <div class="row">
                     @* Player to watch section*@
                     <div class="col-sm-3 player-to-watch-column">
+                        @{
+                            var playerToWatchList = ViewBag.PlayerToWatch as List<PlayerMatch>;
+                        }
+
+
                         <h4 class="player-to-watch">Player to Watch</h4>
                         <div class="card-players">
                                 <div class="row no-gutters">
@@ -293,22 +298,22 @@
                                             <!-- Matches -->
                                             <li class="list-group-item">
                                                 Matches:
-                                                <span class="value"></span>
+                                            <span class="value">@ViewBag.MatchCoutP1</span>
                                             </li>
                                             <!-- Goals -->
                                             <li class="list-group-item">
                                                 Goals:
-                                                <span class="value"></span>
+                                            <span class="value">@playerToWatchList[0].Goals</span>
                                             </li>
                                             <!-- Assists -->
                                             <li class="list-group-item">
                                                 Yellows:
-                                                <span class="value"></span>
+                                            <span class="value">@playerToWatchList[0].YellowCards</span>
                                             </li>
                                             <!-- Shots -->
                                             <li class="list-group-item">
                                                 Reds:
-                                                <span class="value"></span>
+                                            <span class="value">@playerToWatchList[0].RedCards</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -323,10 +328,10 @@
                                     <div class="col-md-4 col-sm-12">
                                         <div class="player-name-container">
                                             <div class="player-firstname">
-                                                <p></p>
+                                            <p>@playerToWatchList[0].Player.FirstName</p>
                                             </div>
                                             <div class="player-lastname">
-                                                <p></p>
+                                            <p>@playerToWatchList[0].Player.LastName</p>
                                             </div>
                                             <span class="fi fi-cl"></span>
                                         </div>
@@ -352,22 +357,22 @@
                                         <!-- Matches -->
                                         <li class="list-group-item">
                                             Matches:
-                                            <span class="value">141</span>
+                                            <span class="value">@ViewBag.MatchCoutP2</span>
                                         </li>
                                         <!-- Goals -->
                                         <li class="list-group-item">
                                             Goals:
-                                            <span class="value">34</span>
+                                            <span class="value">@playerToWatchList[1].Goals</span>
                                         </li>
                                         <!-- Assists -->
                                         <li class="list-group-item">
                                             Yellows:
-                                            <span class="value">28</span>
+                                            <span class="value">@playerToWatchList[1].YellowCards</span>
                                         </li>
                                         <!-- Shots -->
                                         <li class="list-group-item">
                                             Reds:
-                                            <span class="value">275</span>
+                                            <span class="value">@playerToWatchList[1].RedCards</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -382,10 +387,10 @@
                                 <div class="col-md-4 col-sm-12">
                                     <div class="player-name-container">
                                         <div class="player-firstname">
-                                            <p>Player</p>
+                                            <p>@playerToWatchList[1].Player.FirstName</p>
                                         </div>
                                         <div class="player-lastname">
-                                            <p>Name</p>
+                                            <p>@playerToWatchList[1].Player.LastName</p>
                                         </div>
                                         <span class="fi fi-cl"></span>
                                     </div>
