@@ -47,7 +47,7 @@
                         <input type="submit" name="actionButton" value="Player" class="btn btn-link" />
                     </th>
                     <th>
-                        <input type="submit" name="actionButton" value="Matches Played" class="btn btn-link" />
+                        <input type="submit" name="actionButton" value="Match ID" class="btn btn-link" />
                     </th>
                     <th>
                         <input type="submit" disabled="disabled" value="Goals" class="btn btn-link" />
@@ -88,7 +88,7 @@
                             @Html.DisplayFor(modelItem => item.Player.FullName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Match.Id)
+                            @Html.DisplayFor(modelItem => item.Id)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Goals)
