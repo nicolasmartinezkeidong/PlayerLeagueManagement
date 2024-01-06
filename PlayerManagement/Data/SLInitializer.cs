@@ -468,8 +468,23 @@ namespace PlayerManagement.Data
                         AuthorFirstName = "Marcelo",
                         AuthorLastName = "Salas",
                         Date = newsDate.AddDays(-random.Next(0, 731)),
-                        Content = baconNotes[random.Next(0, baconNotes.Length)]
+                        Content = baconNotes[random.Next(0, baconNotes.Length)],      
                     };
+
+                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "soccer1_640.jpg");
+
+
+                    // Create a NewsPhoto object and associate it with the news item
+                    NewsPhoto newsPhoto = new NewsPhoto
+                    {
+                        Content = File.ReadAllBytes(imagePath), // Replace with the path to your image file
+                        MimeType = "image/jpeg", // Update with the appropriate MIME type of your image
+                        News = news // Associate the photo with the news item
+                    };
+
+                    // Set the NewsPhoto property of the News item
+                    news.NewsPhoto = newsPhoto;
+
                     context.News.Add(news);
                 }
                 context.SaveChanges();

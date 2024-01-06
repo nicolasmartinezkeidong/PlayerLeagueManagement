@@ -93,11 +93,11 @@ namespace PlayerManagement.Controllers
 
             var randomPlayerStatsList = randomPlayerStats.ToList();
 
-            // Retrieve all matches played by the selected players
+           
             var matchesPlayedByPlayers = _context.MatchSchedules
-                .Include(match => match.HomeTeam.Players) // Include HomeTeam and its Players
-                .Include(match => match.AwayTeam.Players) // Include AwayTeam and its Players
-                .AsEnumerable() // Retrieve data from the database
+                .Include(match => match.HomeTeam.Players) 
+                .Include(match => match.AwayTeam.Players) 
+                .AsEnumerable() // AsEnumerable to be able to use the Where clause
                 .Where(match =>
                     match.HomeTeam.Players.Any(player => randomPlayerStatsList.Any(rps => rps.PlayerId == player.Id)) ||
                     match.AwayTeam.Players.Any(player => randomPlayerStatsList.Any(rps => rps.PlayerId == player.Id))
