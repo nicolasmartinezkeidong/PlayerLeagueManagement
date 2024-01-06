@@ -419,15 +419,27 @@
                             </div>
                             <!-- Bigger block on the left -->
                             <div class="col-sm-8 bigger-block">
-                                @foreach (var team in ViewBag.News)
+                                @foreach (var news in ViewBag.News)
                                 {
-                                    <a href="@Url.Action("Details", "News", new { id = team.Id })">
+                                    <a href="@Url.Action("Details", "News", new { id = news.Id })">
                                         <div class="card style-card-news">
-                                            <img src="https://campeonatochileno.cl/uploads/noticias/thumb/1701560243643_DWS_2023_8.JPG" class="card-img-top" alt="@team.Title">
+
+                                            @{
+                                                if (news.NewsPhoto?.Content != null)
+                                                {
+                                                    string imageBase64 = Convert.ToBase64String(news.NewsPhoto.Content);
+                                                    string imageSrc = string.Format("data:" + news.NewsPhoto.MimeType + ";base64,{0}", imageBase64);
+                                                    <img src="@imageSrc" alt="Picture of @news.Title news" title="Picture of @news.Title news" class="img-fluid rounded" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/images/soccerBall.jpg" style="max-height: 80px; max-width: 96px" class="img-fluid rounded" />
+                                                }
+                                            }
                                             <div class="card-img-overlay style-card-img-news">
                                                 <div class="style-text-news">
-                                                    <h5 class="card-title">@team.Title</h5>
-                                                    <p class="card-text">@team.Content</p>
+                                                    <h5 class="card-title">@news.Title</h5>
+                                                    <p class="card-text">@news.Content</p>
                                                 </div>
                                             </div>
                                         </div>

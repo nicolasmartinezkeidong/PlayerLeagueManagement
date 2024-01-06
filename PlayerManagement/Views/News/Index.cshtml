@@ -39,7 +39,7 @@
                         {
                             string imageBase64 = Convert.ToBase64String(item.NewsPhoto.Content);
                             string imageSrc = string.Format("data:" + item.NewsPhoto.MimeType + ";base64,{0}", imageBase64);
-                            <img src="@imageSrc" alt="Picture of @item.Title news" title="Picture of @item.Title news" class="img-fluid rounded" />
+                            <img src="@imageSrc" alt="Picture of @item.Title news" title="Picture of @item.Title news" class="img-fluid rounded" style="max-height: 80px; max-width: 96px" />
                         }
                         else
                         {
