@@ -51,6 +51,9 @@
     <thead>
         <tr>
             <th>
+                <input type="submit" name="actionButton" value="MatchDay" class="btn btn-link" />
+            </th>
+            <th>
                 <input type="submit" name="actionButton" value="Date" class="btn btn-link" />
             </th>
             <th>
@@ -77,6 +80,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MatchDay)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>

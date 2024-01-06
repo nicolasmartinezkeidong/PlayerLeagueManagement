@@ -37,7 +37,7 @@ namespace PlayerManagement.Controllers
             //Then in each "test" for filtering, add ViewData["Filtering"] = "btn-danger" if true;
 
             //NOTE: make sure this array has matching values to the column headings
-            string[] sortOptions = new[] { "Match", "Player"};
+            string[] sortOptions = new[] { "Player", "Match ID" };
 
             var stats = from s in _context.PlayerMatchs
                 .Include(p => p.Match)
@@ -88,12 +88,15 @@ namespace PlayerManagement.Controllers
                 if (sortDirection == "asc")
                 {
                     stats = stats
-                        .OrderByDescending(p => p.Player.FirstName);
+                        .OrderBy(p => p.Player.FirstName)
+                        .ThenBy(p => p.Player.LastName);
                 }
                 else
                 {
                     stats = stats
-                        .OrderBy(p => p.Player.FirstName);
+                        .OrderByDescending(p => p.Player.FirstName)
+                        .ThenBy(p => p.Player.LastName);
+
                 }
             }
             //Set sort for next time

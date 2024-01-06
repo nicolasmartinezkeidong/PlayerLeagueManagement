@@ -275,40 +275,45 @@ namespace PlayerManagement.Data
                     // Get the list of field IDs
                     List<int> fieldIds = context.Fields.Select(f => f.Id).ToList();
 
-                    // Set the start and end dates for the match schedule (13 Sundays bewteen both dates)
+                    // Set the start and end dates for the match schedule (13 Sundays between both dates)
                     DateTime startDate = new DateTime(2023, 5, 28);
                     DateTime endDate = new DateTime(2023, 8, 27);
 
                     int matchDay = 1;
+                    DateTime currentDate = startDate;
 
                     // Generate match schedules
-                    for (DateTime date = startDate; date <= endDate; date = date.AddDays(7))
+                    while (currentDate <= endDate)
                     {
-                        // Shuffle the team and field IDs for random assignment
-                        ShuffleList(teamIds);
-                        ShuffleList(fieldIds);
-
-                        // Generate matches for the current date
-                        for (int i = 0; i < teamIds.Count; i += 2)
+                        if (currentDate.DayOfWeek == DayOfWeek.Sunday)
                         {
-                            // Create and add the match to the database
-                            MatchSchedule match = new MatchSchedule
+                            // Shuffle the team and field IDs for random assignment
+                            ShuffleList(teamIds);
+                            ShuffleList(fieldIds);
+
+                            // Generate matches for the current date
+                            for (int i = 0; i < teamIds.Count; i += 2)
                             {
-                                HomeTeamId = teamIds[i],
-                                AwayTeamId = teamIds[i + 1],
-                                Date = date,
-                                Time = matchTime[i / 2 % matchTime.Length],
-                                FieldId = fieldIds[i / 2 % fieldIds.Count],
-                                HomeTeamScore = random.Next(6), 
-                                AwayTeamScore = random.Next(6),
-                                MatchDay = matchDay
-                            };
+                                
+                                MatchSchedule match = new MatchSchedule
+                                {
+                                    HomeTeamId = teamIds[i],
+                                    AwayTeamId = teamIds[i + 1],
+                                    Date = currentDate,
+                                    Time = matchTime[i / 2 % matchTime.Length],
+                                    FieldId = fieldIds[i / 2 % fieldIds.Count],
+                                    HomeTeamScore = random.Next(6),
+                                    AwayTeamScore = random.Next(6),
+                                    MatchDay = matchDay
+                                };
 
+                                context.MatchSchedules.Add(match);
+                            }
 
-                            context.MatchSchedules.Add(match);
+                            matchDay++; // Increment MatchDay only on Sundays
                         }
 
-                        matchDay++;
+                        currentDate = currentDate.AddDays(1); // Move to the next day
                     }
 
                     context.SaveChanges();

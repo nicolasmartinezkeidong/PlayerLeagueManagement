@@ -91,11 +91,33 @@ namespace PlayerManagement.Controllers
 
             ViewBag.PlayerToWatch = randomPlayerStats.ToList();
 
-            var matchCountList = randomPlayerStats.ToList();
-            int matchCountP1 = _context.PlayerMatchs.Count(pm => pm.PlayerId == matchCountList[0].PlayerId);
-            int matchCountP2 = _context.PlayerMatchs.Count(pm => pm.PlayerId == matchCountList[1].PlayerId);
-            ViewBag.MatchCoutP1 = matchCountP1;
-            ViewBag.MatchCoutP2 = matchCountP2;
+            var randomPlayerStatsList = randomPlayerStats.ToList();
+
+            // Retrieve all matches played by the selected players
+            var matchesPlayedByPlayers = _context.MatchSchedules
+                .Include(match => match.HomeTeam.Players) // Include HomeTeam and its Players
+                .Include(match => match.AwayTeam.Players) // Include AwayTeam and its Players
+                .AsEnumerable() // Retrieve data from the database
+                .Where(match =>
+                    match.HomeTeam.Players.Any(player => randomPlayerStatsList.Any(rps => rps.PlayerId == player.Id)) ||
+                    match.AwayTeam.Players.Any(player => randomPlayerStatsList.Any(rps => rps.PlayerId == player.Id))
+                )
+                .ToList();
+
+            int matchCountP1 = matchesPlayedByPlayers.Count(match =>
+                match.HomeTeam.Players.Any(player => player.Id == randomPlayerStatsList[0].PlayerId) ||
+                match.AwayTeam.Players.Any(player => player.Id == randomPlayerStatsList[0].PlayerId)
+            );
+
+            int matchCountP2 = matchesPlayedByPlayers.Count(match =>
+                match.HomeTeam.Players.Any(player => player.Id == randomPlayerStatsList[1].PlayerId) ||
+                match.AwayTeam.Players.Any(player => player.Id == randomPlayerStatsList[1].PlayerId)
+            );
+
+            ViewBag.MatchCountP1 = matchCountP1;
+            ViewBag.MatchCountP2 = matchCountP2;
+
+
 
             #endregion
 
