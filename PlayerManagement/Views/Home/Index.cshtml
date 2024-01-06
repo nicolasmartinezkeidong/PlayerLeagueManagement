@@ -419,19 +419,20 @@
                             </div>
                             <!-- Bigger block on the left -->
                             <div class="col-sm-8 bigger-block">
-                                <a href="#">
-                                    <div class="card style-card-news">
-                                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
-                                        <div class="card-img-overlay style-card-img-news">
-                                            <div class="style-text-news">
-                                                <h5 class="card-title">Card title</h5>
-                                                <p class="card-text">
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                                                </p>
+                                @foreach (var team in ViewBag.News)
+                                {
+                                    <a href="@Url.Action("Details", "News", new { id = team.Id })">
+                                        <div class="card style-card-news">
+                                            <img src="https://campeonatochileno.cl/uploads/noticias/thumb/1701560243643_DWS_2023_8.JPG" class="card-img-top" alt="@team.Title">
+                                            <div class="card-img-overlay style-card-img-news">
+                                                <div class="style-text-news">
+                                                    <h5 class="card-title">@team.Title</h5>
+                                                    <p class="card-text">@team.Content</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                }
                             </div>
 
                             <div class="col-sm-9 col-md-5">
