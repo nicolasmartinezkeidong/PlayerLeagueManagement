@@ -121,6 +121,15 @@ namespace PlayerManagement.Controllers
 
             #endregion
 
+            #region News
+            var newsList = _context.News
+                .Include(n => n.NewsPhoto)
+                .AsNoTracking();
+
+            ViewBag.News = newsList;
+
+            #endregion
+
             return View();
         }
 
