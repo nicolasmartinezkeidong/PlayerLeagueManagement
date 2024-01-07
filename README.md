@@ -33,6 +33,7 @@ At the moment, there are no additional steps other than running the application 
 - [x] Add send email option
 - [x] UI implementation
 - [ ] Fix bugs and UI details
+- [ ] Demo video
 
 ## Additional notes
 Because I'm still working on the final prototype to get a fully functional application, for a while there will not be a guide on how to contribute, but once I finish I'll do it, thank you for your understanding.
