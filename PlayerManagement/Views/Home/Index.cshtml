@@ -501,10 +501,11 @@
                                 <hr />
                             </div>
                             <!-- Block 5 -->
-                            <div class="col-sm-9 col-md-4">
-                                @foreach (var news in secondSetCards)
+                            @foreach (var news in secondSetCards)
                                 {
-                                    <div class="card h-75">
+                                <div class="col-sm-9 col-md-4">
+                                
+                                    <div class="card h-100">
                                         <a href="@Url.Action("Details", "News", new { id = news.Id })" class="text-dark">
                                             @{
                                                 if (news.NewsPhoto?.Content != null)
@@ -526,14 +527,13 @@
                                             </div>
                                         </a>
                                     </div>
-                                }
                             </div>
-                            
+                            }
                             <!-- Block 7 -->
                             <div class="col-sm-9 col-md-4">
                                 <!-- Second set of smaller blocks - card 3 -->
                                 <a class="more-card-news" asp-area="" asp-controller="News" asp-action="Index">
-                                    <div class="card h-75">
+                                    <div class="card h-100" id="moreNewsCard">
                                         <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
                                         <div class="card-body">
                                             <h5 class="card-title">Card title</h5>
@@ -630,6 +630,16 @@
                 console.log('Service worker has been registered for scope:' + reg.scope);
             });
         }
+
+
+        // Wait for DOM content to load
+        window.addEventListener('DOMContentLoaded', function () {
+            // Get the height of card class "h-100"
+            const cardHeight = document.querySelector('.card.h-100').clientHeight;
+
+            // Set the height of the moreNewsCard
+            document.getElementById('moreNewsCard').style.height = cardHeight + 'px';
+        });
 
     </script>
 
