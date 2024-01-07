@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Models;
+using PlayerManagement.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -458,35 +459,33 @@ namespace PlayerManagement.Data
                 #endregion
 
                 #region News
-                if (!context.News.Any())
+                for (int i = 0; i < 6; i++)
                 {
-                    DateTime newsDate = DateTime.Today;// 
+                    DateTime newsDate = DateTime.Today.AddDays(-random.Next(0, 365));
 
                     News news = new News
                     {
-                        Title = "lorem ipsum",
-                        AuthorFirstName = "Marcelo",
-                        AuthorLastName = "Salas",
-                        Date = newsDate.AddDays(-random.Next(0, 731)),
-                        Content = baconNotes[random.Next(0, baconNotes.Length)],      
+                        Title = $"Another Title {i}",
+                        AuthorFirstName = "John",
+                        AuthorLastName = "Doe",
+                        Date = newsDate,
+                        Content = baconNotes[random.Next(0, baconNotes.Length)],
                     };
 
-                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "soccer1_640.jpg");
+                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", $"news{i + 1}.jpg"); // Modify the image path name
 
-
-                    // Create a NewsPhoto object and associate it with the news item
                     NewsPhoto newsPhoto = new NewsPhoto
                     {
-                        Content = File.ReadAllBytes(imagePath), // Replace with the path to your image file
-                        MimeType = "image/jpeg", // Update with the appropriate MIME type of your image
-                        News = news // Associate the photo with the news item
+                        Content = File.ReadAllBytes(imagePath),
+                        MimeType = "image/jpeg", //
+                        News = news
                     };
 
-                    // Set the NewsPhoto property of the News item
                     news.NewsPhoto = newsPhoto;
 
                     context.News.Add(news);
                 }
+
                 context.SaveChanges();
                 #endregion
             }
