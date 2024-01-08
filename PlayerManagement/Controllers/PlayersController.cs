@@ -402,7 +402,7 @@ namespace PlayerManagement.Controllers
                     }
                 }
             }
-              
+                ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", playerToUpdate.PlayerPositionId);
                 PopulateDropDownLists(playerToUpdate);
                 PopulateAssignedPlayerPositions(playerToUpdate);
                 return View(playerToUpdate);
