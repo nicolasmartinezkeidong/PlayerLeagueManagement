@@ -285,8 +285,8 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion
-            , List<IFormFile> theFiles, string chkRemoveImage, IFormFile thePicture)
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions, 
+            Byte[] RowVersion, List<IFormFile> theFiles, string chkRemoveImage, IFormFile thePicture)
         {
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
@@ -738,8 +738,8 @@ namespace PlayerManagement.Controllers
                     {
                         playerToUpdate.Plays.Add(new PlayPosition
                         {
-                            PlayerPositionId = p.Id,
-                            PlayerId = playerToUpdate.Id
+                            PlayerId = playerToUpdate.Id,
+                            PlayerPositionId = p.Id
                         });
                     }
                 }
@@ -747,7 +747,7 @@ namespace PlayerManagement.Controllers
                 {
                     if (currentOptionsHS.Contains(p.Id))//but is currently in the PlayerPosition's collection - we remove it
                     {
-                        PlayPosition positionToRemove = playerToUpdate.Plays.FirstOrDefault(i => i.PlayerPositionId == p.Id);
+                        PlayPosition positionToRemove = playerToUpdate.Plays.SingleOrDefault(i => i.PlayerPositionId == p.Id);
                         _context.Remove(positionToRemove);
                     }
                 }
