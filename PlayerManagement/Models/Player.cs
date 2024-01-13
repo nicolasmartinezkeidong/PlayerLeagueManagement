@@ -76,7 +76,6 @@ namespace PlayerManagement.Models
         [Display(Name = "Primary Position")]
         [Required(ErrorMessage = "You must select the principal position the player plays.")]
         public int PlayerPositionId { get; set; }
-        [Display(Name = "Primary Position")]
         public PlayerPosition PlayerPosition { get; set; }
 
         [Display(Name = "All Positions")]

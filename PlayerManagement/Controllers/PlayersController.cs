@@ -16,6 +16,7 @@ using PlayerManagement.Models;
 using PlayerManagement.Utilities;
 using PlayerManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PlayerManagement.Controllers
 {
@@ -259,7 +260,7 @@ namespace PlayerManagement.Controllers
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
 
-            if (id == null || _context.Players == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -286,9 +287,9 @@ namespace PlayerManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string[] selectedOptions, 
-            Byte[] RowVersion, List<IFormFile> theFiles, string chkRemoveImage, IFormFile thePicture)
+            Byte[] RowVersion, string chkRemoveImage, List<IFormFile> theFiles, IFormFile thePicture)
         {
-            //URL with the last filter, sort and page parameters for this controller
+            ////URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
 
             //Go get the Player to update
@@ -310,7 +311,7 @@ namespace PlayerManagement.Controllers
 
             //Try updating it with the values posted
             if (await TryUpdateModelAsync<Player>(playerToUpdate, "",
-                p => p.FirstName, p => p.LastName, p => p.Phone, p => p.Email, p => p.DOB,
+                p => p.FirstName, p => p.LastName, p => p.Phone,p => p.GamesPlayed,p => p.Email, p => p.DOB,
                 p => p.TeamId, p => p.PlayerPositionId))
             {
                 try
@@ -361,10 +362,13 @@ namespace PlayerManagement.Controllers
                                 + String.Format("{0:d}", databaseValues.DOB));
                         if (databaseValues.Phone != clientValues.Phone)
                             ModelState.AddModelError("Phone", "Current value: "
-                                + databaseValues.PhoneFormatted);
+                                + databaseValues.Phone);
                         if (databaseValues.Email != clientValues.Email)
                             ModelState.AddModelError("Email", "Current value: "
                                 + databaseValues.Email);
+                        if (databaseValues.GamesPlayed != clientValues.GamesPlayed)
+                            ModelState.AddModelError("GamesPlayed", "Current value: "
+                                + databaseValues.GamesPlayed);
                         //For the foreign key, we need to go to the database to get the information to show
                         if (databaseValues.TeamId != clientValues.TeamId)
                         {
@@ -407,6 +411,7 @@ namespace PlayerManagement.Controllers
                 PopulateAssignedPlayerPositions(playerToUpdate);
                 return View(playerToUpdate);
         }
+
         // GET: Players/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -676,49 +681,22 @@ namespace PlayerManagement.Controllers
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, ControllerName());
         }
 
-        private void PopulateDropDownLists(Player player = null)
-        {
-            var tQuery = from t in _context.Teams
-                         orderby t.Name
-                         select t;
-            ViewData["TeamId"] = new SelectList(tQuery, "Id", "Name", player?.TeamId);
-
-            var pQuery = from p in _context.PlayerPositions
-                         orderby p.PlayerPos
-                         select p;
-            ViewData["PlayerPositionId"] = new SelectList(pQuery, "Id", "PlayerPos", player?.PlayerPositionId);
-        }
-
         private void PopulateAssignedPlayerPositions(Player player)
         {
-            //Included the child collection in the parent object
+            //Included the Plays in Players
             var allOptions = _context.PlayerPositions;
-            var currentOptionsHS = new HashSet<int>(player.Plays.Select(p => p.PlayerPositionId));
-            //Create two lists
-            var selected = new List<ListOptionVM>();
-            var available = new List<ListOptionVM>();
-            foreach (var p in allOptions)
+            var currentOptionIDs = new HashSet<int>(player.Plays.Select(p => p.PlayerPositionId));
+            var checkBoxes = new List<CheckOptionVM>();
+            foreach (var option in allOptions)
             {
-                if (currentOptionsHS.Contains(p.Id))
+                checkBoxes.Add(new CheckOptionVM
                 {
-                    selected.Add(new ListOptionVM
-                    {
-                        Id = p.Id,
-                        DisplayText = p.PlayerPos,
-                    });
-                }
-                else
-                {
-                    available.Add(new ListOptionVM
-                    {
-                        Id = p.Id,
-                        DisplayText = p.PlayerPos
-                    });
-                }
+                    Id = option.Id,
+                    DisplayText = option.PlayerPos,
+                    Assigned = currentOptionIDs.Contains(option.Id)
+                });
             }
-
-            ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "Id", "DisplayText");
-            ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "Id", "DisplayText");
+            ViewData["PlayOptions"] = checkBoxes;
         }
         private void UpdatePlayerPositions(string[] selectedOptions, Player playerToUpdate)
         {
@@ -729,35 +707,45 @@ namespace PlayerManagement.Controllers
             }
 
             var selectedOptionsHS = new HashSet<string>(selectedOptions);
-            var currentOptionsHS = new HashSet<int>(playerToUpdate.Plays.Select(b => b.PlayerPositionId));
-            foreach (var p in _context.PlayerPositions)
+            var playerOptionsHS = new HashSet<int>
+                (playerToUpdate.Plays.Select(c => c.PlayerPositionId));//IDs of the currently selected Plays
+            foreach (var option in _context.PlayerPositions)
             {
-                if (selectedOptionsHS.Contains(p.Id.ToString()))//it is selected
+                if (selectedOptionsHS.Contains(option.Id.ToString())) //It is checked
                 {
-                    if (!currentOptionsHS.Contains(p.Id))//but not currently in the PlayerPosition's collection, we add it
+                    if (!playerOptionsHS.Contains(option.Id))  //but not currently included
                     {
-                        playerToUpdate.Plays.Add(new PlayPosition
-                        {
-                            PlayerId = playerToUpdate.Id,
-                            PlayerPositionId = p.Id
-                        });
+                        playerToUpdate.Plays.Add(new PlayPosition { PlayerId = playerToUpdate.Id, PlayerPositionId = option.Id });
                     }
                 }
-                else //not selected
+                else
                 {
-                    if (currentOptionsHS.Contains(p.Id))//but is currently in the PlayerPosition's collection - we remove it
+                    //Checkbox Not checked
+                    if (playerOptionsHS.Contains(option.Id)) //but it is currently in the history - so remove it
                     {
-                        PlayPosition positionToRemove = playerToUpdate.Plays.SingleOrDefault(i => i.PlayerPositionId == p.Id);
-                        _context.Remove(positionToRemove);
+                        PlayPosition playToRemove = playerToUpdate.Plays.SingleOrDefault(c => c.PlayerPositionId == option.Id);
+                        _context.Remove(playToRemove);
                     }
                 }
             }
         }
-        private SelectList PlayerPositionList(int? selectId)
+        
+        private SelectList PlayerPositionList(int? selectedId)
         {
-            return new SelectList(_context
-                .PlayerPositions
-                .OrderBy(p => p.PlayerPos), "Id", "PlayerPos", selectId);
+            return new SelectList(_context.PlayerPositions
+                .OrderBy(p => p.PlayerPos), "Id", "PlayerPos", selectedId);
+        }
+
+        private SelectList TeamPositionList(int? selectedId)
+        {
+            return new SelectList(_context.Teams
+                .OrderBy(t => t.Name), "Id", "Name", selectedId);
+        }
+
+        private void PopulateDropDownLists(Player player = null)
+        {
+            ViewData["PlayerPositionId"] = PlayerPositionList(player?.PlayerPositionId);
+            ViewData["TeamId"] = TeamPositionList(player?.TeamId);
         }
 
         private bool PlayerExists(int id)
