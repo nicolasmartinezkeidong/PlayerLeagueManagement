@@ -260,7 +260,7 @@ namespace PlayerManagement.Controllers
             //URL with the last filter, sort and page parameters for this controller
             ViewDataReturnURL();
 
-            if (id == null)
+            if (id == null || _context.Players == null)
             {
                 return NotFound();
             }
@@ -275,9 +275,8 @@ namespace PlayerManagement.Controllers
             {
                 return NotFound();
             }
-            
-            PopulateDropDownLists(player);
             PopulateAssignedPlayerPositions(player);
+            PopulateDropDownLists(player);
             return View(player);
         }
 
@@ -286,17 +285,15 @@ namespace PlayerManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string[] selectedOptions, 
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions,
             Byte[] RowVersion, string chkRemoveImage, List<IFormFile> theFiles, IFormFile thePicture)
         {
-            ////URL with the last filter, sort and page parameters for this controller
-            ViewDataReturnURL();
 
             //Go get the Player to update
             var playerToUpdate = await _context.Players
+                .Include(p => p.PlayerPhoto)
                 .Include(d => d.PlayerDocuments)
                 .Include(p => p.Plays).ThenInclude(p => p.PlayerPosition)
-                .Include(p => p.PlayerPhoto)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playerToUpdate == null)
@@ -304,6 +301,7 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
+            //Update the plays
             UpdatePlayerPositions(selectedOptions, playerToUpdate);
 
             //Put the original RowVersion value in the OriginalValues collection for the entity
@@ -311,7 +309,7 @@ namespace PlayerManagement.Controllers
 
             //Try updating it with the values posted
             if (await TryUpdateModelAsync<Player>(playerToUpdate, "",
-                p => p.FirstName, p => p.LastName, p => p.Phone,p => p.GamesPlayed,p => p.Email, p => p.DOB,
+                p => p.FirstName, p => p.LastName, p => p.Phone, p => p.GamesPlayed, p => p.Email, p => p.DOB,
                 p => p.TeamId, p => p.PlayerPositionId))
             {
                 try
@@ -375,7 +373,7 @@ namespace PlayerManagement.Controllers
                             Team databaseTeam = await _context.Teams.FirstOrDefaultAsync(i => i.Id == databaseValues.TeamId);
                             ModelState.AddModelError("TeamId", $"Current value: {databaseTeam?.Name}");
                         }
-                        
+
                         if (databaseValues.PlayerPositionId != clientValues.PlayerPositionId)
                         {
                             PlayerPosition databasePosition = await _context.PlayerPositions.FirstOrDefaultAsync(i => i.Id == databaseValues.PlayerPositionId);
@@ -406,10 +404,10 @@ namespace PlayerManagement.Controllers
                     }
                 }
             }
-                ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", playerToUpdate.PlayerPositionId);
-                PopulateDropDownLists(playerToUpdate);
-                PopulateAssignedPlayerPositions(playerToUpdate);
-                return View(playerToUpdate);
+            ViewData["PlayerPositionId"] = new SelectList(_context.PlayerPositions, "Id", "PlayerPos", playerToUpdate.PlayerPositionId);
+            PopulateAssignedPlayerPositions(playerToUpdate);
+            PopulateDropDownLists(playerToUpdate);
+            return View(playerToUpdate);
         }
 
         // GET: Players/Delete/5
@@ -707,8 +705,8 @@ namespace PlayerManagement.Controllers
             }
 
             var selectedOptionsHS = new HashSet<string>(selectedOptions);
-            var playerOptionsHS = new HashSet<int>
-                (playerToUpdate.Plays.Select(c => c.PlayerPositionId));//IDs of the currently selected Plays
+            var playerOptionsHS = new HashSet<int>(playerToUpdate.Plays.Select(p => p.PlayerPositionId));
+
             foreach (var option in _context.PlayerPositions)
             {
                 if (selectedOptionsHS.Contains(option.Id.ToString())) //It is checked
@@ -723,13 +721,12 @@ namespace PlayerManagement.Controllers
                     //Checkbox Not checked
                     if (playerOptionsHS.Contains(option.Id)) //but it is currently in the history - so remove it
                     {
-                        PlayPosition playToRemove = playerToUpdate.Plays.SingleOrDefault(c => c.PlayerPositionId == option.Id);
-                        _context.Remove(playToRemove);
+                        PlayPosition positionToRemove = playerToUpdate.Plays.SingleOrDefault(c => c.PlayerPositionId == option.Id);
+                        _context.Remove(positionToRemove);
                     }
                 }
             }
         }
-        
         private SelectList PlayerPositionList(int? selectedId)
         {
             return new SelectList(_context.PlayerPositions

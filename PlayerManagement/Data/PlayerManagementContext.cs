@@ -51,6 +51,9 @@ namespace PlayerManagement.Data
         public DbSet<News> News { get; set; }
         public DbSet<NewsPhoto> NewsPhotos { get; set; }
 
+        //For Views
+        public DbSet<TeamStatsVM> TeamStatsVM { get; set; }
+        public DbSet<StandingsVM> StandingsVM { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -134,8 +137,6 @@ namespace PlayerManagement.Data
                 }
             }
         }
-
-        public DbSet<PlayerManagement.ViewModels.TeamStatsVM> TeamStatsVM { get; set; }
-        public DbSet<PlayerManagement.ViewModels.StandingsVM> StandingsVM { get; set; }
+        
     }
 }
