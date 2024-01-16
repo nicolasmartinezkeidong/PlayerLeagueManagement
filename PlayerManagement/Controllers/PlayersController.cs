@@ -308,7 +308,7 @@ namespace PlayerManagement.Controllers
             _context.Entry(playerToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
             //Try updating it with the values posted
-            if (await TryUpdateModelAsync<Player>(playerToUpdate, "",
+            if (!await TryUpdateModelAsync<Player>(playerToUpdate, "",
                 p => p.FirstName, p => p.LastName, p => p.Phone, p => p.GamesPlayed, p => p.Email, p => p.DOB,
                 p => p.TeamId, p => p.PlayerPositionId))
             {
