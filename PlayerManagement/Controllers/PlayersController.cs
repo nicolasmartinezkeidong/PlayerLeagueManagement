@@ -190,6 +190,19 @@ namespace PlayerManagement.Controllers
                 return NotFound();
             }
 
+            // other players on the same team
+            var otherPlayers = _context.Players
+                .Where(p => p.TeamId == player.TeamId && p.Id != player.Id)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.FullName,
+                    PlayerPosition = new { PlayerPos = p.PlayerPosition.PlayerPos },
+                    p.Age
+                })
+                .ToList();
+            ViewBag.OtherPlayers = otherPlayers;
+
             return View(player);
         }
 
@@ -560,6 +573,8 @@ namespace PlayerManagement.Controllers
                         {
                            FirstName = p.FirstName,
                            LastName = p.LastName,
+                           Phone = p.Phone,
+                           Email = p.Email,
                            Age = p.Age,
                            PlayerPosition = p.PlayerPosition.PlayerPos
                         };
@@ -584,13 +599,6 @@ namespace PlayerManagement.Controllers
 
                     //Note: You can define a BLOCK of cells: Cells[startRow, startColumn, endRow, endColumn]
                     workSheet.Cells[4, 1, numRows + 3, 2].Style.Font.Bold = true;
-
-                    using (ExcelRange totalfees = workSheet.Cells[numRows + 4, 4])//
-                    {
-                        totalfees.Formula = "Sum(" + workSheet.Cells[4, 4].Address + ":" + workSheet.Cells[numRows + 3, 4].Address + ")";
-                        totalfees.Style.Font.Bold = true;
-                        totalfees.Style.Numberformat.Format = "$###,##0.00";
-                    }
 
                     //Set Style and backgound colour of headings
                     using (ExcelRange headings = workSheet.Cells[3, 1, 3, 6])
@@ -632,7 +640,7 @@ namespace PlayerManagement.Controllers
                     {
                         DateTime todaysDate = DateTime.Today.ToLocalTime();
                         Byte[] theData = excel.GetAsByteArray();
-                        string filename = $"{todaysDate.ToString("MM/dd/yyyy")}Players.xlsx";
+                        string filename = $"{todaysDate.ToString("MM/dd/yyyy")}_Players.xlsx";
                         string mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                         return File(theData, mimeType, filename);
                     }

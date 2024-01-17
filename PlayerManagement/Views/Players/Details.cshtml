@@ -7,103 +7,164 @@
 <h1>Details</h1>
 
 <h2>Player: @Model.FullName</h2>
-<hr />
+
 <div>
-    @{
-        if (Model.PlayerPhoto?.Content != null)
-        {
-            @:<div>
-                string imageBase64 = Convert.ToBase64String(Model.PlayerPhoto.Content);
-                string imageSrc = string.Format("data:" + Model.PlayerPhoto.MimeType + ";base64,{0}", imageBase64);
-                <img src="@imageSrc" alt="Profile Picture of @Model.FullName" title="Profile Picture of @Model.FullName" class="img-fluid rounded" />
-            @:</div><hr />
-        }
-    }
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneFormatted)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PlayerPosition)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PlayerPosition.PlayerPos)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Plays)
-        </dt>
-        <dd class="col-sm-10">
+    <hr />
+    <figure class="row">
+        <p class="col-auto">
             @{
-                int positionsCount = Model.Plays.Count;
-                if (positionsCount > 0)
+                if (Model.PlayerPhoto?.Content != null)
                 {
-                    string firstPosition = Model.Plays.FirstOrDefault().PlayerPosition.PlayerPos;
-                    if (positionsCount > 1)
-                    {
-                        string positionsList = "";
-                        var c = Model.Plays.ToList();
-                        for (int i = 1; i < positionsCount; i++)//Skip the first because we have it already
-                        {
-                            positionsList += c[i].PlayerPosition.PlayerPos + " <br />";
-                        }
-                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.Id)"
-                        aria-expanded="false" aria-controls="collapseSpecalty@(Model.Id)">
-                            @firstPosition <span class="badge bg-info">@positionsCount</span>
-                        </a>
-                        <div class="collapse" id="collapseSpecalty@(Model.Id)">
-                            @Html.Raw(positionsList)
-                        </div>
-                    }
-                    else
-                    {
-                        @firstPosition
-                    }
+                    string imageBase64 = Convert.ToBase64String(Model.PlayerPhoto.Content);
+                    string imageSrc = string.Format("data:" + Model.PlayerPhoto.MimeType + ";base64,{0}", imageBase64);
+                        <img src="@imageSrc" alt="Profile Picture of @Model.FullName" title="Profile Picture of @Model.FullName" class="img-fluid rounded" />
                 }
             }
-        </dd>
-
-        <dt class = "col-sm-2">
+        </p>
+        <figcaption class="col mt-3">
+            <dl class="row lh-1">
+                <dt class="col-md-3">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd class="col-md-9">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt class="col-md-3">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd class="col-md-9">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+                <dt class="col-md-3">
+                    @Html.DisplayNameFor(model => model.Phone)
+                </dt>
+                <dd class="col-md-9">
+                    @Html.DisplayFor(model => model.PhoneFormatted)
+                </dd>
+                <dt class="col-md-3">
+                    @Html.DisplayNameFor(model => model.Age)
+                </dt>
+                <dd class="col-md-9">
+                    @Html.DisplayFor(model => model.Age)
+                </dd>
+                <dt class="col-md-3">
+                    @Html.DisplayNameFor(model => model.PlayerPosition)
+                </dt>
+                <dd class="col-md-9">
+                    @Html.DisplayFor(model => model.PlayerPosition.PlayerPos)
+                </dd>
+                <dt class="col-md-3">
+                    @Html.DisplayNameFor(model => model.Plays)
+                </dt>
+                <dd class="col-md-9">
+                    @{
+                        int playCount = Model.Plays.Count;
+                        if (playCount > 0)
+                        {
+                            string firstPlay = Model.Plays.FirstOrDefault().PlayerPosition.PlayerPos;
+                            if (playCount > 1)
+                            {
+                                string playList = "";
+                                var c = Model.Plays.ToList();
+                                for (int i = 1; i < playCount; i++)//Skip the first because we have it already
+                                {
+                                    playList += c[i].PlayerPosition.PlayerPos + " <br />";
+                                }
+                                    <a class="" role="button" data-bs-toggle="collapse" href="#collapseHistory@(Model.Id)"
+                               aria-expanded="false" aria-controls="collapseHistory@(Model.Id)">
+                                        @firstPlay <span class="badge bg-info">@playCount</span>
+                                    </a>
+                                    <div class="collapse" id="collapseHistory@(Model.Id)">
+                                        @Html.Raw(playList)
+                                    </div>
+                            }
+                            else
+                            {
+                                    @firstPlay
+                            }
+                        }
+                    }
+                </dd>
+                <dt class="col-md-3">
+                    @Html.DisplayNameFor(model => model.PlayerDocuments)
+                </dt>
+                <dd class="col-md-9">
+                    @{
+                        int fileCount = Model.PlayerDocuments.Count;
+                        if (fileCount > 0)
+                        {
+                            var firstFile = Model.PlayerDocuments.FirstOrDefault(); ;
+                            if (fileCount > 1)
+                            {
+                                    <a class="" role="button" data-bs-toggle="collapse" href="#collapseDocs@(Model.Id)"
+                               aria-expanded="false" aria-controls="collapseDocs@(Model.Id)">
+                                        Uploaded Files <span class="badge bg-info">@fileCount</span>
+                                    </a>
+                                    <div class="collapse" id="collapseDocs@(Model.Id)">
+                                        @{
+                                        foreach (var d in Model.PlayerDocuments)
+                                        {
+                                                    <a asp-action="Download" asp-route-id="@d.Id">@d.FileName</a> <br />
+                                        }
+                                        }
+                                    </div>
+                            }
+                            else
+                            {
+                                    <a asp-action="Download" asp-route-id="@firstFile.Id">@firstFile.FileName</a>
+                            }
+                        }
+                    }
+                </dd>
+            </dl>
+        </figcaption>
+    </figure>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Team)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Team.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GamesPlayed)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GamesPlayed)
+        <dd class="col-sm-10">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Position
+                        </th>
+                        <th>
+                            Age
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var teammates = ViewBag.OtherPlayers ;
+                    }
+                    @foreach (var otherPlayer in teammates)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Players" asp-action="Details" asp-route-Id="@otherPlayer.Id">
+                                    @otherPlayer.FullName
+                                </a>
+                            </td>
+                            <td>
+                                @otherPlayer.PlayerPosition.PlayerPos
+                            </td>
+                            <td>
+                                @otherPlayer.Age
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a href='@ViewData["returnURL"]'>Back to List</a>
+    <a href='@ViewData["returnURL"]'>Back to Player List</a>
 </div>
