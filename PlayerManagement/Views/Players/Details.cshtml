@@ -121,9 +121,9 @@
     </figure>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Team)
-        </dt>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Team) <span style="font-weight: normal;">@Html.DisplayFor(model => model.Team.Name)</span>
+    </dt>
         <dd class="col-sm-10">
             <table class="table table-striped">
                 <thead>
